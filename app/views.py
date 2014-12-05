@@ -1,5 +1,5 @@
 from flask import render_template, redirect, session, url_for, request, jsonify
-from app import app, db
+from app import app, db, models
 import config
 
 @app.route('/index')
@@ -23,3 +23,8 @@ def helname(name):
 @app.route("/id/<int:name>")
 def idpage(name):
     return str(name)
+
+##LLAMANDO la Base de Datos :D
+@app.route("/Team")
+def team():
+    return "<span>"+str(models.Team.query.first().username)+"|"+str(models.Team.query.first().age)+"</span>"
