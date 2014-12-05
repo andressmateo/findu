@@ -1,4 +1,3 @@
-__author__ = '?'
 #IMPORTS
 import os
 from flask import Flask

@@ -1,8 +1,6 @@
-from datetime import datetime
 from flask import render_template, redirect, session, url_for, request, jsonify
 from app import app, db
 import config
-__author__ = '?'
 
 @app.route('/index')
 @app.route('/')
