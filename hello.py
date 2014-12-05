@@ -14,5 +14,7 @@ def hello():
 @app.route("/w/<name>")
 def helname(name):
     return "Hello {}!".format(name)
+
+#Debug Activado (Es muy buen Debugger)
 if __name__ == "__main__":
     app.run(debug=True)
