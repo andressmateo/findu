@@ -6,3 +6,5 @@ SQLALCHEMY_DATABASE_URI = "postgres://pautuijerpsjfe:SGKi84ubN5G8SJjtVbHKV47H2i@
 #SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 #WHOOSH_BASE = os.path.join(basedir, 'search.db')
 
+#APP DATA
+AppName = "Project Athene"

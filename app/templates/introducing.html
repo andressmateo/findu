@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title> {% if title %}{{title}}{% else %}Index{% endif %}</title>
+    <link rel="stylesheet" href="http://necolas.github.io/normalize.css/3.0.2/normalize.css" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Dorsa' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+        body{
+            background-color: #212121;
+            background-image: url(http://subtlepatterns.com/patterns/footer_lodyas.png);
+            font-family: 'Dorsa', sans-serif;
+            font-size: 12em;
+            text-align: center;
+        }
+        p{
+            text-shadow: 2px 2px #ffffff;
+        }
+    </style>
+</head>
+<body>
+<p>...Introducing {% if title %}<span>{{title}}</span>{% endif %}...</p>
+</body>
+</html>

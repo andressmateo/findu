@@ -5,15 +5,15 @@ import config
 @app.route('/index')
 @app.route('/')
 def hello():
-    return 'Deployment...'
+    return render_template("introducing.html",title=config.AppName)
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template("404.html"), 404
+    return "Error 404"
 
 @app.errorhandler(500)
 def not_found(error):
-    return render_template("404.html"), 500
+    return "Error 500"
 
 #Ejemplo de Obtener datos de una Ruta
 @app.route("/w/<name>")
