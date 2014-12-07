@@ -27,4 +27,7 @@ def idpage(name):
 ##LLAMANDO la Base de Datos :D
 @app.route("/Team")
 def team():
-    return "<span>"+str(models.Team.query.first().username)+"|"+str(models.Team.query.first().age)+"</span>"
+    ret = ""
+    for member in models.Team.query.all():
+        ret += "<span>"+str(member.username)+"|"+str(member.age)+"</span><br/>"
+    return ret
