@@ -1,5 +1,5 @@
 from flask import render_template, redirect, session, url_for, request, jsonify
-from app import app, db, models
+from app import app, db, models, search
 import config
 
 @app.route('/index')
@@ -31,3 +31,14 @@ def team():
     for member in models.Team.query.all():
         ret += "<span>"+str(member.username)+"|"+str(member.age)+"</span><br/>"
     return ret
+
+@app.route("/Buscar")
+def buscar():
+    return render_template("buscar.html",title=config.AppName)
+
+@app.route("/Busqueda", methods=['POST'])
+def busqueda():
+    b = request.form['busqueda']
+    u = search.busqueda(b)
+    return "<span>"+str(u.nombre) + " , "+ str(u.descripcion) + "</span>"
+
