@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import render_template, redirect, session, url_for, request, jsonify
 from app import app, db, models, search
 import config
@@ -5,7 +6,7 @@ import config
 @app.route('/index')
 @app.route('/')
 def hello():
-    return render_template("introducing.html" , title=config.AppName)
+    return render_template("introducing.html", config=config)
 
 @app.errorhandler(404)
 def not_found(error):
@@ -44,3 +45,7 @@ def busqueda():
 @app.route("/contacto")
 def contact():
     return "No hay"
+
+@app.route("/login")
+def login():
+    return "Despues"

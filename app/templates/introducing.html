@@ -1,24 +1,64 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
+<head lang="es">
     <meta charset="UTF-8">
-    <title> {% if title %}{{title}}{% else %}Index{% endif %}</title>
-    <link rel="stylesheet" href="http://necolas.github.io/normalize.css/3.0.2/normalize.css" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Dorsa' rel='stylesheet' type='text/css'>
-    <style type="text/css">
-        body{
-            background-color: #212121;
-            background-image: url(http://subtlepatterns.com/patterns/footer_lodyas.png);
-            font-family: 'Dorsa', sans-serif;
-            font-size: 12em;
-            text-align: center;
-        }
-        p{
-            text-shadow: 2px 2px #ffffff;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title> {% if config.AppName %}{{config.AppName}}{% else %}Index{% endif %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/introducing.css') }}"/>
 </head>
 <body>
-<p>...Introducing {% if title %}<span>{{title}}</span>{% endif %}...</p>
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">{{ config.AppName }}</h3>
+
+                    <ul class="nav masthead-nav">
+                        <li class="active">
+                            <a href="#">¿Qué Es?</a>
+                        </li>
+
+                        <li>
+                            <a href="#">Buscador</a>
+                        </li>
+
+                        <li>
+                            <a href="#">Contacto</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="inner cover">
+                <h1 class="cover-heading"></h1>
+
+                <p class="lead">{{ config.description.decode(encoding='UTF-8',errors='strict') }}</p>
+
+                <p class="lead">
+                    <a class="btn btn-lg btn-info" href=" {{url_for('login')}} ">Entrar</a>
+                </p>
+            </div>
+
+            <div class="mastfoot">
+                <div class="inner">
+                    <p>
+                        <a href="#" target="_blank">
+                            <small>{{ config.State }}</small>
+                            <sup>{{ config.V }}</sup>
+                        </a>
+                    </p>
+                    <p>
+                        <a href="">
+                            <small>En Desarrollo</small>
+                        </a>
+                    </p>
+                    <p>by {{ config.Team }} Team ~ <a href="">© Todos los Derechos Reservados</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
