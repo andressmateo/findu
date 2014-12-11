@@ -1,0 +1,48 @@
+.not_found{
+    background: #22272A;
+}
+.not_found nav{
+    background-color: #0b0d0e;
+    border-color: #171a1c;
+}
+.not_found h1{
+    color: rgba(255, 255, 255, 0.4);
+    text-shadow: 1px 1px 10px rgba(255, 255, 255, 0.3);
+    font-size: 9em;
+}
+.not_found h2{
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 4em;
+}
+.not_found div{
+    color: rgba(255, 255, 255, 0.9);
+}
+.error-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+.error-actions {
+    margin-top:15px;
+    margin-bottom:15px;
+}
+.error-actions .btn {
+    margin-right:10px;
+}
+
+@media (min-width: 992px) {
+    .not_found{
+        background-image: url("https://c2.staticflickr.com/6/5447/9286000388_7cb8ab30f4_b.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .not_found h1{
+        color: rgba(0, 0, 0, 0.4);
+        text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+    }
+    .not_found h2{
+        color: rgba(0, 0, 0, 0.4);
+    }
+    .not_found div{
+        color: rgba(0, 0, 0, 0.9);
+    }
+}

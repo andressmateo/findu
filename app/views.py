@@ -5,11 +5,11 @@ import config
 @app.route('/index')
 @app.route('/')
 def hello():
-    return render_template("introducing.html",title=config.AppName)
+    return render_template("introducing.html" , title=config.AppName)
 
 @app.errorhandler(404)
 def not_found(error):
-    return "Error 404"
+    return render_template("404.html")
 
 @app.errorhandler(500)
 def not_found(error):
@@ -41,4 +41,6 @@ def busqueda():
     b = request.form['busqueda']
     u = search.busqueda(b)
     return "<span>"+str(u.nombre) + " , "+ str(u.descripcion) + "</span>"
-
+@app.route("/contacto")
+def contact():
+    return "No hay"
