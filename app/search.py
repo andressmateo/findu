@@ -1,15 +1,7 @@
+from app import models, app, db
 
-from app import Universidad
-
-tags = ['Universidad Nacional','nacho','unal','Nacional']
-
-u = Universidad.Universidad(1,"Universidad Nacional","Es una buena universidad")
-v = Universidad.Universidad(1,"Por favor ingresa un nombre correcto","gracias")
-
-def busqueda(b):
-    r = v
-    for t in tags:
-        if b == t:
-            r = u
-    return r
-
+def searchFor(b):
+    ret ="Lo sentimos, no se encontraron resultados"
+    for u in models.OtherName.query.filter_by(name = b):
+            ret = "<span>"+str(u.name)+"-"+(u.university.name).encode('utf-8')+"</span><br/>"
+    return ret
