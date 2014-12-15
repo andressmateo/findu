@@ -33,20 +33,24 @@ def team():
         ret += "<span>"+str(member.username)+"|"+str(member.age)+"</span><br/>"
     return ret
 
-@app.route("/buscar")
+@app.route("/buscar", methods=['POST', 'GET'])
 def buscarIndex():
-    return render_template("buscar.html",title=config.AppName)
+    if request.method == 'POST':
+        url = "/buscar/"+request.form['busqueda']
+        return redirect(url)
+        #return url
+    return render_template("search.html",title=config.AppName)
 
 @app.route("/buscar/<busqueda>")
 def buscar(busqueda):
     return str(search.searchFor(busqueda))
 
 
-@app.route("/busqueda", methods=['POST'])
-def busqueda():
-    b = request.form['busqueda']
-    u = search.searchFor(b)
-    return "<span>"+str(u.nombre) + " , "+ str(u.descripcion) + "</span>"
+#@app.route("/busqueda", methods=['POST'])
+#def busqueda():
+#    b = request.form['busqueda']
+#   u = search.searchFor(b)
+#   return "<span>"+str(u.nombre) + " , "+ str(u.descripcion) + "</span>"
 
 
 @app.route("/contacto")
