@@ -43,7 +43,11 @@ def buscarIndex():
 
 @app.route("/buscar/<busqueda>")
 def buscar(busqueda):
-    return str(search.searchFor(busqueda))
+    result = search.searchFor(busqueda)
+    if (isinstance(result,models.University)):
+        return render_template("university.html",university = result)
+    else:
+        return str("No es")
 
 
 #@app.route("/busqueda", methods=['POST'])

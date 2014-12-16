@@ -7,7 +7,8 @@ def searchFor(b):
     ret ="Lo sentimos, no se encontraron resultados"
     found = False
     for u in db.session.query(models.OtherName).filter(models.OtherName.name.ilike('%'+b+'%')):
-        ret = "<span>"+str(u.name)+" - "+(u.university.name).encode('utf-8')+"</span><br/>"
+        #ret = "<span>"+str(u.name)+" - "+(u.university.name).encode('utf-8')+"</span><br/>"
+        return u.university
         found = True
     if(not found):
         #opciones = [[0 for x in range(2)] for x in range(10)]
