@@ -3,11 +3,21 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Buscar</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
-<form action="/buscar" method="post">
-    <input type="text" name="busqueda" placeholder="¿Qué quieres buscar?"/>
-    <input type="submit" value="Buscar"/>
-</form>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3" style="margin-top:15%">
+                <i class="fa fa-5x">PROJECT ATHENE</i><br/><br/>
+                <form action="/buscar" method="post">
+                    <input class="form-control" type="text" name="busqueda" placeholder="¿Qué quieres buscar?"/>
+                    <br/>
+                    <input class="btn btn-primary center-block" type="submit" value="Buscar"/>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -161,7 +161,7 @@ def team():
 
 
 @app.route("/buscar", methods=['POST', 'GET'])
-def buscarIndex():
+def buscar_index():
     if request.method == 'POST':
         url = "/buscar/"+request.form['busqueda']
         return redirect(url)
@@ -171,15 +171,21 @@ def buscarIndex():
 
 @app.route("/buscar/<busqueda>")
 def buscar(busqueda):
-    result = search.searchFor(busqueda)
-    if (isinstance(result,models.University)):
-        return render_template("university.html",university = result)
-    elif (isinstance(result,models.Career)):
-        return str(result.name)
-    else:
-        return str(result)
-
-
+    result = search.search_for(busqueda)
+    if(len(result)==1):
+        if (isinstance(result[0],models.University)):
+            return render_template("university.html",university = result[0])
+        elif(isinstance(result[0],models.Career)):
+            return render_template("career.html",career  = result[0])
+    elif (isinstance(result[0],models.University) or isinstance(result[0],models.Career)):
+        return render_template("results.html",result = result)
+    elif (result[0]==0):
+        result.__delitem__(0)
+        ret =  "Quizas quiso decir: <a href='/buscar/"+result[0]+"'>"+ result[0]+ "</a>"
+        result.__delitem__(0)
+        for item in result:
+                ret += " o <a href='/buscar/"+item+"'>"+ item+"</a>"
+        return ret
 @app.route("/contacto")
 def contact():
     return "No hay"
@@ -298,7 +304,7 @@ def panel_add_career():
         if request.method == 'POST':
             if request.form["name"] and request.form["description"] and request.form["type"]:
                 try:
-                    career = models.Career(request.form["name"], request.form["type"],
+                    career = models.Career(request.form["name"].encode('utf-8'), request.form["type"],
                                            request.form["description"])
                     db.session.add(career)
                     db.session.commit()
