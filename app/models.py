@@ -62,10 +62,11 @@ class UniversityHeadquarter(db.Model):
     university_id = db.Column(db.Integer, db.ForeignKey('university.id'))
     university = db.relationship('University', backref=db.backref('places', lazy='dynamic'))
 
-    def __init__(self, lat, long, university):
+    def __init__(self, campus_name, lat, long, university):
         self.lat = lat
         self.long = long
         self.university = university
+        self.campus_name = campus_name
         print "New Headquarter: "+self.__repr__()
 
     def __repr__(self):

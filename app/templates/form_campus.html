@@ -1,0 +1,40 @@
+{% extends "panel_base.html" %}
+{% block body %}
+<h2 class="text-center" xmlns="http://www.w3.org/1999/html">Registrar a new campus for a University</h2>
+<form class="form-horizontal" role="form" action="{{ url_for('panel_add_campus') }}"
+        method="post">
+    <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Campus Name</label>
+        <div class="col-sm-9">
+            <input name="name" type="name" class="form-control" id="inputName"
+                   placeholder="Alternative Name" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="selectName" class="col-sm-2 control-label">University</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="selectName" name="id">
+            {% for university in data %}
+                <option value="{{ university.id }}">{{ university.name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label alt="Latitud y Longitud" class="col-sm-2 control-label">Coordinates</label>
+        <div class="col-sm-4">
+            <input name="lat" type="name" class="form-control" id="inputLat"
+                   placeholder="Latitude" required>
+        </div>
+        <div class="col-sm-4 col-sm-push-1">
+            <input name="long" type="name" class="form-control" id="inputLong"
+                   placeholder="Longitude" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Add</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

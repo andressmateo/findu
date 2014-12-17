@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, redirect, session, url_for, request, jsonify
 from app import app, db, models, search
-import config, requests
+import config
 
 
 #OTHER ONES
@@ -23,6 +23,7 @@ def university_json():
         result_json.append(u)
     return jsonify(university=result_json)
 
+
 def names_json():
     result = models.OtherName.query.all()
     result_json = []
@@ -35,6 +36,22 @@ def names_json():
         result_json.append(o)
     return jsonify(name=result_json)
 
+
+def campus_json():
+    result = models.UniversityHeadquarter.query.all()
+    result_json = []
+    for campus in result:
+        c = {
+            "name": campus.campus_name,
+            "university_id": campus.university_id,
+            "university_name": campus.university.name,
+            "lat": campus.lat,
+            "long": campus.long
+        }
+        result_json.append(c)
+    return jsonify(name=result_json)
+
+
 def select_university_data():
     result = models.University.query.all()
     data = []
@@ -46,27 +63,34 @@ def select_university_data():
         data.append(dictionary)
     return data
 #VIEWS
+
+
 @app.route('/index')
 @app.route('/')
 def hello():
     return render_template("introducing.html", config=config)
 
+
 @app.errorhandler(404)
 def not_found(error):
     return render_template("404.html")
 
+
 @app.errorhandler(500)
 def not_found(error):
     return "Error 500"
+
 
 #Ejemplo de Obtener datos de una Ruta
 @app.route("/w/<name>")
 def helname(name):
     return "Hello {}!".format(name)
 
+
 @app.route("/id/<int:name>")
 def idpage(name):
     return str(name)
+
 
 ##LLAMANDO la Base de Datos :D
 @app.route("/Team")
@@ -76,6 +100,7 @@ def team():
         ret += "<span>"+str(member.username)+"|"+str(member.age)+"</span><br/>"
     return ret
 
+
 @app.route("/buscar", methods=['POST', 'GET'])
 def buscarIndex():
     if request.method == 'POST':
@@ -83,6 +108,7 @@ def buscarIndex():
         return redirect(url)
         #return url
     return render_template("search.html",title=config.AppName)
+
 
 @app.route("/buscar/<busqueda>")
 def buscar(busqueda):
@@ -94,9 +120,11 @@ def buscar(busqueda):
     else:
         return str(result)
 
+
 @app.route("/contacto")
 def contact():
     return "No hay"
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -108,10 +136,12 @@ def login():
             return 'Invalid username/password'
     return render_template('login.html')
 
+
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
     session["logged"] = False
     return  redirect(url_for("hello"))
+
 
 @app.route("/admin")
 def admin_link():
@@ -120,6 +150,7 @@ def admin_link():
     else:
         return "Inside"
 
+
 @app.route("/panel")
 def panel():
     if check_log():
@@ -127,12 +158,14 @@ def panel():
     else:
         return "Making a Panel"
 
+
 @app.route("/panel/add/")
 def panel_add():
     if check_log():
         return check_log()
     else:
         return "What do you want to add?"
+
 
 @app.route("/panel/add/university", methods=['POST', 'GET'])
 def panel_add_university():
@@ -153,6 +186,8 @@ def panel_add_university():
                 return render_template("form_result.html", error=True)
         else:
             return render_template("form_university.html")
+
+
 @app.route("/panel/add/name", methods=['POST', 'GET'])
 def panel_add_name():
     if check_log():
@@ -173,14 +208,44 @@ def panel_add_name():
         else:
             return render_template("form_name.html", data=select_university_data())
 
+
+@app.route("/panel/add/campus", methods=['POST', 'GET'])
+def panel_add_campus():
+    if check_log():
+        return check_log()
+    else:
+        if request.method == 'POST':
+            if request.form["name"] and request.form["id"] and request.form["lat"] and request.form["long"]:
+                try:
+                    university = models.University.query.filter_by(id=request.form["id"]).first()
+                    campus = models.UniversityHeadquarter(request.form["name"], float(request.form["lat"]),
+                                                          float(request.form["long"]), university)
+                    db.session.add(campus)
+                    db.session.commit()
+                    return render_template("form_result.html", success=True)
+                except:
+                    return render_template("form_result.html", error=True)
+            else:
+                return render_template("form_result.html", error=True)
+        else:
+            return render_template("form_campus.html", data=select_university_data())
+
+
 @app.route("/list/university")
 def list_university():
     return university_json()
+
 
 @app.route("/list/name")
 def list_names():
     return names_json()
 
+
+@app.route("/list/campus")
+def list_campus():
+    return campus_json()
+
+
 @app.route("/test")
 def test():
-        return render_template("form_name.html")
+        return render_template("form_campus.html", data=select_university_data())
