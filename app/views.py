@@ -3,6 +3,12 @@ from flask import render_template, redirect, session, url_for, request, jsonify
 from app import app, db, models, search
 import config
 
+
+#OTHER ONES
+def check_log():
+    if not session["logged"]:
+        return redirect(url_for("login"))
+#VIEWS
 @app.route('/index')
 @app.route('/')
 def hello():
@@ -51,24 +57,10 @@ def buscar(busqueda):
     else:
         return str(result)
 
-
-#@app.route("/busqueda", methods=['POST'])
-#def busqueda():
-#    b = request.form['busqueda']
-#   u = search.searchFor(b)
-#   return "<span>"+str(u.nombre) + " , "+ str(u.descripcion) + "</span>"
-
-
 @app.route("/contacto")
 def contact():
     return "No hay"
 
-@app.route("/admin")
-def admin_link():
-    if session["logged"]:
-        return "Estas Adentro"
-    else:
-        return redirect(url_for("login"))
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -83,3 +75,56 @@ def login():
 def logout():
     session["logged"] = False
     return  redirect(url_for("hello"))
+
+@app.route("/admin")
+def admin_link():
+    if check_log():
+        return check_log()
+    else:
+        return "Inside"
+
+@app.route("/panel")
+def panel():
+    if check_log():
+        return check_log()
+    else:
+        return "Making a Panel"
+
+@app.route("/panel/add/")
+def panel_add():
+    if check_log():
+        return check_log()
+    else:
+        return "What do you want to add?"
+
+@app.route("/panel/add/university", methods=['POST', 'GET'])
+def panel_add_university():
+    if check_log():
+        return check_log()
+    else:
+        if request.method == 'POST':
+            if request.form["name"] and request.form["description"] and request.form["logo"]:
+                try:
+                    university = models.University(request.form["name"],
+                                                   request.form["description"], request.form["logo"])
+                    db.session.add(university)
+                    db.session.commit()
+                    return render_template("form_result.html", success=True)
+                except:
+                    return render_template("form_result.html", error=True)
+            else:
+                return render_template("form_result.html", error=True)
+        else:
+            return render_template("form_university.html")
+
+@app.route("/list/university")
+def list_university():
+    all = models.University.query.all()
+    #Temporaly I'm going to change this
+    ret = ""
+    for university in all:
+        ret += "<p>"+str(university.id)+university.name+university.description+university.logo+"</p><br>"
+    return ret
+@app.route("/test")
+def test():
+        return render_template("form_result.html",success=True)

@@ -1,0 +1,9 @@
+{% extends "panel_base.html" %}
+{% block body %}
+<div class="row">
+    <div class="col-xs-10 col-xs-push-1
+    {% if success%}bg-success{% elif error%}bg-danger{% else %}bg-info{% endif %} text-center">
+        <h1>{% if success%}Success{% elif error%}ERROR{% else %}INFO{% endif %}</h1>
+    </div>
+</div>
+{% endblock %}
