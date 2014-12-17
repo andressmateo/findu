@@ -6,10 +6,16 @@ words = ["Unal","Medellin","UdeA","Universidad","EAFIT","UPB"]
 def searchFor(b):
     ret ="Lo sentimos, no se encontraron resultados"
     found = False
-    for u in db.session.query(models.OtherName).filter(models.OtherName.name.ilike('%'+b+'%')):
+
+    for u in db.session.query(models.OtherName).filter(models.OtherName.name.ilike(b)):
         #ret = "<span>"+str(u.name)+" - "+(u.university.name).encode('utf-8')+"</span><br/>"
         return u.university
-        found = True
+
+    if (not found):
+        for c in db.session.query(models.Career).all():
+
+            return c
+
     if(not found):
         #opciones = [[0 for x in range(2)] for x in range(10)]
         options = []

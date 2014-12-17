@@ -46,8 +46,10 @@ def buscar(busqueda):
     result = search.searchFor(busqueda)
     if (isinstance(result,models.University)):
         return render_template("university.html",university = result)
+    elif (isinstance(result,models.Career)):
+        return str(result.name)
     else:
-        return str("No es")
+        return str(result)
 
 
 #@app.route("/busqueda", methods=['POST'])
