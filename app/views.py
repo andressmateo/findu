@@ -1,13 +1,50 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, redirect, session, url_for, request, jsonify
 from app import app, db, models, search
-import config
+import config, requests
 
 
 #OTHER ONES
 def check_log():
     if not session["logged"]:
         return redirect(url_for("login"))
+
+
+def university_json():
+    result = models.University.query.all()
+    result_json = []
+    for university in result:
+        u = {
+            "id": university.id,
+            "name": university.name,
+            "description": university.description,
+            "logo": university.logo
+        }
+        result_json.append(u)
+    return jsonify(university=result_json)
+
+def names_json():
+    result = models.OtherName.query.all()
+    result_json = []
+    for o_name in result:
+        o = {
+            "name": o_name.name,
+            "university_id": o_name.university_id,
+            "university_name": o_name.university.name
+        }
+        result_json.append(o)
+    return jsonify(name=result_json)
+
+def select_university_data():
+    result = models.University.query.all()
+    data = []
+    for university in result:
+        dictionary = {
+            "id":university.id,
+            "name":university.name
+        }
+        data.append(dictionary)
+    return data
 #VIEWS
 @app.route('/index')
 @app.route('/')
@@ -116,15 +153,34 @@ def panel_add_university():
                 return render_template("form_result.html", error=True)
         else:
             return render_template("form_university.html")
+@app.route("/panel/add/name", methods=['POST', 'GET'])
+def panel_add_name():
+    if check_log():
+        return check_log()
+    else:
+        if request.method == 'POST':
+            if request.form["name"] and request.form["id"]:
+                try:
+                    university = models.University.query.filter_by(id=request.form["id"]).first()
+                    name = models.OtherName(request.form["name"], university)
+                    db.session.add(name)
+                    db.session.commit()
+                    return render_template("form_result.html", success=True)
+                except:
+                    return render_template("form_result.html", error=True)
+            else:
+                return render_template("form_result.html", error=True)
+        else:
+            return render_template("form_name.html", data=select_university_data())
 
 @app.route("/list/university")
 def list_university():
-    all = models.University.query.all()
-    #Temporaly I'm going to change this
-    ret = ""
-    for university in all:
-        ret += "<p>"+str(university.id)+university.name+university.description+university.logo+"</p><br>"
-    return ret
+    return university_json()
+
+@app.route("/list/name")
+def list_names():
+    return names_json()
+
 @app.route("/test")
 def test():
-        return render_template("form_result.html",success=True)
+        return render_template("form_name.html")

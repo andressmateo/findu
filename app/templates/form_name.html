@@ -1,0 +1,30 @@
+{% extends "panel_base.html" %}
+{% block body %}
+<h2 class="text-center" xmlns="http://www.w3.org/1999/html">Registrar an alternative name for a University</h2>
+<form class="form-horizontal" role="form" action="{{ url_for('panel_add_name') }}"
+        method="post">
+    <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-9">
+            <input name="name" type="name" class="form-control" id="inputName"
+                   placeholder="Alternative Name" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="selectName" class="col-sm-2 control-label">University</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="selectName" name="id">
+            {% for university in data %}
+                <option value="{{ university.id }}">{{ university.name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Add</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
