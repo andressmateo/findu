@@ -49,7 +49,21 @@ def campus_json():
             "long": campus.long
         }
         result_json.append(c)
-    return jsonify(name=result_json)
+    return jsonify(campus=result_json)
+
+
+def career_json():
+    result = models.Career.query.all()
+    result_json = []
+    for career in result:
+        c = {
+            "id": career.id,
+            "name": career.name,
+            "description": career.description,
+            "type": career.type
+        }
+        result_json.append(c)
+    return jsonify(career=result_json)
 
 
 def select_university_data():
@@ -231,6 +245,27 @@ def panel_add_campus():
             return render_template("form_campus.html", data=select_university_data())
 
 
+@app.route("/panel/add/career", methods=['POST', 'GET'])
+def panel_add_career():
+    if check_log():
+        return check_log()
+    else:
+        if request.method == 'POST':
+            if request.form["name"] and request.form["description"] and request.form["type"]:
+            #    try:
+                    career = models.Career(request.form["name"], request.form["type"],
+                                           request.form["description"])
+                    db.session.add(career)
+                    db.session.commit()
+                    return render_template("form_result.html", success=True)
+             #   except:
+             #       return render_template("form_result.html", error=True)
+            else:
+                return render_template("form_result.html", error=True)
+        else:
+            return render_template("form_career.html")
+
+
 @app.route("/list/university")
 def list_university():
     return university_json()
@@ -246,6 +281,11 @@ def list_campus():
     return campus_json()
 
 
+@app.route("/list/career")
+def list_career():
+    return career_json()
+
+
 @app.route("/test")
 def test():
-        return render_template("form_campus.html", data=select_university_data())
+        return render_template("form_career.html")
