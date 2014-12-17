@@ -55,6 +55,7 @@ class Career(db.Model):
 class UniversityHeadquarter(db.Model):
     __tablename__ = "universityheadquarter"
     id = db.Column(db.Integer, unique=True, primary_key=True)
+    campus_name = db.Column(db.String(200))
     lat = db.Column(db.Float)  # Latitude
     long = db.Column(db.Float)  # Longitude
     #careers object, careers.all()
