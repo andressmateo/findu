@@ -66,13 +66,58 @@ def career_json():
     return jsonify(career=result_json)
 
 
+def careeratuniversity_json():
+    result = models.CareerAtUniversity.query.all()
+    result_json = []
+    for careeru in result:
+        cu = {
+            "id": careeru.id,
+            "name": careeru.career.name,
+            "university": careeru.place.university.name,
+            "campus": careeru.place.campus_name,
+            "description": careeru.description,
+            "type": careeru.career.type,
+            "place_id": careeru.place.id,
+            "university_id": careeru.place.university.id,
+            "career_id": careeru.career.id
+        }
+        result_json.append(cu)
+    return jsonify(career=result_json)
+
+
 def select_university_data():
     result = models.University.query.all()
     data = []
     for university in result:
         dictionary = {
-            "id":university.id,
-            "name":university.name
+            "id": university.id,
+            "name": university.name
+        }
+        data.append(dictionary)
+    return data
+
+
+def select_carrer_data():
+    result = models.Career.query.all()
+    data = []
+    for career in result:
+        dictionary = {
+            "id": career.id,
+            "name": career.name
+        }
+        data.append(dictionary)
+    return data
+
+
+def select_place_data():
+    result = models.UniversityHeadquarter.query.all()
+    data = []
+    for place in result:
+        dictionary = {
+            "id": place.id,
+            "university_and_campus": place.university.name+" sede "+place.campus_name,
+            "name": place.campus_name,
+            "university_id": place.university_id
         }
         data.append(dictionary)
     return data
@@ -252,18 +297,42 @@ def panel_add_career():
     else:
         if request.method == 'POST':
             if request.form["name"] and request.form["description"] and request.form["type"]:
-            #    try:
+                try:
                     career = models.Career(request.form["name"], request.form["type"],
                                            request.form["description"])
                     db.session.add(career)
                     db.session.commit()
                     return render_template("form_result.html", success=True)
-             #   except:
-             #       return render_template("form_result.html", error=True)
+                except:
+                    return render_template("form_result.html", error=True)
             else:
                 return render_template("form_result.html", error=True)
         else:
             return render_template("form_career.html")
+
+
+@app.route("/panel/add/careeratuniversity", methods=['POST', 'GET'])
+def panel_add_careeratuniversity():
+    if check_log():
+        return check_log()
+    else:
+        if request.method == 'POST':
+            if request.form["place_id"] and request.form["career_id"] and request.form["description"]:
+                try:
+                    place = models.UniversityHeadquarter.query.filter_by(id=request.form["place_id"]).first()
+                    career = models.Career.query.filter_by(id=request.form["career_id"]).first()
+                    careeratuniversity = models.CareerAtUniversity(request.form["description"],
+                                                                   place, career)
+                    db.session.add(careeratuniversity)
+                    db.session.commit()
+                    return render_template("form_result.html", success=True)
+                except:
+                    return render_template("form_result.html", error=True)
+            else:
+                return render_template("form_result.html", error=True)
+        else:
+            return render_template("form_careeratuniversity.html", places=select_place_data(),
+                                   careers=select_carrer_data())
 
 
 @app.route("/list/university")
@@ -286,6 +355,12 @@ def list_career():
     return career_json()
 
 
+@app.route("/list/careeratuniversity")
+def list_careeratuniversity():
+    return careeratuniversity_json()
+
+
 @app.route("/test")
 def test():
-        return render_template("form_career.html")
+        return render_template("form_careeratuniversity.html",places=select_place_data(),
+                               careers=select_carrer_data())
