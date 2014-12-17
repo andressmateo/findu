@@ -199,7 +199,7 @@ def login():
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
     session["logged"] = False
-    return  redirect(url_for("hello"))
+    return redirect(url_for("hello"))
 
 
 @app.route("/admin")
@@ -207,7 +207,7 @@ def admin_link():
     if check_log():
         return check_log()
     else:
-        return "Inside"
+        return 'Building... while you can go to the <a href="/panel/add/university">Panel</a>'
 
 
 @app.route("/panel")
