@@ -3,12 +3,21 @@
 <head lang="es">
     <meta charset="UTF-8">
     <title>Project Athene - {{university.name}}</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 </head>
 <body>
-<h3>{{university.name}}</h3>
-<img src="{{university.logo}}" alt="Logo-{{university.name}}"/>
-<br><br>
-<b>Descripción</b><br>
-<h5>{{university.description}}</h5>
+<div class="container-fluid">
+    <div class="row">
+        <br/>
+        <div class="col-md-6"><br/>
+            <h3>{{university.name}}</h3> <br/><br/>
+            <b>Descripción</b><br>
+            <h5>{{university.description}}</h5>
+        </div>
+        <div class="col-md-6">
+            <img src="{{university.logo}}" alt="Logo-{{university.name}}"/>
+        </div>
+    </div>
+</div>
 </body>
 </html>
