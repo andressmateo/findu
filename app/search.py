@@ -4,12 +4,12 @@ from app import models, app, db
 def search_for(b):
     ret = []
     found = False
-    for u in db.session.query(models.OtherName).filter(models.OtherName.name.ilike(b)):
+    for u in db.session.query(models.OtherName).filter(models.OtherName.name.ilike(b+"%")):
         ret.append(u.university)
         found = True
 
     if (not found):
-        for c in db.session.query(models.Career).filter(models.Career.name.ilike(b)):
+        for c in db.session.query(models.Career).filter(models.Career.name.ilike(b+"%")):
             ret.append(c)
             found = True
 
@@ -29,6 +29,7 @@ def search_for(b):
                 i += 1
         options.sort(key=lambda times: times [1])
         for l in range(i):
+            found = True
             if (l==0):
                 #ret += "<a href='/buscar/"+options.__getitem__(l)[0]+"'>"+options.__getitem__(l)[0]+"</a>"
                 ret.append(options.__getitem__(l)[0])
@@ -38,6 +39,9 @@ def search_for(b):
                     ret.append(options.__getitem__(l)[0])
                 else:
                     break
+    if (not found):
+        ret.__delitem__(0)
+        ret.append(-1)
     return ret
 
 def levenshtein_distance(str1, str2):

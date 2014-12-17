@@ -186,6 +186,7 @@ def buscar(busqueda):
         for item in result:
                 ret += " o <a href='/buscar/"+item+"'>"+ item+"</a>"
         return ret
+    return "Lo sentimos, no se han encontrado resultados"
 @app.route("/contacto")
 def contact():
     return "No hay"
