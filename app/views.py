@@ -159,16 +159,26 @@ def team():
         ret += "<span>"+str(member.username)+"|"+str(member.age)+"</span><br/>"
     return ret
 
-
 @app.route("/buscar", methods=['POST', 'GET'])
 def buscar_index():
     if request.method == 'POST':
         url = "/buscar/"+request.form['busqueda']
         return redirect(url)
-        #return url
     return render_template("search.html",title=config.AppName)
 
-
+@app.route("/buscar_json", methods=['POST', 'GET'])
+def search_json():
+    if request.method == 'GET':
+        result = models.OtherName.query.all()
+        result_json = []
+        for o_name in result:
+            o = {
+                "name": o_name.name,
+                "university_id": o_name.university_id,
+                "university_name": o_name.university.name
+            }
+            result_json.append(o)
+        return jsonify(names=result_json)
 @app.route("/buscar/<busqueda>")
 def buscar(busqueda):
     result = search.search_for(busqueda)
