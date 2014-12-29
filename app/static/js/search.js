@@ -1,5 +1,5 @@
-angular.module('ui.bootstrap', ['ui.bootstrap']);
-        angular.module('ui.bootstrap').controller('TypeaheadCtrl', function($scope, $http) {
+angular.module('ui.bootstrap.search', ['ui.bootstrap']);
+        angular.module('ui.bootstrap.search').controller('TypeaheadCtrl', function($scope, $http) {
 
   $scope.getLocation = function(val) {
     return $http.get('/buscar_json', {
