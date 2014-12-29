@@ -162,14 +162,14 @@ def team():
 @app.route("/buscar", methods=['POST', 'GET'])
 def buscar_index():
     if request.method == 'POST':
-        url = "/buscar/"+request.form['busqueda']
+        url = "/buscar/"+request.form['search']
         return redirect(url)
     return render_template("search.html",title=config.AppName)
 
 @app.route("/buscar_json", methods=['POST', 'GET'])
 def search_json():
     if request.method == 'GET':
-        result = models.OtherName.query.all()
+        result = db.session.query(models.OtherName).filter(models.OtherName.name.ilike("%"+request.args.get("search")+"%"))
         result_json = []
         for o_name in result:
             o = {
