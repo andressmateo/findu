@@ -123,11 +123,11 @@ def select_place_data():
     return data
 #VIEWS
 
-
+@app.route("/main")
 @app.route('/index')
 @app.route('/')
 def hello():
-    return render_template("introducing.html", config=config)
+    return render_template("main.html", config=config)
 
 
 @app.errorhandler(404)
@@ -152,7 +152,7 @@ def idpage(name):
 
 
 ##LLAMANDO la Base de Datos :D
-@app.route("/Team")
+@app.route("/team")
 def team():
     ret = ""
     for member in models.Team.query.all():

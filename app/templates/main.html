@@ -1,0 +1,35 @@
+{% set active_page = "main" %}
+{% extends "base.html" %}
+{% block body %}
+    <section style="background-image: url(//farm4.staticflickr.com/3009/3591792820_fe0f586aa4_b.jpg)" class="size-sixteen">
+        <div class="size-sixteen-nine">
+            <div class="shadow-left visible-xs-block"></div>
+            <div class="shadow-right visible-xs-block"></div>
+            <div class="shadow hidden-xs"></div>
+            <div class="container" id="index-cover-text">
+                <h1>Busca qué <br>realmente quieres ser.</h1>
+                <h2 class="hidden-xs">Explora universidades &amp; carreras con Athene.</h2>
+                <a type="button" class="btn btn-lg btn-danger" href="#">&#128515; Sign Up Now!</a>
+            </div>
+        </div>
+    </section>
+    <section class="container">
+        <h1 class="text-center">{{ config.AppName }}</h1>
+        <div class="row">
+            {{ config.description.decode(encoding='UTF-8',errors='strict') }}
+        </div>
+        <div class="row">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero suscipit maiores cumque iusto incidunt, ut inventore neque nisi voluptatibus ea veritatis eos mollitia, nobis reprehenderit perspiciatis sit enim modi quia?
+        </div>
+        <div class="row">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate nostrum, eius sit praesentium, eligendi corrupti vel autem, reiciendis omnis quisquam voluptatibus qui inventore enim soluta esse iste eos. Reiciendis, consequuntur.</div>
+        <div class="row">Nemo quibusdam fuga, reiciendis nihil voluptatibus doloribus non exercitationem maxime quisquam perferendis. Eveniet dolorem accusantium laborum. Cum, ipsa laborum quasi quo adipisci illo amet perspiciatis nihil in tempora. Voluptas, laborum.</div>
+        <div class="row">Corporis laboriosam debitis dicta voluptatum veritatis ullam saepe rerum accusamus impedit fugit labore qui fugiat, cum, eveniet suscipit optio ut fuga, officia at. Nemo fugiat, vitae officiis qui odit eligendi.</div>
+    </section>
+        <br/>
+        <br/>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+    document.addEventListener("touchstart", function() {}, true);
+    </script>
+{% endblock %}
