@@ -1,0 +1,17 @@
+{% set active_page = "universities" %}
+{% extends "base.html" %}
+{% block body %}
+<br>
+<br>
+<br>
+<br>
+<ul class="list-group">
+{% for university in universities %}
+    <li class="list-group-item">
+    <a href="{{url_for("universities")+"/"+(university.name)|replace(" ", "-")}}">
+    {{university.name}}
+    </a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}

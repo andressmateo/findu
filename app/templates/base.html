@@ -32,7 +32,7 @@
                 <ul class="nav navbar-nav">
                     <li {% if active_page == "main" %}class="active"{% endif %}><a href="{{url_for('hello')}}">Inicio<span class="sr-only">(current)</span></a>
                     </li>
-                    <li><a href="#">Universidades</a>
+                    <li><a href="{{url_for("universities")}}">Universidades</a>
                     </li>
                     <li><a href="#">Carreras</a>
                     </li>

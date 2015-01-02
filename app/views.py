@@ -377,12 +377,21 @@ def list_careeratuniversity():
     return careeratuniversity_json()
 
 
+@app.route("/universities")
+def universities():
+    return render_template("universities.html", universities=models.University.query.all())
+
 @app.route("/universities/<university>")
 def universities_page(university):
-    u = models.University.query.filter(models.University.name.contains(university)).all()
+    if " " in university:
+        university = university.replace("-", " ")
+        return redirect(url_for("buscar", busqueda=university))
+    university = university.replace("-", " ")
+    #u = models.University.query.filter(models.University.name.contains(university)).all()
+    u = models.University.query.filter_by(name=university).all()
     #return str(len(u))
     if len(u) <= 0:
-        return redirect(url_for("buscar_index"))
+        return redirect(url_for("buscar", busqueda=university))
     else:
         return render_template("university.html", university=u[0])
 
