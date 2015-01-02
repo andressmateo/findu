@@ -377,7 +377,16 @@ def list_careeratuniversity():
     return careeratuniversity_json()
 
 
+@app.route("/universities/<university>")
+def universities_page(university):
+    u = models.University.query.filter(models.University.name.contains(university)).all()
+    #return str(len(u))
+    if len(u) <= 0:
+        return redirect(url_for("buscar_index"))
+    else:
+        return render_template("university.html", university=u[0])
+
+
 @app.route("/test")
 def test():
-        return render_template("form_careeratuniversity.html",places=select_place_data(),
-                               careers=select_carrer_data())
+        return render_template("university.html",university=models.University.query.all()[2])
