@@ -37,7 +37,7 @@
                     </li>
                     <li><a href="{{url_for("universities")}}">Universidades</a>
                     </li>
-                    <li><a href="#">Carreras</a>
+                    <li><a href="{{url_for("careers")}}">Carreras</a>
                     </li>
                     <li><a href="#">Examen</a>
                     </li>
@@ -46,7 +46,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{url_for('panel')}}">Panel</a>
                             </li>
-                            <li><a href="#">Admin Panel</a>
+                            <li><a href="{{url_for('admin_link')}}">Admin Panel</a>
                             </li>
                             <li><a href="#">API</a>
                             </li>
@@ -65,10 +65,9 @@
                            type="text" name="search" placeholder="¿Qué quieres buscar?"
                            typeahead="possibility for possibility in getPossibilities($viewValue)"
                            typeahead-loading="loadingResults"/>
-                    <i ng-show="loadingResults" class="glyphicon glyphicon-refresh"></i>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <label for="search-box"><span class="glyphicon glyphicon-search search-icon"></span>
+                    <label for="search-box"><span style="color:black;" class="glyphicon glyphicon-search search-icon"></span>
                     </label>
+                    <i ng-show="loadingResults" class="glyphicon glyphicon-refresh"></i>
                     <input type="submit" id="search-submit" />
                 </form>
                 <ul class="nav navbar-nav navbar-right">

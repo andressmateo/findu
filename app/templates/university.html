@@ -1,7 +1,7 @@
 {% set active_page = "university_page" %}
 {% extends "base.html" %}
 {% block body %}
-<section style="background-image: url(//farm4.staticflickr.com/3386/3334908507_5171f30df5_o.jpg)" class="size-four-one">
+<section style="background-image: url({{ if_none(university.background,"http://placekitten.com/g/1280/720") }})" class="size-four-one">
     <div class="size-fully">
         <div class="shadow-left visible-xs-block"></div>
         <div class="shadow-right visible-xs-block"></div>
@@ -23,7 +23,7 @@
                 </li>
                 <li class=""><a href="#headquarters">{{university.places.all()|length }} Sedes</a>
                 </li>
-                <li class=""><a href="#careers">Join(#) Carreras</a>
+                <li class=""><a href="#careers">{{join_campus(university)|length}} Carreras</a>
                 </li>
                 <li class=""><a href="#names">{{university.names.all()|length}} Nombres</a>
                 </li>
@@ -46,7 +46,7 @@
                     </ul>
                     <div class="description">
                         <p class="text-justify">
-                            {{university.description}}
+                            {{university.description|safe}}
                         </p>
                     </div>
                 </div>
@@ -58,19 +58,56 @@
             </div>
             <div class="row" id="headquarters">
                 <h2>Sedes</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt amet unde laudantium similique officia iste, labore quibusdam magni libero culpa ratione facere, quasi ipsa, suscipit molestiae! Consequatur nam qui nostrum.</p>
+                <div class="container-fluid">
+                    <div class="row">
+                    {% for place in university.places.all() %}
+                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                            <iframe width="100%" frameborder="0" style="pointer-events:none; border:0"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDu6jZ0QqCMctO8SY4n-JfCqmLbtL5knjc
+                            &q={{ place.lat }},{{ place.long }}"></iframe>
+                            <h3>{{ place.campus_name }}</h3>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
             </div>
             <div class="row" id="careers">
                 <h2>Carreras</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt amet unde laudantium similique officia iste, labore quibusdam magni libero culpa ratione facere, quasi ipsa, suscipit molestiae! Consequatur nam qui nostrum.</p>
+                <div class="container-fluid">
+                    <div class="row">
+                    {% for career in join_campus(university) %}
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                                <div class="size-one-one">
+                                <div class="size-fully"
+                                     style="background:url(https://cdn4.iconfinder.com/data/icons/medical-9/512/DNA-256.png);">
+                                    <a href="{{ url_for("careers")+"/"+career.name.replace(" ", "-")}}" class="btn btn-lg"
+                                        style="position: absolute;right: 0%;bottom: 0%;">
+                                        <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                                    </a>
+                                    <a href="{{university.name.replace(' ', '-')+'/career/'+career.name.replace(' ', '-')}}"
+                                       style="position: absolute;left: 0%;bottom: 0%;" class="btn btn-lg">
+                                        <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+                                    </a>
+                                    <h3>{{ career.name }}</h3>
+                                </div>
+                                </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
             </div>
             <div class="row" id="names">
                 <h2>Nombres</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt amet unde laudantium similique officia iste, labore quibusdam magni libero culpa ratione facere, quasi ipsa, suscipit molestiae! Consequatur nam qui nostrum.</p>
+                <div>
+                    {% for name in university.names.all() %}
+                        <a href="#" class="btn btn-default btn-lg disabled">{{ name.name }}</a>
+                    {% endfor %}
+                </div>
             </div>
             <div class="row" id="comments">
                 <h2>Commentarios</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt amet unde laudantium similique officia iste, labore quibusdam magni libero culpa ratione facere, quasi ipsa, suscipit molestiae! Consequatur nam qui nostrum.</p>
+                <textarea class="form-control" rows="3"></textarea>
+                <br/>
             </div>
         </div>
 

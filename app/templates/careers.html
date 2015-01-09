@@ -1,0 +1,17 @@
+{% set active_page = "careers" %}
+{% extends "base.html" %}
+{% block body %}
+<br>
+<br>
+<br>
+<br>
+<ul class="list-group">
+{% for career in careers %}
+    <li class="list-group-item">
+    <a href="{{url_for("careers")+"/"+(career.name)|replace(" ", "-")}}">
+    {{career.name}}
+    </a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}

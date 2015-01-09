@@ -1,19 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <title></title>
-</head>
-<body>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-10">
-            <h3>{{career.name}}</h3><br/><br/>
-            <h4>Descripción: </h4>
-            <h5>{{career.description}}w</h5>
+{% set active_page = "career_page" %}
+{% extends "base.html" %}
+{% block body %}
+<section style="background-image: url(http://placekitten.com/g/1280/720)" class="size-four-one">
+    <div class="size-fully">
+        <div class="shadow-left visible-xs-block"></div>
+        <div class="shadow-right visible-xs-block"></div>
+        <div class="shadow hidden-xs"></div>
+        <div class="container" id="index-cover-text">
+
         </div>
     </div>
+</section>
+<div class="container">
+    <div class="row">
+        <aside id="left" class="col-md-3">
+            <div class="logo_university" style="position: relative;margin-top: -130px;">
+                <img src="https://cdn4.iconfinder.com/data/icons/medical-9/512/DNA-512.png" alt="Logo - {{career.name}}" class="img-responsive img-circle" style="background-color:rgba(255,255,255,0.1);" />
+            </div>
+            <h1>{{career.name}}</h1>
+            <ul class="nav sections">
+                <li class="active"><a href="#overview">General</a>
+                </li>
+                <li class=""><a href="#headquarters">{{career.places.all()|length }} Sedes</a>
+                </li>
+                <li class=""><a href="#comments">Commentarios</a>
+                </li>
+            </ul>
+
+        </aside>
+        <div class="container-fluid col-md-9">
+            <div class="row" id="overview">
+                <div class="info col-md-8">
+                    <ul class="additional-stats list-inline">
+                        <li class="stat"><span>Lema</span> Lorem ipsum</li>
+                        <li class="stat"><span>Fundación</span>1989</li>
+                        <li class="stat"><span>Dirección</span>Carrera 49 N° 7 Sur - 50</li>
+                        <li class="stat"><span>Estudiantes</span>12.000</li>
+                        <li class="stat"><span>Rectorad</span>Alberto Uribe Correa</li>
+                        <li class="stat"><span>Sitio web</span><a href="http://www.eafit.edu.co/" target="_blank">eafit.edu.co</a>
+                        </li>
+                    </ul>
+                    <div class="description">
+                        <p class="text-justify">
+                            {{career.description|safe}}
+                        </p>
+                    </div>
+                </div>
+                <div class="buttoms col-md-4">
+                    <button type="button" class="btn btn-lg btn-block btn-info">button</button>
+                    <button type="button" class="btn btn-lg btn-block btn-success">button</button>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">button</button>
+                </div>
+            </div>
+            <div class="row" id="comments">
+                <h2>Commentarios</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt amet unde laudantium similique officia iste, labore quibusdam magni libero culpa ratione facere, quasi ipsa, suscipit molestiae! Consequatur nam qui nostrum.</p>
+            </div>
+        </div>
+
+    </div>
 </div>
-</body>
-</html>
+</div>
+
+
+{% endblock %}

@@ -22,13 +22,15 @@ class University(db.Model):
     name = db.Column(db.String(200), unique=True)
     description = db.Column(db.Text)
     logo = db.Column(db.Text)
+    background = db.Column(db.Text)
     #places object, places.all()
     #names object, names.all()
 
-    def __init__(self, name, description, logo):
+    def __init__(self, name, description, logo, background=""):
         self.name = name
         self.description = description
         self.logo = logo
+        self.background = background
         print "New University: "+self.__repr__()
 
     def __repr__(self):

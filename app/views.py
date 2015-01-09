@@ -3,6 +3,27 @@ from flask import render_template, redirect, session, url_for, request, jsonify
 from app import app, db, models, search
 import config
 
+
+#TEMPLATE FILTERS
+@app.template_global()
+def if_none(original, remplace):
+    if isinstance(original, type(None)):
+        return remplace
+    elif original == "":
+        return remplace
+    else:
+        return original
+
+
+@app.template_global()
+def join_campus(university):
+    careers = []
+    for u in university.places.all():
+        for cu in u.careers.all():
+            careers.append(cu.career)
+    return list(set(careers))
+
+
 #OTHER ONES
 def check_log():
     if not session["logged"]:
@@ -133,17 +154,14 @@ def hello():
 
 @app.errorhandler(404)
 def not_found(error):
+    print error
     return render_template("404.html")
 
 
 @app.errorhandler(500)
 def not_found(error):
+    print error
     return "Error 500"
-
-
-@app.route("/id/<int:name>")
-def idpage(name):
-    return str(name)
 
 
 @app.route("/buscar", methods=['POST', 'GET'])
@@ -151,7 +169,7 @@ def buscar_index():
     if request.method == 'POST':
         url = "/buscar/"+request.form['search']
         return redirect(url)
-    return render_template("search.html",title=config.AppName)
+    return render_template("search.html", title=config.AppName)
 
 
 @app.route("/buscar_json", methods=['POST', 'GET'])
@@ -184,7 +202,7 @@ def buscar(busqueda):
         ret =  "Quizas quiso decir: <a href='/buscar/"+result[0]+"'>"+ result[0]+ "</a>"
         result.__delitem__(0)
         for item in result:
-                ret += " o <a href='/buscar/"+item+"'>"+ item+"</a>"
+                ret += " o <a href='/buscar/"+item+"'>"+item+"</a>"
         return ret
     return "Lo sentimos, no se han encontrado resultados"
 
@@ -216,7 +234,7 @@ def admin_link():
     if check_log():
         return check_log()
     else:
-        return 'Building... while you can go to the <a href="/panel/list_university">Panel</a>'
+        return render_template("panel_base.html")
 
 
 @app.route("/panel")
@@ -224,7 +242,7 @@ def panel():
     if check_log():
         return check_log()
     else:
-        return "Making a Panel"
+        return render_template("panel_base.html")
 
 
 @app.route("/panel/list_university")
@@ -272,6 +290,7 @@ def view_university(university):
         universities = db.session.query(models.University).all()
         return render_template("view_university.html",university=u[0], universities = universities)
 
+
 #cat_university for career_at_university
 @app.route("/panel/list_cat_university")
 def list_cat_university():
@@ -300,6 +319,7 @@ def view_name(name):
         n = db.session.query(models.OtherName).filter_by(name = name)
         names = db.session.query(models.OtherName).all()
         return render_template("view_name.html",name=n[0], names = names)
+
 
 @app.route("/panel/view_campus/<campus>")
 def view_campus(campus):
@@ -641,9 +661,16 @@ def list_careeratuniversity():
     return careeratuniversity_json()
 """
 
+
 @app.route("/universities")
 def universities():
     return render_template("universities.html", universities=models.University.query.all())
+
+
+@app.route("/careers")
+def careers():
+    return render_template("careers.html", careers=models.Career.query.all())
+
 
 @app.route("/universities/<university>")
 def universities_page(university):
@@ -658,6 +685,19 @@ def universities_page(university):
         return redirect(url_for("buscar", busqueda=university))
     else:
         return render_template("university.html", university=u[0])
+
+
+@app.route("/careers/<career>")
+def careers_page(career):
+    if " " in career:
+        career = career.replace("-", " ")
+        return redirect(url_for("buscar", busqueda=career))
+    career = career.replace("-", " ")
+    u = models.Career.query.filter_by(name=career).all()
+    if len(u) <= 0:
+        return redirect(url_for("buscar", busqueda=career))
+    else:
+        return render_template("career.html", career=u[0])
 
 
 @app.route("/test")
