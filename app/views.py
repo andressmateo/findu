@@ -669,11 +669,27 @@ def careers_page(career):
         career = career.replace("-", " ")
         return redirect(url_for("buscar", busqueda=career))
     career = career.replace("-", " ")
-    u = models.Career.query.filter_by(name=career).all()
-    if len(u) <= 0:
+    c = models.Career.query.filter_by(name=career).all()
+    if len(c) <= 0:
         return redirect(url_for("buscar", busqueda=career))
     else:
-        return render_template("career.html", career=u[0])
+        return render_template("career.html", career=c[0])
+
+
+@app.route("/universities/<university>/career/<career>")
+def career_at_university_page(university, career):
+    if " " in career or " " in university:
+        university = university.replace("-", " ")
+        return redirect(url_for("buscar", busqueda=university))
+    university = university.replace("-", " ")
+    career = career.replace("-", " ")
+    c = models.Career.query.filter_by(name=career).first()
+    s = models.CareerAtUniversity.query.filter_by(career_id=c.id).all()
+    for sede in s:
+        if sede.place.university.name != university:
+            s.remove(sede)
+    return render_template("career_at_university.html", careers=s)
+
 
 
 @app.route("/test")

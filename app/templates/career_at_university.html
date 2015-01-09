@@ -1,0 +1,36 @@
+{% set active_page = "career_at_university_page" %}
+{% extends "base.html" %}
+{% block body %}
+<section style="background-image: url(http://placekitten.com/g/1280/720)" class="size-four-one">
+    <div class="size-fully">
+        <div class="shadow-left visible-xs-block"></div>
+        <div class="shadow-right visible-xs-block"></div>
+        <div class="shadow hidden-xs"></div>
+        <div class="container" id="index-cover-text">
+
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <aside id="left" class="col-md-3">
+            <div class="logo_university" style="position: relative;margin-top: -130px;">
+                <img src="{{careers[0].place.university.logo}}" alt="Logo" class="img-responsive img-circle" style="background-color:rgba(255,255,255,0.1);" />
+            </div>
+        </aside>
+        <div class="container-fluid col-md-9">
+            <h1>Hay {{careers|length}} lugare(s) en {{careers[0].place.university.name}} donde puedes estudiar
+            {{careers[0].career.name}}</h1>
+            <ul class="nav sections">
+            	{% for career in careers %}
+                <li class="active"><a href="#overview">{{career.place.campus_name}}</a></li>
+            	{% endfor %}
+            </ul>
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+{% endblock %}
