@@ -1,0 +1,40 @@
+{% set active_page = "university_page" %}
+{% extends "base.html" %}
+{% block body %}
+<section class="size-four-one">
+    <div class="size-fully">
+    <iframe width="100%" height="100%" frameborder="0" style="border:0"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDu6jZ0QqCMctO8SY4n-JfCqmLbtL5knjc
+                            &q={{ campus.lat }},{{ campus.long }}"></iframe>
+        <div class="shadow-left visible-xs-block"></div>
+        <div class="shadow-right visible-xs-block"></div>
+        <div class="shadow hidden-xs"></div>
+        <div class="container" id="index-cover-text">
+
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <aside id="left" class="col-md-3">
+            <div class="logo_university" style="position: relative;margin-top: -100px;">
+                <img src="{{campus.university.logo}}" alt="Logo - {{campus.name}}" class="img-responsive img-thumbnail" />
+            </div>
+            <h2>{{campus.university.name}}</h2>
+
+        </aside>
+        <div class="container-fluid col-md-9">
+            <div class="row" id="overview">
+                <h1>{{campus.campus_name}}</h1>
+            </div>
+            <div class="row" id="comments">
+                <h2>Commentarios</h2>
+                <textarea class="form-control" rows="3"></textarea>
+                <br/>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+{% endblock %}

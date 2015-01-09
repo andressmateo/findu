@@ -62,10 +62,13 @@
                     <div class="row">
                     {% for place in university.places.all() %}
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                            <a href="{{url_for('campus_page',university=university.name.replace(' ', '-'),
+                            campus=place.campus_name.replace(' ', '-'))}}">
                             <iframe width="100%" frameborder="0" style="pointer-events:none; border:0"
                             src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDu6jZ0QqCMctO8SY4n-JfCqmLbtL5knjc
                             &q={{ place.lat }},{{ place.long }}"></iframe>
                             <h3>{{ place.campus_name }}</h3>
+                            </a>
                         </div>
                     {% endfor %}
                     </div>

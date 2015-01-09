@@ -152,8 +152,9 @@ def hello():
     return render_template("main.html", config=config)
 
 
+@app.route("/404")
 @app.errorhandler(404)
-def not_found(error):
+def not_found(error=""):
     print error
     return render_template("404.html")
 
@@ -161,7 +162,7 @@ def not_found(error):
 @app.errorhandler(500)
 def not_found(error):
     print error
-    return "Error 500"
+    return render_template("404.html")
 
 
 @app.route("/buscar", methods=['POST', 'GET'])
@@ -684,12 +685,27 @@ def career_at_university_page(university, career):
     university = university.replace("-", " ")
     career = career.replace("-", " ")
     c = models.Career.query.filter_by(name=career).first()
+    if isinstance(c, type(None)):
+        return redirect(url_for("buscar", busqueda=university))
     s = models.CareerAtUniversity.query.filter_by(career_id=c.id).all()
     for sede in s:
         if sede.place.university.name != university:
             s.remove(sede)
     return render_template("career_at_university.html", careers=s)
 
+
+@app.route("/universities/<university>/campus/<campus>")
+def campus_page(university, campus):
+    if " " in university or " " in campus:
+        university = university.replace("-", " ")
+        return redirect(url_for("buscar", busqueda=university))
+    university = university.replace("-", " ")
+    campus = campus.replace("-", " ")
+    c = models.UniversityHeadquarter.query.filter_by(campus_name=campus).all()
+    for campus in c:
+        if campus.university.name == university:
+            return render_template("campus.html", campus=campus)
+    return redirect(url_for("404"))
 
 
 @app.route("/test")
