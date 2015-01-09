@@ -328,8 +328,8 @@ def add_university():
     else:
         if request.args.get("method") == 'POST':
             try:
-                university = models.University(request.args.get("name"),
-                                               request.args.get("description"), request.args.get("logo"))
+                university = models.University(request.args.get("name").encode('utf-8'),
+                                               request.args.get("description").encode('utf-8'), request.args.get("logo"))
                 db.session.add(university)
                 db.session.commit()
                 return str(1)
@@ -348,7 +348,7 @@ def add_career():
         if request.args.get("method") == 'POST':
             try:
                 career = models.Career(request.args.get("name").encode('utf-8'), request.args.get("type"),
-                                           request.args.get("description"))
+                                           request.args.get("description").encode('utf-8'))
                 db.session.add(career)
                 db.session.commit()
                 return str(1)
@@ -367,7 +367,7 @@ def add_name():
         if request.args.get("method") == 'POST':
             try:
                 university = models.University.query.filter_by(id=request.args.get("university")).first()
-                name = models.OtherName(request.args.get("name"), university)
+                name = models.OtherName(request.args.get("name").encode('utf-8'), university)
                 db.session.add(name)
                 db.session.commit()
                 return str(1)
@@ -386,7 +386,7 @@ def add_campus():
         if request.args.get("method") == 'POST':
 
             university = models.University.query.filter_by(id=request.args.get("id")).first()
-            campus = models.UniversityHeadquarter(request.args.get("name"), float(request.args.get("lat")),
+            campus = models.UniversityHeadquarter(request.args.get("name").encode('utf-8'), float(request.args.get("lat")),
                                                       float(request.args.get("long")), university)
             db.session.add(campus)
             db.session.commit()
@@ -405,7 +405,7 @@ def add_cat_university():
         if request.args.get("method") == 'POST':
             place = models.UniversityHeadquarter.query.filter_by(id=request.args.get("place_id")).first()
             career = models.Career.query.filter_by(id=request.args.get("career_id")).first()
-            cat_university = models.CareerAtUniversity(request.args.get("description"),place, career)
+            cat_university = models.CareerAtUniversity(request.args.get("description").encode('utf-8'),place, career)
             db.session.add(cat_university)
             db.session.commit()
             return str(1)
@@ -433,8 +433,8 @@ def save_changes_university():
     else:
         try:
             models.University.query.filter_by(id=request.args.get("id")).\
-            update({models.University.name: request.args.get("name"),
-                    models.University.description: request.args.get("description"),
+            update({models.University.name: request.args.get("name").encode('utf-8'),
+                    models.University.description: request.args.get("description").encode('utf-8'),
                     models.University.logo: request.args.get("logo")}, synchronize_session=False)
             db.session.commit()
             return str(1)
@@ -459,8 +459,8 @@ def save_changes_career():
     else:
         try:
             models.Career.query.filter_by(id=request.args.get("id")).\
-            update({models.Career.name: request.args.get("name"),
-                    models.Career.description: request.args.get("description"),
+            update({models.Career.name: request.args.get("name").encode('utf-8'),
+                    models.Career.description: request.args.get("description").encode('utf-8'),
                     models.Career.type: request.args.get("type")}, synchronize_session=False)
             db.session.commit()
             return str(1)
@@ -485,7 +485,7 @@ def save_changes_campus():
     else:
         try:
             models.UniversityHeadquarter.query.filter_by(id=request.args.get("id")).\
-            update({models.UniversityHeadquarter.campus_name: request.args.get("name"),
+            update({models.UniversityHeadquarter.campus_name: request.args.get("name").encode('utf-8'),
                     models.UniversityHeadquarter.lat: float(request.args.get("lat")),
                     models.UniversityHeadquarter.long: float(request.args.get("long"))}, synchronize_session=False)
             db.session.commit()
@@ -512,7 +512,7 @@ def save_changes_cat_university():
     else:
         try:
             models.CareerAtUniversity.query.filter_by(id=request.args.get("id")).\
-            update({models.CareerAtUniversity.description: request.args.get("description")}, synchronize_session=False)
+            update({models.CareerAtUniversity.description: request.args.get("description").encode('utf-8')}, synchronize_session=False)
             db.session.commit()
             return str(1)
         except:
@@ -591,30 +591,6 @@ def panel_delete_cat_university():
             return str(0)
 
 
-"""
-@app.route("/panel/add/careeratuniversity", methods=['POST', 'GET'])
-def panel_add_careeratuniversity():
-    if check_log():
-        return check_log()
-    else:
-        if request.method == 'POST':
-            if request.form["place_id"] and request.form["career_id"] and request.form["description"]:
-                try:
-                    place = models.UniversityHeadquarter.query.filter_by(id=request.form["place_id"]).first()
-                    career = models.Career.query.filter_by(id=request.form["career_id"]).first()
-                    careeratuniversity = models.CareerAtUniversity(request.form["description"],
-                                                                   place, career)
-                    db.session.add(careeratuniversity)
-                    db.session.commit()
-                    return render_template("form_result.html", success=True)
-                except:
-                    return render_template("form_result.html", error=True)
-            else:
-                return render_template("form_result.html", error=True)
-        else:
-            return render_template("form_cat_university.html", places=select_place_data(),
-                                   careers=select_carrer_data())
-"""
 """
 @app.route("/list/university")
 def list_university():
