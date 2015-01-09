@@ -708,6 +708,7 @@ def campus_page(university, campus):
     return redirect(url_for("404"))
 
 
+#TESTING TOOL
 @app.route("/test")
 def test():
         return render_template("university.html",university=models.University.query.all()[2])
