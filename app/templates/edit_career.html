@@ -91,13 +91,21 @@ athene.controller('editCareerCtrl', function ($scope, $modal, $http) {
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label">Tipo</label>
-        <div class="col-sm-9">
+        <label class="col-sm-2 control-label">Type</label>
+        <div class="col-sm-5">
             <label class="radio-inline">
-              <input type="radio" name="type" id="inlineRadio1" ng-model="career_type" value="PREGRADO">PREGRADO
+              <input type="radio" name="type" id="inlineRadio1" ng-model="career_type" value="PREGRADO (Técnica)">PREGRADO (Técnica)
+            </label> <br/>
+            <label class="radio-inline">
+              <input type="radio" name="type" id="inlineRadio2" ng-model="career_type" value="PREGRADO (Tegnología)">PREGRADO (Tégnología)
             </label>
+        </div>
+        <div class="col-md-4">
             <label class="radio-inline">
-              <input type="radio" name="type" id="inlineRadio2" ng-model="career_type" value="POSGRADO">POSGRADO
+              <input type="radio" name="type" id="inlineRadio3" ng-model="career_type" value="PREGRADO (Profesional)">PREGRADO (Profesional)
+            </label> <br/>
+            <label class="radio-inline">
+              <input type="radio" name="type" id="inlineRadio4" ng-model="career_type" value="POSGRADO">POSGRADO
             </label>
         </div>
     </div>
