@@ -1,19 +1,84 @@
-{% extends "panel_base.html" %}
+{% extends "list_career.html" %}
 {% block body_panel %}
-<h2 class="text-center" xmlns="http://www.w3.org/1999/html">Registrar a new Career</h2>
-<form class="form-horizontal" role="form" action="{{ url_for('panel_add_career') }}"
-        method="post">
+<script>
+athene.controller('addCareerCtrl', function ($scope, $modal, $http) {
+
+  $scope.add = function () {
+    $http.get('/panel/add_career', {
+      params: {
+        method : 'POST',
+        name: $scope.career_name,
+        description: $scope.career_description,
+        type: $scope.career_type,
+      }
+    }).then(function(response){
+          $scope.openStatusModal(response.data);
+    });
+  };
+
+    $scope.openStatusModal = function (status) {
+    if(status=='0'){
+      template = 'fail.html'
+    }else if(status=='1'){
+      template = 'ok.html'
+    }
+    var modalInstance = $modal.open({
+      templateUrl: template,
+      controller: 'OkModalCtrl',
+      resolve: {
+      }
+    });
+  };
+});
+</script>
+
+<script type="text/ng-template" id="ok.html">
+    <div class="modal-header modal-success">
+        <h3 class="modal-title modal-success">
+             <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                Successful
+        </h3>
+    </div>
+    <div class="modal-body">
+        The operation was executed successfully :D
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-success btn-sm" ng-click="close('career')">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="fail.html">
+    <div class="modal-header modal-danger">
+        <h3 class="modal-title modal-danger">
+             <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                ERROR
+        </h3>
+    </div>
+    <div class="modal-body">
+        An error occurred while the operation was executed
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-danger btn-sm" ng-click="close()">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+<h2 class="text-center" xmlns="">Record a new Career</h2>
+<form class="form-horizontal" role="form" action="" method="post" ng-controller="addCareerCtrl">
     <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-9">
-            <input name="name" type="name" class="form-control" id="inputName"
+            <input name="name" type="name" class="form-control" id="inputName" ng-model="career_name"
                    placeholder="Career Name" required>
         </div>
     </div>
     <div class="form-group">
         <label for="textareaDescription" class="col-sm-2 control-label">Description</label>
         <div class="col-sm-9">
-            <textarea name="description" id="textareaDescription" class="form-control" rows="3"
+            <textarea name="description" id="textareaDescription" class="form-control" rows="3" ng-model="career_description"
                       placeholder="Career Description" required></textarea>
         </div>
     </div>
@@ -21,16 +86,17 @@
         <label class="col-sm-2 control-label">Tipo</label>
         <div class="col-sm-9">
             <label class="radio-inline">
-              <input type="radio" name="type" id="inlineRadio1" value="PREGRADO">PREGRADO
+              <input type="radio" name="type" id="inlineRadio1" ng-model="career_type" value="PREGRADO">PREGRADO
             </label>
             <label class="radio-inline">
-              <input type="radio" name="type" id="inlineRadio2" value="POSGRADO">POSGRADO
+              <input type="radio" name="type" id="inlineRadio2" ng-model="career_type" value="POSGRADO">POSGRADO
             </label>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Add</button>
+            <button ng-click="add()" class="btn btn-info">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Add</button>
         </div>
     </div>
 </form>

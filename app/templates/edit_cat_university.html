@@ -1,0 +1,114 @@
+{% extends "list_cat_university.html" %}
+{% block body_panel %}
+
+<script>
+athene.controller('editCatUniversityCtrl', function ($scope, $modal, $http) {
+
+       $scope.place = "{{cat_university.place.id}}";
+       $scope.career = "{{cat_university.career.id}}";
+       $scope.description = "{{cat_university.description}}";
+
+  $scope.edit = function (id) {
+    $http.get('/panel/edit_cat_university', {
+      params: {
+        method : 'POST',
+        id: id,
+        description: $scope.description,
+      }
+    }).then(function(response){
+          $scope.openStatusModal(response.data);
+    });
+  };
+
+    $scope.openStatusModal = function (status) {
+    if(status=='0'){
+      template = 'fail.html'
+    }else if(status=='1'){
+      template = 'ok.html'
+    }
+    var modalInstance = $modal.open({
+      templateUrl: template,
+      controller: 'OkModalCtrl',
+      resolve: {
+      }
+    });
+  };
+});
+</script>
+
+<script type="text/ng-template" id="ok.html">
+    <div class="modal-header modal-success">
+        <h3 class="modal-title modal-success">
+             <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                Successful
+        </h3>
+    </div>
+    <div class="modal-body">
+        The operation was executed successfully :D
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-success btn-sm" ng-click="close('cat')">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="fail.html">
+    <div class="modal-header modal-danger">
+        <h3 class="modal-title modal-danger">
+             <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                ERROR
+        </h3>
+    </div>
+    <div class="modal-body">
+        An error occurred while the operation was executed
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-danger btn-sm" ng-click="close()">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+
+<h2 class="text-center">Edit <i>{{cat_university.career.name}}</b> - {{cat_university.place.university.name}}</i></h2>
+<form class="form-horizontal" role="form"  method="post" ng-controller="editCatUniversityCtrl">
+    <div class="form-group">
+        <label for="selectName" class="col-sm-2 control-label">Place</label>
+        <div class="col-sm-9">
+            <fieldset disabled>
+                <select class="form-control" id="selectName" name="place_id" ng-model="place">
+                    {% for place in places %}
+                    <option value="{{ place.id }}">{{ place.university_and_campus }}</option>
+                    {% endfor %}
+                </select>
+            </fieldset>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="selectName" class="col-sm-2 control-label">Career</label>
+        <div class="col-sm-9">
+            <fieldset disabled>
+                <select class="form-control" id="selectCarrer" name="career_id" ng-model="career">
+                    {% for career in careers %}
+                    <option value="{{ career.id }}">{{ career.name }}</option>
+                    {% endfor %}
+                </select>
+            </fieldset>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="textareaDescription" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-9">
+            <textarea name="description" id="textareaDescription" class="form-control" rows="3" ng-model="description"
+                      placeholder="How is the Career in this University?" required></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-info btn-sm" ng-click="edit({{cat_university.id}})">
+                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save changes</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

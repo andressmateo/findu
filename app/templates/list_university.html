@@ -1,0 +1,22 @@
+{% extends "panel_base.html" %}
+
+
+{% block body_panel %}
+{% endblock %}
+
+{% block list_panel %}
+<b>Universities</b>
+<ul class="list-group">
+{% for university in universities %}
+    <li class="list-group-item">
+    <a href="{{ url_for('panel') }}/view_university/{{university.id}}">
+    {{university.name}}
+    </a></li>
+{% endfor %}
+</ul>
+<form action="{{ url_for('panel') }}/add_university">
+    <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add</button>
+</form>
+
+{% endblock %}

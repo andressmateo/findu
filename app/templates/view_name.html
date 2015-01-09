@@ -1,0 +1,81 @@
+{% extends "list_name.html" %}
+
+{% block body_panel %}
+
+<div class="panel panel-default" ng-controller="ModalDemoCtrl">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-9">
+                <b>Alter Name</b><br/>
+                {{name.name}}
+            </div>
+            <div class="col-md-3">
+                <div class="col-md-12">
+                    <div class="col-md-5 col-md-offset-7">
+                        <button class="btn btn-danger btn-sm" ng-click="openConfirmationModal()">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <b>University</b> <br/>
+        {{name.university.name}}
+    </div>
+
+<script type="text/ng-template" id="confirmation.html">
+    <div class="modal-header modal-danger">
+        <h3 class="modal-title modal-danger">
+             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Are you sure?
+        </h3>
+    </div>
+    <div class="modal-body">
+        really do you wish delete <i>{{name.name}}</i>?
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-link" ng-click="cancel()">Cancel</button>
+         <button class="btn btn-danger btn-sm" ng-click="deleteName('{{name.name}}')">
+             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
+         </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="ok.html">
+    <div class="modal-header modal-success">
+        <h3 class="modal-title modal-success">
+             <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                Successful
+        </h3>
+    </div>
+    <div class="modal-body">
+        The operation was executed successfully :D
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-success btn-sm" ng-click="close('name')">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="fail.html">
+    <div class="modal-header modal-danger">
+        <h3 class="modal-title modal-danger">
+             <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                ERROR
+        </h3>
+    </div>
+    <div class="modal-body">
+        An error occurred while the operation was executed
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-danger btn-sm" ng-click="close()">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+
+</div>
+
+{% endblock %}

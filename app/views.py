@@ -3,7 +3,6 @@ from flask import render_template, redirect, session, url_for, request, jsonify
 from app import app, db, models, search
 import config
 
-
 #OTHER ONES
 def check_log():
     if not session["logged"]:
@@ -121,6 +120,8 @@ def select_place_data():
         }
         data.append(dictionary)
     return data
+
+
 #VIEWS
 
 @app.route("/main")
@@ -140,24 +141,10 @@ def not_found(error):
     return "Error 500"
 
 
-#Ejemplo de Obtener datos de una Ruta
-@app.route("/w/<name>")
-def helname(name):
-    return "Hello {}!".format(name)
-
-
 @app.route("/id/<int:name>")
 def idpage(name):
     return str(name)
 
-
-##LLAMANDO la Base de Datos :D
-@app.route("/team")
-def team():
-    ret = ""
-    for member in models.Team.query.all():
-        ret += "<span>"+str(member.username)+"|"+str(member.age)+"</span><br/>"
-    return ret
 
 @app.route("/buscar", methods=['POST', 'GET'])
 def buscar_index():
@@ -165,6 +152,7 @@ def buscar_index():
         url = "/buscar/"+request.form['search']
         return redirect(url)
     return render_template("search.html",title=config.AppName)
+
 
 @app.route("/buscar_json", methods=['POST', 'GET'])
 def search_json():
@@ -179,6 +167,8 @@ def search_json():
             }
             result_json.append(o)
         return jsonify(names=result_json)
+
+
 @app.route("/buscar/<busqueda>")
 def buscar(busqueda):
     result = search.search_for(busqueda)
@@ -197,6 +187,8 @@ def buscar(busqueda):
                 ret += " o <a href='/buscar/"+item+"'>"+ item+"</a>"
         return ret
     return "Lo sentimos, no se han encontrado resultados"
+
+
 @app.route("/contacto")
 def contact():
     return "No hay"
@@ -224,7 +216,7 @@ def admin_link():
     if check_log():
         return check_log()
     else:
-        return 'Building... while you can go to the <a href="/panel/add/university">Panel</a>'
+        return 'Building... while you can go to the <a href="/panel/list_university">Panel</a>'
 
 
 @app.route("/panel")
@@ -235,99 +227,371 @@ def panel():
         return "Making a Panel"
 
 
-@app.route("/panel/add/")
-def panel_add():
+@app.route("/panel/list_university")
+def list_university():
     if check_log():
         return check_log()
     else:
-        return "What do you want to add?"
+        universities = db.session.query(models.University).all()
+        return render_template("list_university.html", universities = universities)
 
 
-@app.route("/panel/add/university", methods=['POST', 'GET'])
-def panel_add_university():
+@app.route("/panel/list_career")
+def list_career():
     if check_log():
         return check_log()
     else:
-        if request.method == 'POST':
-            if request.form["name"] and request.form["description"] and request.form["logo"]:
-                try:
-                    university = models.University(request.form["name"],
-                                                   request.form["description"], request.form["logo"])
-                    db.session.add(university)
-                    db.session.commit()
-                    return render_template("form_result.html", success=True)
-                except:
-                    return render_template("form_result.html", error=True)
-            else:
-                return render_template("form_result.html", error=True)
+        careers = db.session.query(models.Career).all()
+        return render_template("list_career.html", careers = careers)
+
+
+@app.route("/panel/list_name")
+def list_name():
+    if check_log():
+        return check_log()
+    else:
+        names = db.session.query(models.OtherName).all()
+        return render_template("list_name.html", names = names)
+
+
+@app.route("/panel/list_campus")
+def list_campus():
+    if check_log():
+        return check_log()
+    else:
+        campuses = db.session.query(models.UniversityHeadquarter).all()
+        return render_template("list_campus.html", campuses = campuses)
+
+
+@app.route("/panel/view_university/<university>")
+def view_university(university):
+    if check_log():
+        return check_log()
+    else:
+        u = db.session.query(models.University).filter_by(id = university)
+        universities = db.session.query(models.University).all()
+        return render_template("view_university.html",university=u[0], universities = universities)
+
+#cat_university for career_at_university
+@app.route("/panel/list_cat_university")
+def list_cat_university():
+    if check_log():
+        return check_log()
+    else:
+        cats_university = db.session.query(models.CareerAtUniversity).all()
+        return render_template("list_cat_university.html", cats_university = cats_university)
+
+
+@app.route("/panel/view_career/<career>")
+def view_career(career):
+    if check_log():
+        return check_log()
+    else:
+        c = db.session.query(models.Career).filter_by(id = career)
+        careers = db.session.query(models.Career).all()
+        return render_template("view_career.html",career=c[0], careers = careers)
+
+
+@app.route("/panel/view_name/<name>")
+def view_name(name):
+    if check_log():
+        return check_log()
+    else:
+        n = db.session.query(models.OtherName).filter_by(name = name)
+        names = db.session.query(models.OtherName).all()
+        return render_template("view_name.html",name=n[0], names = names)
+
+@app.route("/panel/view_campus/<campus>")
+def view_campus(campus):
+    if check_log():
+        return check_log()
+    else:
+        n = db.session.query(models.UniversityHeadquarter).filter_by(id = campus)
+        campuses = db.session.query(models.UniversityHeadquarter).all()
+        return render_template("view_campus.html",campus=n[0], campuses = campuses)
+
+
+@app.route("/panel/view_cat_university/<cat_university>")
+def view_cat_university(cat_university):
+    if check_log():
+        return check_log()
+    else:
+        n = db.session.query(models.CareerAtUniversity).filter_by(id = cat_university)
+        cats_university = db.session.query(models.CareerAtUniversity).all()
+        return render_template("view_cat_university.html",cat_university=n[0], cats_university = cats_university)
+
+
+@app.route("/panel/add_university", methods=['POST', 'GET'])
+def add_university():
+    if check_log():
+        return check_log()
+    else:
+        if request.args.get("method") == 'POST':
+            try:
+                university = models.University(request.args.get("name"),
+                                               request.args.get("description"), request.args.get("logo"))
+                db.session.add(university)
+                db.session.commit()
+                return str(1)
+            except:
+                return str(0)
         else:
-            return render_template("form_university.html")
+            universities = db.session.query(models.University).all()
+            return render_template("form_university.html",universities=universities)
 
 
-@app.route("/panel/add/name", methods=['POST', 'GET'])
-def panel_add_name():
+@app.route("/panel/add_career", methods=['POST', 'GET'])
+def add_career():
     if check_log():
         return check_log()
     else:
-        if request.method == 'POST':
-            if request.form["name"] and request.form["id"]:
-                try:
-                    university = models.University.query.filter_by(id=request.form["id"]).first()
-                    name = models.OtherName(request.form["name"], university)
-                    db.session.add(name)
-                    db.session.commit()
-                    return render_template("form_result.html", success=True)
-                except:
-                    return render_template("form_result.html", error=True)
-            else:
-                return render_template("form_result.html", error=True)
+        if request.args.get("method") == 'POST':
+            try:
+                career = models.Career(request.args.get("name").encode('utf-8'), request.args.get("type"),
+                                           request.args.get("description"))
+                db.session.add(career)
+                db.session.commit()
+                return str(1)
+            except:
+                return str(0)
         else:
-            return render_template("form_name.html", data=select_university_data())
+            careers = db.session.query(models.Career).all()
+            return render_template("form_career.html",careers=careers)
 
 
-@app.route("/panel/add/campus", methods=['POST', 'GET'])
-def panel_add_campus():
+@app.route("/panel/add_name", methods=['POST', 'GET'])
+def add_name():
     if check_log():
         return check_log()
     else:
-        if request.method == 'POST':
-            if request.form["name"] and request.form["id"] and request.form["lat"] and request.form["long"]:
-                try:
-                    university = models.University.query.filter_by(id=request.form["id"]).first()
-                    campus = models.UniversityHeadquarter(request.form["name"], float(request.form["lat"]),
-                                                          float(request.form["long"]), university)
-                    db.session.add(campus)
-                    db.session.commit()
-                    return render_template("form_result.html", success=True)
-                except:
-                    return render_template("form_result.html", error=True)
-            else:
-                return render_template("form_result.html", error=True)
+        if request.args.get("method") == 'POST':
+            try:
+                university = models.University.query.filter_by(id=request.args.get("university")).first()
+                name = models.OtherName(request.args.get("name"), university)
+                db.session.add(name)
+                db.session.commit()
+                return str(1)
+            except:
+                return str(0)
         else:
-            return render_template("form_campus.html", data=select_university_data())
+            names = db.session.query(models.OtherName).all()
+            return render_template("form_name.html",names=names,  data=select_university_data())
 
 
-@app.route("/panel/add/career", methods=['POST', 'GET'])
-def panel_add_career():
+@app.route("/panel/add_campus", methods=['POST', 'GET'])
+def add_campus():
     if check_log():
         return check_log()
     else:
-        if request.method == 'POST':
-            if request.form["name"] and request.form["description"] and request.form["type"]:
-                try:
-                    career = models.Career(request.form["name"].encode('utf-8'), request.form["type"],
-                                           request.form["description"])
-                    db.session.add(career)
-                    db.session.commit()
-                    return render_template("form_result.html", success=True)
-                except:
-                    return render_template("form_result.html", error=True)
-            else:
-                return render_template("form_result.html", error=True)
+        if request.args.get("method") == 'POST':
+
+            university = models.University.query.filter_by(id=request.args.get("id")).first()
+            campus = models.UniversityHeadquarter(request.args.get("name"), float(request.args.get("lat")),
+                                                      float(request.args.get("long")), university)
+            db.session.add(campus)
+            db.session.commit()
+            return str(1)
+
         else:
-            return render_template("form_career.html")
+            campuses = db.session.query(models.UniversityHeadquarter).all()
+            return render_template("form_campus.html",campuses=campuses,  data=select_university_data())
 
 
+@app.route("/panel/add_cat_university", methods=['POST', 'GET'])
+def add_cat_university():
+    if check_log():
+        return check_log()
+    else:
+        if request.args.get("method") == 'POST':
+            place = models.UniversityHeadquarter.query.filter_by(id=request.args.get("place_id")).first()
+            career = models.Career.query.filter_by(id=request.args.get("career_id")).first()
+            cat_university = models.CareerAtUniversity(request.args.get("description"),place, career)
+            db.session.add(cat_university)
+            db.session.commit()
+            return str(1)
+
+        else:
+            cats_university = db.session.query(models.CareerAtUniversity).all()
+            return render_template("form_cat_university.html",cats_university=cats_university,places=select_place_data(),
+                                   careers=select_carrer_data())
+
+
+@app.route("/panel/edit_university/<university>")
+def edit_university(university):
+    if check_log():
+        return check_log()
+    else:
+        u = db.session.query(models.University).filter_by(id = university)
+        universities = db.session.query(models.University).all()
+        return render_template("edit_university.html",university=u[0], universities = universities)
+
+
+@app.route("/panel/edit_university", methods=['POST', 'GET'])
+def save_changes_university():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            models.University.query.filter_by(id=request.args.get("id")).\
+            update({models.University.name: request.args.get("name"),
+                    models.University.description: request.args.get("description"),
+                    models.University.logo: request.args.get("logo")}, synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+
+@app.route("/panel/edit_career/<career>")
+def edit_career(career):
+    if check_log():
+        return check_log()
+    else:
+        u = db.session.query(models.Career).filter_by(id = career)
+        careers = db.session.query(models.Career).all()
+        return render_template("edit_career.html",career=u[0], careers = careers)
+
+
+@app.route("/panel/edit_career", methods=['POST', 'GET'])
+def save_changes_career():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            models.Career.query.filter_by(id=request.args.get("id")).\
+            update({models.Career.name: request.args.get("name"),
+                    models.Career.description: request.args.get("description"),
+                    models.Career.type: request.args.get("type")}, synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+
+@app.route("/panel/edit_campus/<campus>")
+def edit_campus(campus):
+    if check_log():
+        return check_log()
+    else:
+        u = db.session.query(models.UniversityHeadquarter).filter_by(id = campus)
+        campuses = db.session.query(models.UniversityHeadquarter).all()
+        return render_template("edit_campus.html",campus=u[0], campuses = campuses, data=select_university_data())
+
+
+@app.route("/panel/edit_campus", methods=['POST', 'GET'])
+def save_changes_campus():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            models.UniversityHeadquarter.query.filter_by(id=request.args.get("id")).\
+            update({models.UniversityHeadquarter.campus_name: request.args.get("name"),
+                    models.UniversityHeadquarter.lat: float(request.args.get("lat")),
+                    models.UniversityHeadquarter.long: float(request.args.get("long"))}, synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+
+@app.route("/panel/edit_cat_university/<cat_university>")
+def edit_cat_university(cat_university):
+    if check_log():
+        return check_log()
+    else:
+        u = db.session.query(models.CareerAtUniversity).filter_by(id = cat_university)
+        cats_university = db.session.query(models.CareerAtUniversity).all()
+        return render_template("edit_cat_university.html",cat_university=u[0],cats_university = cats_university,
+                               places=select_place_data(), careers=select_carrer_data())
+
+
+@app.route("/panel/edit_cat_university", methods=['POST', 'GET'])
+def save_changes_cat_university():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            models.CareerAtUniversity.query.filter_by(id=request.args.get("id")).\
+            update({models.CareerAtUniversity.description: request.args.get("description")}, synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+
+@app.route("/panel/delete_university", methods=['POST', 'GET'])
+def panel_delete_university():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            models.OtherName.query.filter_by(university_id=request.args.get("id")).delete(synchronize_session=False)
+            uh = models.UniversityHeadquarter.query.filter_by(university_id=request.args.get("id"))
+            for uh_id in uh:
+                models.CareerAtUniversity.query.filter_by(place_id=uh_id.id).delete(synchronize_session=False)
+            models.UniversityHeadquarter.query.filter_by(university_id=request.args.get("id")).delete(synchronize_session=False)
+            models.University.query.filter_by(id=request.args.get("id")).delete(synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+
+@app.route("/panel/delete_career", methods=['POST', 'GET'])
+def panel_delete_career():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            models.CareerAtUniversity.query.filter_by(career_id=request.args.get("id")).delete(synchronize_session=False)
+            models.Career.query.filter_by(id=request.args.get("id")).delete(synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+
+@app.route("/panel/delete_name", methods=['POST', 'GET'])
+def panel_delete_name():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            db.session.query(models.OtherName).filter(models.OtherName.name.ilike(request.args.get("name")+"")).\
+                delete(synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+@app.route("/panel/delete_campus", methods=['POST', 'GET'])
+def panel_delete_campus():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            models.CareerAtUniversity.query.filter_by(place_id=request.args.get("id")).delete(synchronize_session=False)
+            models.UniversityHeadquarter.query.filter_by(id=request.args.get("id")).delete(synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+
+@app.route("/panel/delete_cat_university", methods=['POST', 'GET'])
+def panel_delete_cat_university():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            models.CareerAtUniversity.query.filter_by(id=request.args.get("id")).delete(synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+
+"""
 @app.route("/panel/add/careeratuniversity", methods=['POST', 'GET'])
 def panel_add_careeratuniversity():
     if check_log():
@@ -348,10 +612,10 @@ def panel_add_careeratuniversity():
             else:
                 return render_template("form_result.html", error=True)
         else:
-            return render_template("form_careeratuniversity.html", places=select_place_data(),
+            return render_template("form_cat_university.html", places=select_place_data(),
                                    careers=select_carrer_data())
-
-
+"""
+"""
 @app.route("/list/university")
 def list_university():
     return university_json()
@@ -375,7 +639,7 @@ def list_career():
 @app.route("/list/careeratuniversity")
 def list_careeratuniversity():
     return careeratuniversity_json()
-
+"""
 
 @app.route("/universities")
 def universities():

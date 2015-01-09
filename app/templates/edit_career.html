@@ -1,16 +1,20 @@
-{% extends "list_university.html" %}
+{% extends "list_career.html" %}
 {% block body_panel %}
-
 <script>
-athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
+athene.controller('editCareerCtrl', function ($scope, $modal, $http) {
 
-  $scope.add = function () {
-    $http.get('/panel/add_university', {
+    $scope.career_name = "{{career.name}}";
+    $scope.career_description = "{{career.description}}";
+    $scope.career_type = "{{career.type}}";
+
+  $scope.edit = function (id) {
+    $http.get('/panel/edit_career', {
       params: {
         method : 'POST',
-        name: $scope.university_name,
-        description: $scope.university_description,
-        logo: $scope.university_logo,
+        id: id,
+        name: $scope.career_name,
+        description: $scope.career_description,
+        type: $scope.career_type,
 
       }
     }).then(function(response){
@@ -31,7 +35,9 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
       }
     });
   };
+
 });
+
 </script>
 
 <script type="text/ng-template" id="ok.html">
@@ -45,7 +51,7 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
         The operation was executed successfully :D
     </div>
     <div class="modal-footer">
-         <button class="btn btn-success btn-sm" ng-click="close('university')">
+         <button class="btn btn-success btn-sm" ng-click="close('career')">
              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
          </button>
     </div>
@@ -68,33 +74,37 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
     </div>
 </script>
 
-<h2 class="text-center">Record a new University</h2>
-<form class="form-horizontal" role="form" action="" method="post" ng-controller="addUniversityCtrl">
+<h2 class="text-center" >Edit <i>{{career.name}}</i></h2>
+<form class="form-horizontal" role="form" action="" method="post" ng-controller="editCareerCtrl">
     <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-9">
-            <input name="name" type="name" class="form-control" id="inputName" ng-model="university_name"
-                   placeholder="University Name" required>
+            <input name="name" type="name" class="form-control" id="inputName" ng-model="career_name"
+                   placeholder="Career Name" required>
         </div>
     </div>
     <div class="form-group">
         <label for="textareaDescription" class="col-sm-2 control-label">Description</label>
         <div class="col-sm-9">
-            <textarea name="description"id="textareaDescription"class="form-control" rows="3" ng-model="university_description"
-                      placeholder="University Description" required></textarea>
+            <textarea name="description" id="textareaDescription" class="form-control" rows="3" ng-model="career_description"
+                      placeholder="Career Description" required></textarea>
         </div>
     </div>
     <div class="form-group">
-        <label for="inputLogo" class="col-sm-2 control-label">Logo (url)</label>
+        <label class="col-sm-2 control-label">Tipo</label>
         <div class="col-sm-9">
-            <input name="logo" type="url" class="form-control" id="inputLogo" ng-model="university_logo"
-                   placeholder="URL of the University Logo" required>
+            <label class="radio-inline">
+              <input type="radio" name="type" id="inlineRadio1" ng-model="career_type" value="PREGRADO">PREGRADO
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="type" id="inlineRadio2" ng-model="career_type" value="POSGRADO">POSGRADO
+            </label>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button ng-click="add()" class="btn btn-info">
-                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Add</button>
+            <button class="btn btn-info btn-sm" ng-click="edit({{career.id}})">
+                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save changes</button>
         </div>
     </div>
 </form>

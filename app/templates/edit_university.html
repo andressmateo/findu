@@ -2,12 +2,17 @@
 {% block body_panel %}
 
 <script>
-athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
+athene.controller('editUniversityCtrl', function ($scope, $modal, $http) {
 
-  $scope.add = function () {
-    $http.get('/panel/add_university', {
+    $scope.university_name = "{{university.name}}";
+    $scope.university_description = "{{university.description}}";
+    $scope.university_logo = "{{university.logo}}";
+
+  $scope.edit = function (id) {
+    $http.get('/panel/edit_university', {
       params: {
         method : 'POST',
+        id: id,
         name: $scope.university_name,
         description: $scope.university_description,
         logo: $scope.university_logo,
@@ -31,6 +36,7 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
       }
     });
   };
+
 });
 </script>
 
@@ -68,8 +74,9 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
     </div>
 </script>
 
-<h2 class="text-center">Record a new University</h2>
-<form class="form-horizontal" role="form" action="" method="post" ng-controller="addUniversityCtrl">
+<h3 class="text-center">Edit university: <i>{{university.name}}</i></h3>
+<form class="form-horizontal" role="form" action=""
+        method="post" ng-controller="editUniversityCtrl">
     <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-9">
@@ -87,14 +94,14 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
     <div class="form-group">
         <label for="inputLogo" class="col-sm-2 control-label">Logo (url)</label>
         <div class="col-sm-9">
-            <input name="logo" type="url" class="form-control" id="inputLogo" ng-model="university_logo"
-                   placeholder="URL of the University Logo" required>
+            <input name="logo" type="url" class="form-control" id="inputLogo"
+                 ng-model="university_logo"  placeholder="URL of the University Logo" required>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button ng-click="add()" class="btn btn-info">
-                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Add</button>
+            <button class="btn btn-info btn-sm" ng-click="edit({{university.id}})">
+                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save changes</button>
         </div>
     </div>
 </form>

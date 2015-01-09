@@ -1,17 +1,21 @@
 {% extends "list_campus.html" %}
 {% block body_panel %}
-
 <script>
-athene.controller('addCampusCtrl', function ($scope, $modal, $http) {
+athene.controller('editCampusCtrl', function ($scope, $modal, $http) {
 
-  $scope.add = function () {
-    $http.get('/panel/add_campus', {
+    $scope.campus_name = "{{campus.campus_name}}";
+    $scope.campus_lat = "{{campus.lat}}";
+    $scope.campus_long = "{{campus.long}}";
+    $scope.campus_id_u = "{{campus.university.id}}"
+
+  $scope.edit = function (id) {
+    $http.get('/panel/edit_campus', {
       params: {
         method : 'POST',
         name: $scope.campus_name,
         lat: $scope.campus_lat,
         long: $scope.campus_long,
-        id: $scope.campus_id_u,
+        id: "{{campus.id}}",
       }
     }).then(function(response){
           $scope.openStatusModal(response.data);
@@ -31,7 +35,9 @@ athene.controller('addCampusCtrl', function ($scope, $modal, $http) {
       }
     });
   };
+
 });
+
 </script>
 
 <script type="text/ng-template" id="ok.html">
@@ -68,8 +74,8 @@ athene.controller('addCampusCtrl', function ($scope, $modal, $http) {
     </div>
 </script>
 
-<h2 class="text-center" >Record a new campus for a University</h2>
-<form class="form-horizontal" role="form" ng-controller="addCampusCtrl">
+<h2 class="text-center" xmlns="">Edit Campus <i>{{campus.campus_name}} </i></h2>
+<form class="form-horizontal" role="form" ng-controller="editCampusCtrl">
     <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Campus Name</label>
         <div class="col-sm-9">
@@ -80,11 +86,13 @@ athene.controller('addCampusCtrl', function ($scope, $modal, $http) {
     <div class="form-group">
         <label for="selectName" class="col-sm-2 control-label">University</label>
         <div class="col-sm-9">
-            <select class="form-control" id="selectName" name="id" ng-model="campus_id_u">
-            {% for university in data %}
-                <option value="{{ university.id }}">{{ university.name }}</option>
-            {% endfor %}
-            </select>
+            <fieldset disabled>
+                <select class="form-control" id="selectName" name="id" ng-model="campus_id_u">
+                {% for university in data %}
+                    <option value="{{ university.id }}">{{ university.name }}</option>
+                {% endfor %}
+                </select>
+            </fieldset>
         </div>
     </div>
     <div class="form-group">
@@ -100,8 +108,8 @@ athene.controller('addCampusCtrl', function ($scope, $modal, $http) {
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button ng-click="add()" class="btn btn-info">
-                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Add</button>
+            <button class="btn btn-info btn-sm" ng-click="edit({{campus.id}})">
+                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save changes</button>
         </div>
     </div>
 </form>
