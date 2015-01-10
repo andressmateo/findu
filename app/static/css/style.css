@@ -71,7 +71,9 @@ bottom: 0;
   color: white;
   cursor: pointer;
 }
-
+#accordion > div > div.panel-heading{
+  text-align: center;
+}
 /*Sizes*/
 .size-sixteen-nine{
     position:relative;
@@ -104,6 +106,7 @@ bottom: 0;
     height: 100%;
     top: 0;
 }
+
 
 footer{
     width: 100%;

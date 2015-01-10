@@ -1,49 +1,44 @@
 # -*- coding: utf8 -*-
 from app import models, app, db
+from sqlalchemy.sql.functions import ReturnTypeFromArgs
+from sqlalchemy import func
+import unicodedata
 
-def search_for(b):
-    ret = []
-    found = False
-    for u in db.session.query(models.OtherName).filter(models.OtherName.name.ilike(b+"%")):
-        ret.append(u.university)
-        found = True
 
-    if (not found):
-        for c in db.session.query(models.Career).filter(models.Career.name.ilike(b+"%")):
-            ret.append(c)
-            found = True
+#Don't Touch
+class unaccent(ReturnTypeFromArgs):
+    pass
 
-    if(not found):
-        options = []
-        words = []
-        i = 0
-        ret.append(0)
-        for n in db.session.query(models.OtherName).all():
-            words.append(n.name)
-        for n in db.session.query(models.Career).all():
-            words.append(n.name)
-        for word in words:
-            d = levenshtein_distance(word.lower(),b.lower())
-            if(d<5):
-                options.append((word,d))
-                i += 1
-        options.sort(key=lambda times: times [1])
-        for l in range(i):
-            found = True
-            if (l==0):
-                #ret += "<a href='/buscar/"+options.__getitem__(l)[0]+"'>"+options.__getitem__(l)[0]+"</a>"
-                ret.append(options.__getitem__(l)[0])
-            if(l-1 >= 0):
-                if (options.__getitem__(l)[1] == options.__getitem__(l-1)[1]):
-                    #ret += " o <a href='/buscar/"+options.__getitem__(l)[0]+"'>"+options.__getitem__(l)[0]+"</a>"
-                    ret.append(options.__getitem__(l)[0])
-                else:
-                    break
-    if (not found):
-        ret.__delitem__(0)
-        ret.append(-1)
-    return ret
 
+def flat_text(s):
+    if isinstance(s, str):
+        s = s.decode("utf-8")
+    return (''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))).lower()
+
+
+def search(question, param="all"):
+    question = flat_text(question)
+    query = {
+        "u": [],
+        "c": [],
+        "s": [],
+        "o": []
+    }
+    #"Universidades:"
+    if param == "all" or param == "u":
+        query["u"] = models.University.query.filter(unaccent(func.lower(models.University.name)).contains(question)).all()
+    #"Carreras:"
+    if param == "all" or param == "c":
+        query["c"] = models.Career.query.filter(unaccent(func.lower(models.Career.name)).contains(question)).all()
+    #"Sedes:"
+    if param == "all" or param == "s":
+        query["s"] = models.UniversityHeadquarter.query.filter(unaccent(func.lower(models.UniversityHeadquarter.campus_name)).contains(question)).all()
+    #"OtherNames"
+    if param == "all" or param == "u" or param == "o":
+        query["o"] = models.OtherName.query.filter(unaccent(func.lower(models.OtherName.name)).contains(question)).all()
+    return query
+
+"""
 def levenshtein_distance(str1, str2):
   d=dict()
   for i in range(len(str1)+1):
@@ -55,3 +50,4 @@ def levenshtein_distance(str1, str2):
      for j in range(1, len(str2)+1):
         d[i][j] = min(d[i][j-1]+1, d[i-1][j]+1, d[i-1][j-1]+(not str1[i-1] == str2[j-1]))
   return d[len(str1)][len(str2)]
+"""

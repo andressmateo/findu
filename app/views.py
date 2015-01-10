@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# -*- coding: latin-1 -*-
 from flask import render_template, redirect, session, url_for, request, jsonify
 from app import app, db, models, search
 import config
@@ -22,6 +23,11 @@ def join_campus(university):
         for cu in u.careers.all():
             careers.append(cu.career)
     return list(set(careers))
+
+
+@app.template_global()
+def flat_text(word):
+    return search.flat_text(word)
 
 
 #OTHER ONES
@@ -190,23 +196,10 @@ def search_json():
 
 @app.route("/buscar/<busqueda>")
 def buscar(busqueda):
-    result = search.search_for(busqueda)
-    if(len(result)==1):
-        if (isinstance(result[0],models.University)):
-            return render_template("university.html",university = result[0])
-        elif(isinstance(result[0],models.Career)):
-            return render_template("career.html",career  = result[0])
-    elif (isinstance(result[0],models.University) or isinstance(result[0],models.Career)):
-        return render_template("results.html",result = result)
-    elif (result[0]==0):
-        result.__delitem__(0)
-        ret =  "Quizas quiso decir: <a href='/buscar/"+result[0]+"'>"+ result[0]+ "</a>"
-        result.__delitem__(0)
-        for item in result:
-                ret += " o <a href='/buscar/"+item+"'>"+item+"</a>"
-        return ret
-    return "Lo sentimos, no se han encontrado resultados"
-
+    query = search.search(busqueda)
+    repeated = set(query["u"]).intersection(set([x.university for x in query["o"]]))
+    query["o"] = list(set([x.university for x in query["o"]]).difference(repeated))
+    return render_template("search_list.html", items=query)
 
 @app.route("/contacto")
 def contact():

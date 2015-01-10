@@ -1,0 +1,89 @@
+{% set active_page = "results" %} {% extends "base.html" %}{% block body %}
+<br/>
+<br/>
+<br/>
+<style>
+	
+</style>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="list-group-item">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+        <span class="badge">{{items["u"]|length+items["o"]|length}}</span>
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Universidades
+        </a>
+        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+      </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+            	<ul class="list-group">
+				{% for university in items["u"] %}
+					<li class="list-group-item">
+						<a href="{{url_for("universities")+"/"+(university.name)|replace(" ", "-")}}">
+	    					{{university.name}}
+	    				</a>
+    				</li>
+				{% endfor %}
+				{% for university in items["o"] %}
+					<li class="list-group-item">
+						<a href="{{url_for("universities")+"/"+(university.name)|replace(" ", "-")}}">
+	    					{{university.name}}*
+	    				</a>
+    				</li>
+				{% endfor %}
+				</ul>
+            </div>
+        </div>
+    </div>
+    <div class="list-group-item">
+        <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+        <span class="badge">{{items["c"]|length}}</span>
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Carreras
+        </a>
+        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+      </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+            	<ul class="list-group">
+				{% for career in items["c"] %}
+					<li class="list-group-item">
+						<a href="{{url_for("careers")+"/"+(career.name)|replace(" ", "-")}}">
+	    					{{career.name}}
+	    				</a>
+    				</li>
+				{% endfor %}
+				</ul>
+            </div>
+        </div>
+    </div>
+    <div class="list-group-item">
+        <div class="panel-heading" role="tab" id="headingThree">
+            <h4 class="panel-title">
+        <span class="badge">{{items["s"]|length}}</span>
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Sedes
+        </a>
+        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+      </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+            	<ul class="list-group">
+				{% for campus in items["s"] %}
+					<li class="list-group-item">
+						<a href="{{url_for('campus_page',university=(campus.university.name)|replace(' ', '-'),campus=(campus.campus_name)|replace(' ', '-'))}}">
+	    					{{campus.campus_name}} de {{campus.university.name}}
+	    				</a>
+    				</li>
+				{% endfor %}
+				</ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
