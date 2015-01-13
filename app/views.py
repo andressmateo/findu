@@ -704,4 +704,10 @@ def campus_page(university, campus):
 #TESTING TOOL
 @app.route("/test")
 def test():
-        return render_template("university.html",university=models.University.query.all()[2])
+        u = models.Career.query.filter_by(name="Example").first()
+        k = models.KnowledgeArea.query.all()
+        return str("Name"+u.name+"<br>knowledges:"+u.knowledge_areas[2].name+","+u.knowledge_areas[1].name+
+        "<br><br>Name: "+k[2].careers[0].name)
+
+
+
