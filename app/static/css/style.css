@@ -106,8 +106,54 @@ bottom: 0;
     height: 100%;
     top: 0;
 }
-
-
+#verified{
+  text-transform: uppercase;
+  font-weight: bolder;
+  color: rgba(255,255,255,0.7);
+  margin-right: 1em;
+}
+#verified.true > span{
+  color: #2ecc71;
+  margin-right: 0.5em;
+}
+#cover-university{
+  box-shadow: inset 0px -100px 100px 0px rgba(0, 0, 0, 0.6);
+}
+#stats-cover{
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  vertical-align: middle;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+#cover-title{
+  width: 100%;
+  position: absolute;
+  bottom: 40px;
+}
+#cover-title > div > div > div > h1 {
+  color: white;
+  font-size: 3em;
+}
+li#site > a{
+  border-radius: 0;
+  padding: 0;
+  display: inline-block;
+  color: white;
+  background-color: transparent;
+}
+li#site > a:hover{
+  color: white;
+  background-color: transparent;
+}
+li#site > a > span{
+  color: #3498db;
+  margin-right: 0.5em;
+}
 footer{
     width: 100%;
     border-top: 0.5em solid #e53935;
@@ -266,4 +312,9 @@ p.forgotpass a {
   font-size: 16px;
 }
 
-
+@media (min-width: 992px) {
+  #left > div.logo_university{
+    margin-top: -100px;
+    position: relative;
+  }
+}
