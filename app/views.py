@@ -182,13 +182,29 @@ def buscar_index():
 @app.route("/buscar_json", methods=['POST', 'GET'])
 def search_json():
     if request.method == 'GET':
-        result = db.session.query(models.OtherName).filter(models.OtherName.name.ilike("%"+request.args.get("search")+"%"))
+        resultC = db.session.query(models.Career).filter(models.Career.name.ilike("%"+request.args.get("search")+"%"))
+        resultU = db.session.query(models.University).filter(models.University.name.ilike("%"+request.args.get("search")+"%"))
+        resultO = db.session.query(models.OtherName).filter(models.OtherName.name.ilike("%"+request.args.get("search")+"%"))
+        resultS = db.session.query(models.UniversityHeadquarter).filter(models.UniversityHeadquarter.campus_name.ilike("%"+request.args.get("search")+"%"))
         result_json = []
-        for o_name in result:
+        for o_name in resultC:
             o = {
                 "name": o_name.name,
-                "university_id": o_name.university_id,
-                "university_name": o_name.university.name
+            }
+            result_json.append(o)
+        for o_name in resultU:
+            o = {
+                "name": o_name.name,
+            }
+            result_json.append(o)
+        for o_name in resultO:
+            o = {
+                "name": o_name.name,
+            }
+            result_json.append(o)
+        for o_name in resultS:
+            o = {
+                "name":o_name.university.name+ " - "+o_name.campus_name,
             }
             result_json.append(o)
         return jsonify(names=result_json)
