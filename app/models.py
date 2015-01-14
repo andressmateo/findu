@@ -30,11 +30,15 @@ class University(db.Model):
     principal = db.Column(db.String(200))
     students = db.Column(db.Integer)
     web_site = db.Column(db.Text)
+    address = db.Column(db.String(100))
+    accredited = db.Column(db.Boolean)
+    facebook = db.Column(db.Text)
+    twitter = db.Column(db.Text)
     #places object, places.all()
     #names object, names.all()
 
     def __init__(self, name, description, logo, background="", motto="", established=0, type="", principal ="",
-                 students=0, web_site=""):
+                 students=0, web_site="", address="", accredited=True, facebook="", twitter=""):
         self.name = name
         self.description = description
         self.logo = logo
@@ -45,6 +49,10 @@ class University(db.Model):
         self.principal = principal
         self.students = students
         self.web_site = web_site
+        self.address = address
+        self.accredited = accredited
+        self.facebook = facebook
+        self.twitter = twitter
         print "New University: "+self.__repr__()
 
     def __repr__(self):
@@ -55,13 +63,14 @@ class KnowledgeArea(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
     name = db.Column(db.String(200))
     definition = db.Column(db.Text)
+
     def __init__(self, name, definition):
         self.name = name
         self.definition = definition
         print "New KnowledgeArea: "+self.__repr__()
 
     def __repr__(self):
-        return "<KnowledgeArea>"
+        return "<KnowledgeArea "+self.name+" >"
 
 
 related = db.Table('related', db.metadata,
@@ -76,7 +85,6 @@ class Career(db.Model):
     type = db.Column(db.String(40))
     description = db.Column(db.Text)
     knowledge_areas = db.relationship("KnowledgeArea", secondary=related, backref=db.backref('careers', lazy='dynamic'))
-
     #places object, places.all()
 
     def __init__(self, name, type, description,knowledge_areas=KnowledgeArea.query.filter_by(id=1)):
@@ -109,7 +117,7 @@ class UniversityHeadquarter(db.Model):
         print "New Headquarter: "+self.__repr__()
 
     def __repr__(self):
-        return "<Headquarter>"
+        return "<Headquarter "+self.campus_name+" >"
 
 
 class OtherName(db.Model):
@@ -145,5 +153,5 @@ class CareerAtUniversity(db.Model):
         print "New CareerAtUniversity: "+self.__repr__()
 
     def __repr__(self):
-        return "<CareerAtUniversity>"
+        return "<CareerAtUniversity "+self.career.name+"@"+self.place.university.name+" >"
 

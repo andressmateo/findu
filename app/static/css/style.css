@@ -137,7 +137,10 @@ bottom: 0;
 }
 #cover-title > div > div > div > h1 {
   color: white;
-  font-size: 3em;
+  font-size: 2.25em;
+}
+#cover-title > div > div > div > h1{
+  text-align: center;
 }
 li#site > a{
   border-radius: 0;
@@ -153,6 +156,14 @@ li#site > a:hover{
 li#site > a > span{
   color: #3498db;
   margin-right: 0.5em;
+}
+#careers > div > div > div > div.size-one-one > div{
+  background-size: cover !important;
+  background-repeat: no-repeat;
+}
+#headquarters > div > div > div{
+  border-bottom: solid 1px rgba(0,0,0,0.1);
+  margin-bottom: 1em;
 }
 footer{
     width: 100%;
@@ -187,6 +198,34 @@ section.size-sixteen-nine > div.size-fully > div#index-cover-text > h2{
 section.size-sixteen-nine > div.size-fully > div#index-cover-text > a{
     border-radius: 0;
     color: white;
+}
+ul > li > span.text-stats{
+  text-transform: uppercase;
+  font-weight: bold;
+  color: rgba(0,0,0,0.3);
+  margin-right: 0.5em;
+}
+ul.additional-stats > li{
+  margin-right: 0.7em;
+}
+#overview > div.info{
+  margin-top: 1em;
+}
+aside#left > ul.sections > li{
+  text-transform: uppercase;
+  font-weight: bold;
+  color: rgba(0,0,0,0.3);
+  border-bottom: solid 1px rgba(0,0,0,0.3)
+}
+aside#left > ul.sections > li > a{
+  color: rgba(0,0,0,0.3);
+}
+aside#left > ul.sections > li > a:hover{
+  background-color: transparent;
+  color: black;
+}
+#overview > div.info > ul > li{
+  margin-bottom: 0.2em;
 }
 /*End General*/
 .row{
@@ -316,5 +355,15 @@ p.forgotpass a {
   #left > div.logo_university{
     margin-top: -100px;
     position: relative;
+  }
+  #cover-title > div > div > div > h1 {
+    color: white;
+    font-size: 3em;
+  }
+  #cover-title > div > div > div > h1{
+    text-align: left;
+  }
+  #headquarters > div > div > div{
+    margin-bottom: 2em;
   }
 }
