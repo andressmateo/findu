@@ -358,8 +358,35 @@ def add_university():
     else:
         if request.args.get("method") == 'POST':
             try:
-                university = models.University(request.args.get("name").encode('utf-8'),
-                                               request.args.get("description").encode('utf-8'), request.args.get("logo"))
+                name = request.args.get("name")
+                description = request.args.get("description")
+                logo = request.args.get("logo")
+                type = request.args.get("type")
+                if(type==None):
+                    type="Not defined"
+                motto = request.args.get("motto")
+                if (motto==None):
+                    motto = "Not defined"
+                established = request.args.get("established")
+                if(established==None):
+                    established = 0
+                principal = request.args.get("principal")
+                if(principal==None
+                ):
+                    principal = "Not defined"
+                students = request.args.get("students")
+                if (students==None):
+                    students = 0
+                web = request.args.get("web")
+                if (web==None):
+                    web = "Not defined"
+                background = request.args.get("background")
+                if (background==None):
+                    background = "Not defined"
+                if(name==None or description==None or logo ==None):
+                    return str(0)
+                university = models.University(name.encode('utf-8'),description.encode('utf-8'),logo, background,
+                                               motto.encode('utf-8'), established, type, principal.encode('utf-8'), students, web)
                 db.session.add(university)
                 db.session.commit()
                 return str(1)
@@ -462,10 +489,38 @@ def save_changes_university():
         return check_log()
     else:
         try:
+            name = request.args.get("name").encode('utf-8')
+            description = request.args.get("description").encode('utf-8')
+            logo = request.args.get("logo")
+            type = request.args.get("type")
+            if(type==None):
+                type="Not defined"
+            motto = request.args.get("motto").encode('utf-8')
+            if (motto==None):
+                motto = "Not defined"
+            established = request.args.get("established")
+            if(established==None):
+                established = 0
+            principal = request.args.get("principal").encode('utf-8')
+            if(principal==None):
+                principal = "Not defined"
+            students = request.args.get("students")
+            if (students==None):
+                students = 0
+            web = request.args.get("web")
+            if (web==None):
+                web = "Not defined"
+            background = request.args.get("background")
+            if (background==None):
+                background = "Not defined"
+            if(name==None or description==None or logo == None):
+                return str(0)
             models.University.query.filter_by(id=request.args.get("id")).\
-            update({models.University.name: request.args.get("name").encode('utf-8'),
-                    models.University.description: request.args.get("description").encode('utf-8'),
-                    models.University.logo: request.args.get("logo")}, synchronize_session=False)
+            update({models.University.name: name, models.University.description: description,
+                    models.University.logo: logo, models.University.type : type,
+                    models.University.motto : motto, models.University.established : established,
+                    models.University.principal : principal, models.University.students : students,
+                    models.University.web_site : web, models.University.background : background}, synchronize_session=False)
             db.session.commit()
             return str(1)
         except:
