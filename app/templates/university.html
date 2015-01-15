@@ -18,7 +18,12 @@
                     <div class="col-md-push-3 col-md-9">
                         <ul class="nav nav-pills">
                             <li id="verified" class="true">
-                                <span class="glyphicon glyphicon-ok"></span>Acreditada
+                                {% if if_none(university.established,'NO')=="NO" %}
+                                {% elif university.established %}
+                                    <span class="glyphicon glyphicon-ok"></span>Acreditada
+                                {% else %}
+                                    <span class="glyphicon glyphicon-remove"></span>NO Acreditada
+                                {% endif %}
                             </li>
                             <li id="site">
                                 <a href="{{ if_none(university.web_site,'#')|safe }}" target="_blank"><span class="glyphicon glyphicon-new-window"></span>{{ if_none(university.web_site,'<a style="color:rgba(255,0,0,0.5);">No Ingresado</span>')|safe }}</a>
@@ -53,26 +58,20 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="#names">
-                        {{university.names.all()|length}} Nombres
-                    </a>
-                </li>
-                <li class="">
                     <a href="#comments">
                         Commentarios
                     </a>
                 </li>
             </ul>
             <br/><br/>
-            <a class="twitter-timeline" href="https://twitter.com/EAFIT" data-widget-id="555410966016696320"></a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            <!-- Twitter Frame -->
         </aside>
         <div class="container-fluid col-md-9">
             <div class="row" id="overview">
                 <div class="info col-md-8">
                     <ul class="additional-stats list-inline">
                         <li class="stat"><span class="text-stats">Fundación</span>{{ if_none(university.established,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
-                        <li class="stat"><span class="text-stats">Dirección</span>Carrera 49 N° 7 Sur - 50</li>
+                        <li class="stat"><span class="text-stats">Dirección</span>{{ if_none(university.address,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
                         <li class="stat"><span class="text-stats">Estudiantes</span>{{ if_none(university.students,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
                         <li class="stat"><span class="text-stats">Rectorado</span>{{ if_none(university.principal,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
                         <li class="stat"><span class="text-stats">Lema</span>{{ if_none(university.motto,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
@@ -85,7 +84,11 @@
                     </div>
                 </div>
                 <div class="buttoms col-md-4">
-                    <iframe style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; WIDTH: 100%; HEIGHT: 380px; OVERFLOW: hidden; BORDER-TOP: medium none; BORDER-RIGHT: medium none" src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Funiversidadeafit&amp;width=280&amp;height=395&amp;show_faces=false&amp;colorscheme=light&amp;stream=true&amp;show_border=false&amp;header=false&amp;appId=391548297617137" frameborder="0" allowtransparency="" scrolling="no"></iframe>
+                    {% if if_none(university.facebook,False) %}
+                    <iframe style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; WIDTH: 100%; HEIGHT: 380px; OVERFLOW: hidden; BORDER-TOP: medium none; BORDER-RIGHT: medium none" src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2F{{university.facebook}}&amp;width=280&amp;height=395&amp;show_faces=false&amp;colorscheme=light&amp;stream=true&amp;show_border=false&amp;header=false&amp;appId=391548297617137" frameborder="0" allowtransparency="" scrolling="no"></iframe>
+                    {% else %}
+                    How can i put here...?
+                    {% endif %}
                 </div>
             </div>
             <div class="row" id="headquarters">
@@ -135,14 +138,6 @@
 
                     {% endfor %}
                     </div>
-                </div>
-            </div>
-            <div class="row" id="names">
-                <h2>Nombres</h2>
-                <div>
-                    {% for name in university.names.all() %}
-                        <a href="#" class="btn btn-default btn-lg disabled">{{ name.name }}</a>
-                    {% endfor %}
                 </div>
             </div>
             <div class="row" id="comments">
