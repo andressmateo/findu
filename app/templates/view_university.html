@@ -32,25 +32,45 @@
         <a href="{{university.logo}}">{{university.logo}}</a>
         <br/> <br/>
         <b>Type</b> <br/>
-        {{university.type}}
+        {{ if_none(university.type,'<a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>')|safe }}
         <br/> <br/>
         <b>Background</b> <br/>
-        {{university.background}}
+        {% if (university.background == None or university.background=="")%}
+            <a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>
+        {% else %}
+            <a href="{{university.background}}">{{university.background}}</a>
+        {% endif %}
         <br/> <br/>
         <b>Motto</b> <br/>
-        {{university.motto}}
+        {{ if_none(university.motto,'<a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>')|safe }}
         <br/> <br/>
         <b>Established</b> <br/>
-        {{university.established}}
+        {{ if_none(university.established,'<a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>')|safe }}
         <br/> <br/>
         <b>Principal</b> <br/>
-        {{university.principal}}
+        {{ if_none(university.principal,'<a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>')|safe }}
         <br/> <br/>
         <b>Students</b> <br/>
-        {{university.students}}
+        {{ if_none(university.students,'<a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>')|safe }}
         <br/> <br/>
         <b>Website</b> <br/>
-        {{university.web_site}}
+        {% if (university.web_site == None or university.web_site=="")%}
+            <a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>
+        {% else %}
+            <a href="{{university.web_site}}">{{university.web_site}}</a>
+        {% endif %}
+        <br/> <br/>
+        <b>Address</b> <br/>
+        {{ if_none(university.address,'<a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>')|safe }}
+        <br/> <br/>
+        <b>Accredited</b> <br/>
+        {{ if_none(university.accredited,'<a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>')|safe }}
+        <br/> <br/>
+        <b>Facebook</b> <br/>
+        {{ if_none(university.facebook,'<a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>')|safe }}
+        <br/> <br/>
+        <b>Twitter</b> <br/>
+        {{ if_none(university.twitter,'<a type="button" class="btn btn-danger btn-xs disabled">Not defined</a>')|safe }}
     </div>
 
 <script type="text/ng-template" id="confirmation.html">

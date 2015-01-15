@@ -38,7 +38,7 @@ class University(db.Model):
     #names object, names.all()
 
     def __init__(self, name, description, logo, background="", motto="", established=0, type="", principal ="",
-                 students=0, web_site="", address="", accredited=True, facebook="", twitter=""):
+                 students=0, web_site="", address="", accredited=False, facebook="", twitter=""):
         self.name = name
         self.description = description
         self.logo = logo

@@ -10,7 +10,7 @@ import config
 def if_none(original, remplace):
     if isinstance(original, type(None)):
         return remplace
-    elif original == "":
+    elif (original == "" or original==-1):
         return remplace
     else:
         return original
@@ -362,31 +362,29 @@ def add_university():
                 description = request.args.get("description")
                 logo = request.args.get("logo")
                 type = request.args.get("type")
-                if(type==None):
-                    type="Not defined"
                 motto = request.args.get("motto")
-                if (motto==None):
-                    motto = "Not defined"
+                if (motto!=None):
+                    motto = motto.encode('utf-8')
                 established = request.args.get("established")
-                if(established==None):
-                    established = 0
                 principal = request.args.get("principal")
-                if(principal==None
-                ):
-                    principal = "Not defined"
+                if(principal!=None):
+                    principal = principal.encode('utf-8')
                 students = request.args.get("students")
-                if (students==None):
-                    students = 0
                 web = request.args.get("web")
-                if (web==None):
-                    web = "Not defined"
                 background = request.args.get("background")
-                if (background==None):
-                    background = "Not defined"
+                address = request.args.get("address")
+                accredited = request.args.get("accredited")
+                if(accredited==None):
+                    accredited = False
+                facebook = request.args.get("facebook")
+                twitter = request.args.get("twitter")
+
                 if(name==None or description==None or logo ==None):
                     return str(0)
+
                 university = models.University(name.encode('utf-8'),description.encode('utf-8'),logo, background,
-                                               motto.encode('utf-8'), established, type, principal.encode('utf-8'), students, web)
+                                               motto, established, type, principal, students, web,address,
+                                               accredited, facebook, twitter)
                 db.session.add(university)
                 db.session.commit()
                 return str(1)
@@ -488,43 +486,46 @@ def save_changes_university():
     if check_log():
         return check_log()
     else:
-        try:
-            name = request.args.get("name").encode('utf-8')
-            description = request.args.get("description").encode('utf-8')
+
+            name = request.args.get("name")
+            description = request.args.get("description")
             logo = request.args.get("logo")
             type = request.args.get("type")
-            if(type==None):
-                type="Not defined"
-            motto = request.args.get("motto").encode('utf-8')
-            if (motto==None):
-                motto = "Not defined"
+            motto = request.args.get("motto")
+            if (motto!=None):
+                motto = motto.encode('utf-8')
             established = request.args.get("established")
-            if(established==None):
-                established = 0
-            principal = request.args.get("principal").encode('utf-8')
-            if(principal==None):
-                principal = "Not defined"
+            if(established == None or established == ''):
+                established = -1
+            principal = request.args.get("principal")
+            if(principal!=None):
+                principal = principal.encode('utf-8')
             students = request.args.get("students")
-            if (students==None):
-                students = 0
+            if (students == None or students == ''):
+                students = -1
             web = request.args.get("web")
-            if (web==None):
-                web = "Not defined"
             background = request.args.get("background")
-            if (background==None):
-                background = "Not defined"
-            if(name==None or description==None or logo == None):
+            address = request.args.get("address")
+            accredited = request.args.get("accredited")
+            if(accredited==None):
+                    accredited = False
+            facebook = request.args.get("facebook")
+            twitter = request.args.get("twitter")
+
+            if(name==None or description==None or logo ==None):
                 return str(0)
+
             models.University.query.filter_by(id=request.args.get("id")).\
             update({models.University.name: name, models.University.description: description,
                     models.University.logo: logo, models.University.type : type,
                     models.University.motto : motto, models.University.established : established,
                     models.University.principal : principal, models.University.students : students,
-                    models.University.web_site : web, models.University.background : background}, synchronize_session=False)
+                    models.University.web_site : web, models.University.background : background,
+                    models.University.address : address, models.University.accredited : accredited,
+                    models.University.facebook : facebook, models.University.twitter : twitter}, synchronize_session=False)
             db.session.commit()
             return str(1)
-        except:
-            return str(0)
+
 
 
 @app.route("/panel/edit_career/<career>")

@@ -16,8 +16,12 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
         established: $scope.university_established,
         principal: $scope.university_principal,
         students: $scope.university_students,
-        web: $scope.university_web,
-        background: $scope.university_background,
+        web : $scope.university_web,
+        background : $scope.university_background,
+        address : $scope.university_address,
+        accredited : $scope.university_accredited,
+        facebook : $scope.university_facebook,
+        twitter : $scope.university_twitter
       }
     }).then(function(response){
           $scope.openStatusModal(response.data);
@@ -86,7 +90,8 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
     <div class="form-group">
         <label for="textareaDescription" class="col-sm-2 control-label">Description *</label>
         <div class="col-sm-9">
-            <textarea name="description"id="textareaDescription"class="form-control" rows="3" ng-model="university_description"
+            <textarea name="description"id="textareaDescription"class="form-control" rows="3"
+                      ng-model="university_description"
                       placeholder="University Description" required></textarea>
         </div>
     </div>
@@ -148,6 +153,39 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
         <div class="col-sm-9">
             <input name="background" type="url" class="form-control" ng-model="university_background"
                    placeholder="URL of an image big and pretty to be the background of the university's page">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Address</label>
+        <div class="col-sm-9">
+            <input name="address" type="text" class="form-control" ng-model="university_address"
+                   placeholder="University's address">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Accredited</label>
+        <div class="col-sm-9">
+            <input type="checkbox" ng-model="university_accredited" ng-true-value="True">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Facebook</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-addon">@</span>
+                    <input type="text" class="form-control" placeholder="Username of the university on Facebook"
+                            ng-model="university_facebook">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Twitter</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-addon">@</span>
+                    <input type="text" class="form-control" placeholder="Currently is not available"
+                           ng-model="university_twitter"disabled>
+            </div>
         </div>
     </div>
     <div class="form-group">
