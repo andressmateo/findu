@@ -106,6 +106,34 @@ bottom: 0;
     height: 100%;
     top: 0;
 }
+.list-image-bg{
+	background-repeat: no-repeat;
+	background-size: cover !important;
+	box-shadow: inset 0px -55px 30px 0px rgba(0, 0, 0, 0.8);
+}
+.list-university-icons{
+	
+}
+.list-university-icons > span{
+	padding: 0.5em;
+	font-size: 1.25em;
+}
+#frame > div > div.col-xs-12.col-sm-12.col-md-9.col-lg-9 > div > div > div{
+	padding: 0;
+	border-bottom: solid 1px #2d2d2d;
+	border-right: solid 1px #2d2d2d;
+}
+#frame > div > div.col-xs-12.col-sm-12.col-md-9.col-lg-9 > div > div > div > a{
+	color: white;
+}
+#frame > div > div.col-xs-12.col-sm-12.col-md-9.col-lg-9{
+	padding: 0;
+}
+#frame > div > div.col-xs-12.col-sm-12.col-md-9.col-lg-9 > div > div > div > a > div > div > div > div.titles{
+	position: absolute;
+	bottom: 0;
+	left: 1.5em
+}
 #verified{
   text-transform: uppercase;
   font-weight: bolder;
@@ -273,7 +301,15 @@ p#signame{
 .error-actions .btn {
     margin-right:10px;
 }
-
+#frame{
+	padding-top: 50px;
+	padding-left: 0;
+	padding-right: 0;
+	background-color: #1d1d1d;
+}
+#frame > div > div.col-xs-12.col-sm-12.col-md-9.col-lg-9 > div.container-fluid{
+	padding: 0;
+}
 @media (min-width: 992px) {
     .not_found{
         background-image: url("https://c2.staticflickr.com/6/5447/9286000388_7cb8ab30f4_b.jpg");

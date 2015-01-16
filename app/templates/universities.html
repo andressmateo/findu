@@ -1,18 +1,68 @@
 {% set active_page = "universities" %}
 {% extends "base.html" %}
+{% block head %}
+<style>
+    body{
+    background:black;
+    }
+</style>
+{% endblock %}
 {% block body %}
-<br>
-<br>
-<br>
-<br>
-<ul class="list-group">
-{% for university in universities %}
-    <li class="list-group-item">
-        <a href="{{url_for('universities_page',university=university.name.replace(' ', '-'))}}">
-            {{university.name}}
-        </a>
-    </li>
-{% endfor %}
-</ul>
+<div id="frame" class="container-fluid">
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3" style="box-sizing: border-box;">
+        <div class="sidenav">
+            <h1 class="text-center" style="color:white;">
+                Universidades
+            </h1>
+            <h2 class="h5 text-center" style="padding:0.25em;color:rgba(255,255,255,0.4);">
+                Tenemos <b>{{universities|length}}</b> universidades de las que puedes consultar información
+            </h2>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" style="box-sizing: border-box;">
+        <div class="container-fluid">
+        <div class="row" style="border-left: solid 1px #2d2d2d;">
+        {% for university in universities[:2] %}
+            <div class="col-md-6">
+                <a href="{{url_for('universities_page',university=university.name.replace(' ','-'))}}">
+                    <div class="fanart">
+                        <div class="size-sixteen-nine">
+                            <div class="size-fully list-image-bg" style="background:url({{if_none(university.background,'http://placekitten.com/g/1280/720')}});">
+                                <div class="titles">
+                                    <h3>{{university.name}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div class="list-university-icons">
+                    <span class="glyphicon glyphicon-resize-full" aria-hidden="true" style="color:#2196f3;"></span>
+                    <span class="glyphicon glyphicon-heart" aria-hidden="true" style="float:right;color:#f44336;"></span>                </div>
+            </div>
+        {% endfor %}
+        {% for university in universities[2:] %}
+            <div class="col-md-4">
+                <a href="{{url_for('universities_page',university=university.name.replace(' ','-'))}}">
+                    <div class="fanart">
+                        <div class="size-sixteen-nine">
+                            <div class="size-fully list-image-bg" style="background:url({{if_none(university.background,'http://placekitten.com/g/1280/720')}});">
+                                <div class="titles">
+                                    <h3>{{university.name}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div class="list-university-icons">
+                    <span class="glyphicon glyphicon-resize-full" aria-hidden="true" style="color:#2196f3;"></span>
+                    <span class="glyphicon glyphicon-heart" aria-hidden="true" style="float:right;color:#f44336;"></span>                </div>
+            </div>
+        {% endfor %}
+        </div>
+        </div>
+    </div>
+</div>
+</div>
 
 {% endblock %}
