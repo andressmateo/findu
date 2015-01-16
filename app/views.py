@@ -747,6 +747,7 @@ def careers_page(career):
 
 @app.route("/universidades/<university>/carreras/<career>")
 def career_at_university_page(university, career):
+    r = []
     if " " in career or " " in university:
         university = university.replace("-", " ")
         return redirect(url_for("buscar", busqueda=university))
@@ -757,9 +758,9 @@ def career_at_university_page(university, career):
         return redirect(url_for("buscar", busqueda=university))
     s = models.CareerAtUniversity.query.filter_by(career_id=c.id).all()
     for sede in s:
-        if sede.place.university.name != university:
-            s.remove(sede)
-    return render_template("career_at_university.html", careers=s)
+        if sede.place.university.name == university:
+            r.append(sede)
+    return render_template("career_at_university.html", careers=r)
 
 
 @app.route("/universidades/<university>/sedes/<campus>")
