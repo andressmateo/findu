@@ -78,20 +78,24 @@ related = db.Table('related', db.metadata,
     db.Column('id_knowledge_area', db.Integer,db.ForeignKey('knowledge_area.id'))
 )
 
+
 class Career(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
     name = db.Column(db.String(200), unique=True)
     type = db.Column(db.String(40))
     description = db.Column(db.Text)
     knowledge_areas = db.relationship("KnowledgeArea", secondary=related, backref=db.backref('careers', lazy='dynamic'))
+    icon = db.Column(db.Text)
+    background = db.Column(db.Text)
     #places object, places.all()
 
-    def __init__(self, name, type, description,knowledge_areas=None):
+    def __init__(self, name, type, description, knowledge_areas=None, icon="", background=""):
         self.name = name
         self.description = description
         self.type = type  # PREGRADO-POSGRADO-ETC
         self.knowledge_areas = knowledge_areas
-
+        self.icon = icon
+        self.background = background
         print "New Career: "+self.__repr__()
 
     def __repr__(self):
@@ -107,12 +111,13 @@ class UniversityHeadquarter(db.Model):
     #careers object, careers.all()
     university_id = db.Column(db.Integer, db.ForeignKey('university.id'))
     university = db.relationship('University', backref=db.backref('places', lazy='dynamic'))
-
-    def __init__(self, campus_name, lat, long, university):
+    background = db.Column(db.Text)
+    def __init__(self, campus_name, lat, long, university, background=""):
         self.lat = lat
         self.long = long
         self.university = university
         self.campus_name = campus_name
+        self.background = background
         print "New Headquarter: "+self.__repr__()
 
     def __repr__(self):
