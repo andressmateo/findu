@@ -26,7 +26,10 @@
                                 {% endif %}
                             </li>
                             <li id="site">
-                                <a href="{{ if_none(university.web_site,'#')|safe }}" target="_blank"><span class="glyphicon glyphicon-new-window"></span>{{ if_none(university.web_site,'<a style="color:rgba(255,0,0,0.5);">No Ingresado</span>')|safe }}</a>
+                                <a href="{{ if_none(university.web_site,'#')|safe }}" target="_blank">
+                                    <span class="glyphicon glyphicon-new-window"></span>
+                                    {{ if_none(university.web_site,'<span style="color:rgba(255,0,0,0.5);">No Ingresado</span>')|safe }}
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -72,10 +75,9 @@
                     <ul class="additional-stats list-inline">
                         <li class="stat"><span class="text-stats">Fundación</span>{{ if_none(university.established,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
                         <li class="stat"><span class="text-stats">Dirección</span>{{ if_none(university.address,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
-                        <li class="stat"><span class="text-stats">Estudiantes</span>{{ if_none(university.students,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
+                        <li class="stat"><span class="text-stats">Estudiantes</span>{{ if_none(university.students,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}<small style="margin-left:0.25em;color:#984447;"><abbr title="aproximadamente" style="border:none;">aprox.</abbr></small></li>
                         <li class="stat"><span class="text-stats">Rectorado</span>{{ if_none(university.principal,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
                         <li class="stat"><span class="text-stats">Lema</span>{{ if_none(university.motto,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
-                        </li>
                     </ul>
                     <div class="description">
                         <p class="text-justify">
@@ -118,11 +120,11 @@
                             <div class="size-one-one">
                                 <div class="size-fully"
                                      style="background:url(https://cdn4.iconfinder.com/data/icons/medical-9/512/DNA-256.png);">
-                                    <a href="{{ url_for("careers")+"/"+career.name.replace(" ", "-")}}" class="btn btn-lg"
+                                    <a href="{{ url_for('careers_page',career=career.name.replace(' ', '-'))}}" class="btn btn-lg"
                                         style="position: absolute;right: 0%;bottom: 0%;">
                                         <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
                                     </a>
-                                    <a href="{{university.name.replace(' ', '-')+'/career/'+career.name.replace(' ', '-')}}"
+                                    <a href="{{url_for('career_at_university_page',university=university.name.replace(' ', '-'),career=career.name.replace(' ', '-'))}}"
                                        style="position: absolute;left: 0%;bottom: 0%;" class="btn btn-lg">
                                         <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
                                     </a>
@@ -148,7 +150,6 @@
         </div>
 
     </div>
-</div>
 </div>
 
 

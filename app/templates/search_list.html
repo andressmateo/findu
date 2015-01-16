@@ -21,14 +21,14 @@
             	<ul class="list-group">
 				{% for university in items["u"] %}
 					<li class="list-group-item">
-						<a href="{{url_for("universities")+"/"+(university.name)|replace(" ", "-")}}">
+						<a href="{{url_for('universities_page', university=university.name.replace(' ', '-'))}}">
 	    					{{university.name}}
 	    				</a>
     				</li>
 				{% endfor %}
 				{% for university in items["o"] %}
 					<li class="list-group-item">
-						<a href="{{url_for("universities")+"/"+(university.name)|replace(" ", "-")}}">
+						<a href="{{url_for('universities_page', university=university.name.replace(' ', '-'))}}">
 	    					{{university.name}}*
 	    				</a>
     				</li>
@@ -52,7 +52,7 @@
             	<ul class="list-group">
 				{% for career in items["c"] %}
 					<li class="list-group-item">
-						<a href="{{url_for("careers")+"/"+(career.name)|replace(" ", "-")}}">
+						<a href="{{url_for('careers_page',career=career.name.replace(' ', '-'))}}">
 	    					{{career.name}}
 	    				</a>
     				</li>
@@ -76,7 +76,7 @@
             	<ul class="list-group">
 				{% for campus in items["s"] %}
 					<li class="list-group-item">
-						<a href="{{url_for('campus_page',university=(campus.university.name)|replace(' ', '-'),campus=(campus.campus_name)|replace(' ', '-'))}}">
+						<a href="{{url_for('campus_page',university=campus.university.name.replace(' ', '-'),campus=campus.campus_name.replace(' ', '-'))}}">
 	    					{{campus.campus_name}} de {{campus.university.name}}
 	    				</a>
     				</li>

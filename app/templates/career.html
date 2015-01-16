@@ -19,38 +19,57 @@
             </div>
             <h1>{{career.name}}</h1>
             <ul class="nav sections">
-                <li class="active"><a href="#overview">General</a>
+                <li class="active">
+                    <a href="#overview">General</a>
                 </li>
-                <li class=""><a href="#headquarters">{{career.places.all()|length }} Sedes</a>
+                <li>
+                    <a href="#universities">{{join_universities_from_campuses(career.places.all())|length}} Universidades</a>
                 </li>
-                <li class=""><a href="#comments">Commentarios</a>
+                <li>
+                    <a href="#headquarters">{{career.places.all()|length }} Sedes</a>
+                </li>
+                <li>
+                    <a href="#comments">Commentarios</a>
                 </li>
             </ul>
 
         </aside>
         <div class="container-fluid col-md-9">
             <div class="row" id="overview">
-                <div class="info col-md-8">
-                    <ul class="additional-stats list-inline">
-                        <li class="stat"><span>Lema</span> Lorem ipsum</li>
-                        <li class="stat"><span>Fundación</span>1989</li>
-                        <li class="stat"><span>Dirección</span>Carrera 49 N° 7 Sur - 50</li>
-                        <li class="stat"><span>Estudiantes</span>12.000</li>
-                        <li class="stat"><span>Rectorad</span>Alberto Uribe Correa</li>
-                        <li class="stat"><span>Sitio web</span><a href="http://www.eafit.edu.co/" target="_blank">eafit.edu.co</a>
-                        </li>
-                    </ul>
+                <div class="info col-md-12">
                     <div class="description">
-                        <p class="text-justify">
-                            {{career.description|safe}}
-                        </p>
+                        <blockquote>
+                            <p class="text-justify">
+                                {{career.description}}
+                            </p>
+                        </blockquote>
                     </div>
                 </div>
-                <div class="buttoms col-md-4">
-                    <button type="button" class="btn btn-lg btn-block btn-info">button</button>
-                    <button type="button" class="btn btn-lg btn-block btn-success">button</button>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">button</button>
+            </div>
+            <div id="universities" class="row">
+                <h2>Universidades<small> ¿Dónde Estudiar?</small></h2>
+                <div class="container-fluid">
+                    <div class="row">
+                    	{% for university in join_universities_from_campuses(career.places.all()) %}
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                        	<h3 class="text-center"><a href="{{url_for('universities_page', university=university.name.replace(' ','-'))}}">{{university.name}}</a></h3>
+                            <img src="{{if_none(university.background,'https://c2.staticflickr.com/6/5447/9286000388_7cb8ab30f4_b.jpg')}}" alt="Imagen de la Universidad" class="img-responsive"/>
+                            <p>{{university.description[:100]|safe}}..</p>
+                        </div>
+                        {% endfor%}
+                    </div>
                 </div>
+            </div>
+            <div class="row">
+                <h2>Sedes <small>¿En Qué Lugar Estudiar? </small></h2>
+                <ul class="sections list-inline text-justify">
+                {% for campus in career.places.all() %}
+                    <li class="active h2 text-center">
+                        <a style="color:rgba(0,0,0,0.7);" href="{{url_for('campus_page',university=campus.place.university.name.replace(' ', '-'),campus=campus.place.campus_name.replace(' ','-'))}}"><small>&#9899;{{campus.place.university.name}}:</small>
+                            <br/>{{campus.place.campus_name}}</a>
+                    </li>
+                {% endfor %}
+                </ul>
             </div>
             <div class="row" id="comments">
                 <h2>Commentarios</h2>
