@@ -3,13 +3,50 @@
 <script>
 athene.controller('addCareerCtrl', function ($scope, $modal, $http) {
 
+    $scope.knowledges = [];
+    $scope.selections = [];
+/*
+    $scope.look_for_knowledges = function () {
+    $http.get('/knowledge_area_json', {
+      params: {
+        method : 'POST',
+        question: $scope.knowledge_question,
+      }
+    }).then(function(response){
+          response.data.names.map(function(item){
+                $scope.knowledges.push(item.name);
+          }
+    });
+  };
+
+   $scope.look_for_knowledges();*/
+
+{% for knowledge in knowledges %}
+        $scope.knowledges.push('{{knowledge.name}}');
+{% endfor %}
+
+
+$scope.pushSelection = function (selection) {
+    $scope.selections.push(selection);
+    var index = $scope.knowledges.indexOf(selection)
+    $scope.knowledges.splice(index, 1);
+}
+
+$scope.pullSelection = function (selection) {
+    $scope.knowledges.push(selection);
+    var index = $scope.selections.indexOf(selection)
+    $scope.selections.splice(index, 1);
+}
+
   $scope.add = function () {
+  var jsonSelections = JSON.stringify($scope.selections);
     $http.get('/panel/add_career', {
       params: {
         method : 'POST',
         name: $scope.career_name,
         description: $scope.career_description,
         type: $scope.career_type,
+        knowledges: jsonSelections
       }
     }).then(function(response){
           $scope.openStatusModal(response.data);
@@ -69,21 +106,21 @@ athene.controller('addCareerCtrl', function ($scope, $modal, $http) {
 <h2 class="text-center" xmlns="">Record a new Career</h2>
 <form class="form-horizontal" role="form" action="" method="post" ng-controller="addCareerCtrl">
     <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Name</label>
+        <label for="inputName" class="col-sm-2 control-label">Name *</label>
         <div class="col-sm-9">
             <input name="name" type="name" class="form-control" id="inputName" ng-model="career_name"
                    placeholder="Career Name" required>
         </div>
     </div>
     <div class="form-group">
-        <label for="textareaDescription" class="col-sm-2 control-label">Description</label>
+        <label for="textareaDescription" class="col-sm-2 control-label">Description *</label>
         <div class="col-sm-9">
             <textarea name="description" id="textareaDescription" class="form-control" rows="3" ng-model="career_description"
                       placeholder="Career Description" required></textarea>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label">Type</label>
+        <label class="col-sm-2 control-label">Type *</label>
         <div class="col-sm-5">
             <label class="radio-inline">
               <input type="radio" name="type" id="inlineRadio1" ng-model="career_type" value="PREGRADO (Técnica)">PREGRADO (Técnica)
@@ -99,6 +136,38 @@ athene.controller('addCareerCtrl', function ($scope, $modal, $http) {
             <label class="radio-inline">
               <input type="radio" name="type" id="inlineRadio4" ng-model="career_type" value="POSGRADO">POSGRADO
             </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <label class="col-sm-2 control-label">Knowledge Areas</label>
+                <div class="col-sm-5">
+                    Please choose the knowledge areas related with the career <br/>
+                    <input type="text" class="form-control" ng-model="knowledge_question"
+                               placeholder="Search for some knowledge area"><br>
+                    <div style="width:100%; height:200px; overflow: scroll;">
+                        <ul class="list-group" >
+                                <li class="list-group-item" ng-repeat="k in knowledges | searchForKnowledges:knowledge_question">
+                                     <button type="button" class="btn btn-primary btn-xs" ng-click="pushSelection(k)">
+                                         <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{'{{k}}'}}
+                                </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    These are your selections <br/> <br/>
+                    <ul class="list-group" >
+                        <li class="list-group-item" ng-repeat="selection in selections">
+                            <button type="button" class="btn btn-danger btn-xs" ng-click="pullSelection(selection)">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            {{'{{selection}}'}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
     <div class="form-group">

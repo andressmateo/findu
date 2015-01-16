@@ -92,6 +92,19 @@ athene.controller('ModalInstanceCtrl', function ($scope, $modal, $modalInstance,
     });
   };
 
+$scope.deleteKnowledgeArea = function (id) {
+    $http.get('/panel/delete_knowledge_area', {
+      params: {
+        method : 'POST',
+        id: id,
+      }
+    }).then(function(response){
+          $scope.openStatusModal(response.data)
+          $modalInstance.close();
+    });
+};
+
+
   $scope.openStatusModal = function (status) {
     if(status=='0'){
       template = 'fail.html'
@@ -124,8 +137,29 @@ athene.controller('OkModalCtrl', function ($scope, $modalInstance, $http, $windo
       $window.location.href = "/panel/list_campus";
     }if(ref=='cat'){
       $window.location.href = "/panel/list_cat_university";
+    }if(ref=='know'){
+      $window.location.href = "/panel/list_knowledge_area";
     }
     $modalInstance.close();
   };
 
+});
+
+athene.filter('searchForKnowledges', function(){
+
+	return function(arr, knowledge_question){
+		if(!knowledge_question){
+			return arr;
+		}
+
+		var result = [];
+		knowledge_question = knowledge_question.toLowerCase();
+
+		angular.forEach(arr, function(item){
+			if(item.toLowerCase().indexOf(knowledge_question) !== -1){
+				result.push(item);
+			}
+		});
+		return result;
+	};
 });

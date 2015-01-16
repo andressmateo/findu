@@ -61,7 +61,7 @@ class University(db.Model):
 
 class KnowledgeArea(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    name = db.Column(db.String(200))
+    name = db.Column(db.String(200),unique=True)
     definition = db.Column(db.Text)
 
     def __init__(self, name, definition):
@@ -78,7 +78,6 @@ related = db.Table('related', db.metadata,
     db.Column('id_knowledge_area', db.Integer,db.ForeignKey('knowledge_area.id'))
 )
 
-
 class Career(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
     name = db.Column(db.String(200), unique=True)
@@ -87,7 +86,7 @@ class Career(db.Model):
     knowledge_areas = db.relationship("KnowledgeArea", secondary=related, backref=db.backref('careers', lazy='dynamic'))
     #places object, places.all()
 
-    def __init__(self, name, type, description,knowledge_areas=KnowledgeArea.query.filter_by(id=1)):
+    def __init__(self, name, type, description,knowledge_areas=None):
         self.name = name
         self.description = description
         self.type = type  # PREGRADO-POSGRADO-ETC
@@ -154,4 +153,3 @@ class CareerAtUniversity(db.Model):
 
     def __repr__(self):
         return "<CareerAtUniversity "+self.career.name+"@"+self.place.university.name+" >"
-

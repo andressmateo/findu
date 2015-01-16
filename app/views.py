@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 # -*- coding: latin-1 -*-
-from flask import render_template, redirect, session, url_for, request, jsonify
-from app import app, db, models, search
+from flask import render_template, redirect, session, url_for, request, json
+from app import app, db, models, search, json_tools
 import config
-
 
 #TEMPLATE FILTERS
 @app.template_global()
@@ -36,81 +35,6 @@ def check_log():
         return redirect(url_for("login"))
 
 
-def university_json():
-    result = models.University.query.all()
-    result_json = []
-    for university in result:
-        u = {
-            "id": university.id,
-            "name": university.name,
-            "description": university.description,
-            "logo": university.logo
-        }
-        result_json.append(u)
-    return jsonify(university=result_json)
-
-
-def names_json():
-    result = models.OtherName.query.all()
-    result_json = []
-    for o_name in result:
-        o = {
-            "name": o_name.name,
-            "university_id": o_name.university_id,
-            "university_name": o_name.university.name
-        }
-        result_json.append(o)
-    return jsonify(name=result_json)
-
-
-def campus_json():
-    result = models.UniversityHeadquarter.query.all()
-    result_json = []
-    for campus in result:
-        c = {
-            "name": campus.campus_name,
-            "university_id": campus.university_id,
-            "university_name": campus.university.name,
-            "lat": campus.lat,
-            "long": campus.long
-        }
-        result_json.append(c)
-    return jsonify(campus=result_json)
-
-
-def career_json():
-    result = models.Career.query.all()
-    result_json = []
-    for career in result:
-        c = {
-            "id": career.id,
-            "name": career.name,
-            "description": career.description,
-            "type": career.type
-        }
-        result_json.append(c)
-    return jsonify(career=result_json)
-
-
-def careeratuniversity_json():
-    result = models.CareerAtUniversity.query.all()
-    result_json = []
-    for careeru in result:
-        cu = {
-            "id": careeru.id,
-            "name": careeru.career.name,
-            "university": careeru.place.university.name,
-            "campus": careeru.place.campus_name,
-            "description": careeru.description,
-            "type": careeru.career.type,
-            "place_id": careeru.place.id,
-            "university_id": careeru.place.university.id,
-            "career_id": careeru.career.id
-        }
-        result_json.append(cu)
-    return jsonify(career=result_json)
-
-
 def select_university_data():
     result = models.University.query.all()
     data = []
@@ -123,7 +47,7 @@ def select_university_data():
     return data
 
 
-def select_carrer_data():
+def select_career_data():
     result = models.Career.query.all()
     data = []
     for career in result:
@@ -148,6 +72,17 @@ def select_place_data():
         data.append(dictionary)
     return data
 
+
+#CALLING JSON_TOOLS
+
+@app.route("/buscar_json", methods=['POST', 'GET'])
+def search_json():
+    if request.method == 'GET':
+        return json_tools.search_json(request.args.get("search"))
+
+@app.route("/knowledge_area_json", methods=['POST', 'GET'])
+def search_knowledge_area():
+    return json_tools.knowledge_area_json(if_none(request.args.get("question")))
 
 #VIEWS
 
@@ -177,37 +112,6 @@ def buscar_index():
         url = "/buscar/"+request.form['search']
         return redirect(url)
     return render_template("search.html", title=config.AppName)
-
-
-@app.route("/buscar_json", methods=['POST', 'GET'])
-def search_json():
-    if request.method == 'GET':
-        resultC = db.session.query(models.Career).filter(models.Career.name.ilike("%"+request.args.get("search")+"%"))
-        resultU = db.session.query(models.University).filter(models.University.name.ilike("%"+request.args.get("search")+"%"))
-        resultO = db.session.query(models.OtherName).filter(models.OtherName.name.ilike("%"+request.args.get("search")+"%"))
-        resultS = db.session.query(models.UniversityHeadquarter).filter(models.UniversityHeadquarter.campus_name.ilike("%"+request.args.get("search")+"%"))
-        result_json = []
-        for o_name in resultC:
-            o = {
-                "name": o_name.name,
-            }
-            result_json.append(o)
-        for o_name in resultU:
-            o = {
-                "name": o_name.name,
-            }
-            result_json.append(o)
-        for o_name in resultO:
-            o = {
-                "name": o_name.name,
-            }
-            result_json.append(o)
-        for o_name in resultS:
-            o = {
-                "name":o_name.university.name+ " - "+o_name.campus_name,
-            }
-            result_json.append(o)
-        return jsonify(names=result_json)
 
 
 @app.route("/buscar/<busqueda>")
@@ -290,6 +194,14 @@ def list_campus():
         campuses = db.session.query(models.UniversityHeadquarter).all()
         return render_template("list_campus.html", campuses = campuses)
 
+@app.route("/panel/list_knowledge_area")
+def list_knowledge_area():
+    if check_log():
+        return check_log()
+    else:
+        knowledges = db.session.query(models.KnowledgeArea).all()
+        return render_template("list_knowledge_area.html", knowledges = knowledges)
+
 
 @app.route("/panel/view_university/<university>")
 def view_university(university):
@@ -351,6 +263,16 @@ def view_cat_university(cat_university):
         return render_template("view_cat_university.html",cat_university=n[0], cats_university = cats_university)
 
 
+@app.route("/panel/view_knowledge_area/<knowledge_area>")
+def view_knowledge_area(knowledge_area):
+    if check_log():
+        return check_log()
+    else:
+        k = db.session.query(models.KnowledgeArea).filter_by(id = knowledge_area)
+        knowledges = db.session.query(models.KnowledgeArea).all()
+        return render_template("view_knowledge_area.html",knowledge=k[0],  knowledges = knowledges)
+
+
 @app.route("/panel/add_university", methods=['POST', 'GET'])
 def add_university():
     if check_log():
@@ -402,16 +324,20 @@ def add_career():
     else:
         if request.args.get("method") == 'POST':
             try:
+                k = json.loads(request.args.get("knowledges"))
+                names = list(k)
+                knowledges = db.session.query(models.KnowledgeArea).filter(models.KnowledgeArea.name.in_(names)).all()
                 career = models.Career(request.args.get("name").encode('utf-8'), request.args.get("type"),
-                                           request.args.get("description").encode('utf-8'))
+                                           request.args.get("description").encode('utf-8'),knowledges)
                 db.session.add(career)
                 db.session.commit()
                 return str(1)
             except:
                 return str(0)
         else:
+            knowledges = db.session.query(models.KnowledgeArea).all()
             careers = db.session.query(models.Career).all()
-            return render_template("form_career.html",careers=careers)
+            return render_template("form_career.html",careers=careers, knowledges = knowledges)
 
 
 @app.route("/panel/add_name", methods=['POST', 'GET'])
@@ -468,7 +394,22 @@ def add_cat_university():
         else:
             cats_university = db.session.query(models.CareerAtUniversity).all()
             return render_template("form_cat_university.html",cats_university=cats_university,places=select_place_data(),
-                                   careers=select_carrer_data())
+                                   careers=select_career_data())
+
+
+@app.route("/panel/add_knowledge_area", methods=['POST', 'GET'])
+def add_knowledge_area():
+    if check_log():
+        return check_log()
+    else:
+        if request.args.get("method") == 'POST':
+            k = models.KnowledgeArea(request.args.get("name").encode('utf-8'),request.args.get("definition").encode('utf-8'))
+            db.session.add(k)
+            db.session.commit()
+            return str(1)
+        else:
+            knowledges = db.session.query(models.KnowledgeArea).all()
+            return render_template("form_knowledge_area.html",knowledges=knowledges)
 
 
 @app.route("/panel/edit_university/<university>")
@@ -535,7 +476,9 @@ def edit_career(career):
     else:
         u = db.session.query(models.Career).filter_by(id = career)
         careers = db.session.query(models.Career).all()
-        return render_template("edit_career.html",career=u[0], careers = careers)
+        knowledges = db.session.query(models.KnowledgeArea).all()
+        return render_template("edit_career.html",career=u[0], careers = careers, knowledges = knowledges)
+        #return render_template("edit_career.html",career=u[0], careers = careers)
 
 
 @app.route("/panel/edit_career", methods=['POST', 'GET'])
@@ -544,6 +487,15 @@ def save_changes_career():
         return check_log()
     else:
         try:
+            k = json.loads(request.args.get("knowledges"))
+            names = list(k)
+            c = models.Career.query.filter_by(id=request.args.get("id")).first()
+            while(len(c.knowledge_areas)!=0):
+                for kw in c.knowledge_areas:
+                    c.knowledge_areas.remove(kw)
+            knowledges = db.session.query(models.KnowledgeArea).filter(models.KnowledgeArea.name.in_(names)).all()
+            for ka in knowledges:
+                c.knowledge_areas.insert(len(c.knowledge_areas),ka)
             models.Career.query.filter_by(id=request.args.get("id")).\
             update({models.Career.name: request.args.get("name").encode('utf-8'),
                     models.Career.description: request.args.get("description").encode('utf-8'),
@@ -588,7 +540,7 @@ def edit_cat_university(cat_university):
         u = db.session.query(models.CareerAtUniversity).filter_by(id = cat_university)
         cats_university = db.session.query(models.CareerAtUniversity).all()
         return render_template("edit_cat_university.html",cat_university=u[0],cats_university = cats_university,
-                               places=select_place_data(), careers=select_carrer_data())
+                               places=select_place_data(), careers=select_career_data())
 
 
 @app.route("/panel/edit_cat_university", methods=['POST', 'GET'])
@@ -599,6 +551,31 @@ def save_changes_cat_university():
         try:
             models.CareerAtUniversity.query.filter_by(id=request.args.get("id")).\
             update({models.CareerAtUniversity.description: request.args.get("description").encode('utf-8')}, synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+
+@app.route("/panel/edit_knowledge_area/<knowledge_area>")
+def edit_knowledge_area(knowledge_area):
+    if check_log():
+        return check_log()
+    else:
+        k = db.session.query(models.KnowledgeArea).filter_by(id = knowledge_area)
+        knowledges = db.session.query(models.KnowledgeArea).all()
+        return render_template("edit_knowledge_area.html",knowledge=k[0],knowledges = knowledges)
+
+
+@app.route("/panel/edit_knowledge_area", methods=['POST', 'GET'])
+def save_changes_knowledge_area():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            models.KnowledgeArea.query.filter_by(id=request.args.get("id")).\
+            update({models.KnowledgeArea.name: request.args.get("name").encode('utf-8'),
+                    models.KnowledgeArea.definition : request.args.get("definition").encode('utf-8')}, synchronize_session=False)
             db.session.commit()
             return str(1)
         except:
@@ -629,6 +606,10 @@ def panel_delete_career():
         return check_log()
     else:
         try:
+            c = models.Career.query.filter_by(id=request.args.get("id")).first()
+            while(len(c.knowledge_areas)!=0):
+                for kw in c.knowledge_areas:
+                    c.knowledge_areas.remove(kw)
             models.CareerAtUniversity.query.filter_by(career_id=request.args.get("id")).delete(synchronize_session=False)
             models.Career.query.filter_by(id=request.args.get("id")).delete(synchronize_session=False)
             db.session.commit()
@@ -658,6 +639,22 @@ def panel_delete_campus():
         try:
             models.CareerAtUniversity.query.filter_by(place_id=request.args.get("id")).delete(synchronize_session=False)
             models.UniversityHeadquarter.query.filter_by(id=request.args.get("id")).delete(synchronize_session=False)
+            db.session.commit()
+            return str(1)
+        except:
+            return str(0)
+
+
+@app.route("/panel/delete_knowledge_area", methods=['POST', 'GET'])
+def panel_delete_knowledge_area():
+    if check_log():
+        return check_log()
+    else:
+        try:
+            k = models.KnowledgeArea.query.filter_by(id=request.args.get("id")).first()
+            for c in k.careers:
+                c.knowledge_areas.remove(k)
+            models.KnowledgeArea.query.filter_by(id=request.args.get("id")).delete(synchronize_session=False)
             db.session.commit()
             return str(1)
         except:
@@ -771,15 +768,3 @@ def campus_page(university, campus):
         if campus.university.name == university:
             return render_template("campus.html", campus=campus)
     return redirect(url_for("404"))
-
-
-#TESTING TOOL
-@app.route("/test")
-def test():
-        u = models.Career.query.filter_by(name="Example").first()
-        k = models.KnowledgeArea.query.all()
-        return str("Name"+u.name+"<br>knowledges:"+u.knowledge_areas[2].name+","+u.knowledge_areas[1].name+
-        "<br><br>Name: "+k[2].careers[0].name)
-
-
-

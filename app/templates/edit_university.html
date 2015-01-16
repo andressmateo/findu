@@ -27,7 +27,7 @@ athene.controller('editUniversityCtrl', function ($scope, $modal, $http) {
     if($scope.university_established==''){
         $scope.university_established = -1;
     }
-    
+
     $http.get('/panel/edit_university', {
       params: {
         method : 'POST',
