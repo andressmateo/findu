@@ -4,13 +4,13 @@
 <br>
 <br>
 <br>
-<br>
 <ul class="list-group">
 {% for career in careers %}
     <li class="list-group-item">
-    <a href="{{url_for("careers")+"/"+(career.name)|replace(" ", "-")}}">
-    {{career.name}}
-    </a></li>
+        <a href="{{url_for('careers_page',career=career.name.replace(' ', '-'))}}">
+            {{career.name}}
+        </a>
+    </li>
 {% endfor %}
 </ul>
 

@@ -8,9 +8,10 @@
 <ul class="list-group">
 {% for university in universities %}
     <li class="list-group-item">
-    <a href="{{url_for("universities")+"/"+(university.name)|replace(" ", "-")}}">
-    {{university.name}}
-    </a></li>
+        <a href="{{url_for('universities_page',university=university.name.replace(' ', '-'))}}">
+            {{university.name}}
+        </a>
+    </li>
 {% endfor %}
 </ul>
 

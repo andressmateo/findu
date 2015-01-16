@@ -24,6 +24,9 @@ def join_campus(university):
             careers.append(cu.career)
     return list(set(careers))
 
+@app.template_global()
+def join_universities_from_campuses(campuses):
+    return list(set([x.place.university for x in campuses]))
 
 @app.template_global()
 def flat_text(word):
@@ -704,17 +707,17 @@ def list_careeratuniversity():
 """
 
 
-@app.route("/universities")
+@app.route("/universidades")
 def universities():
     return render_template("universities.html", universities=models.University.query.all())
 
 
-@app.route("/careers")
+@app.route("/carreras")
 def careers():
     return render_template("careers.html", careers=models.Career.query.all())
 
 
-@app.route("/universities/<university>")
+@app.route("/universidades/<university>")
 def universities_page(university):
     if " " in university:
         university = university.replace("-", " ")
@@ -729,7 +732,7 @@ def universities_page(university):
         return render_template("university.html", university=u[0])
 
 
-@app.route("/careers/<career>")
+@app.route("/carreras/<career>")
 def careers_page(career):
     if " " in career:
         career = career.replace("-", " ")
@@ -742,7 +745,7 @@ def careers_page(career):
         return render_template("career.html", career=c[0])
 
 
-@app.route("/universities/<university>/career/<career>")
+@app.route("/universidades/<university>/carreras/<career>")
 def career_at_university_page(university, career):
     if " " in career or " " in university:
         university = university.replace("-", " ")
@@ -759,7 +762,7 @@ def career_at_university_page(university, career):
     return render_template("career_at_university.html", careers=s)
 
 
-@app.route("/universities/<university>/campus/<campus>")
+@app.route("/universidades/<university>/sedes/<campus>")
 def campus_page(university, campus):
     if " " in university or " " in campus:
         university = university.replace("-", " ")
