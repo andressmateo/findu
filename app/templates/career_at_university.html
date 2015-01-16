@@ -15,17 +15,27 @@
     <div class="row">
         <aside id="left" class="col-md-3">
             <div class="logo_university" style="position: relative;margin-top: -130px;">
-                <img src="{{careers[0].place.university.logo}}" alt="Logo" class="img-responsive img-circle" style="background-color:rgba(255,255,255,0.1);" />
+                <img src="{{careers[0].place.university.logo}}" alt="Logo" class="img-responsive img-thumbnail" style="background-color:rgba(255,255,255,0.1);" />
             </div>
         </aside>
         <div class="container-fluid col-md-9">
-            <h1>Hay {{careers|length}} lugare(s) en {{careers[0].place.university.name}} donde puedes estudiar
-            {{careers[0].career.name}}</h1>
-            <ul class="nav sections">
-            	{% for career in careers %}
-                <li class="active"><a href="#overview">{{career.place.campus_name}}</a></li>
-            	{% endfor %}
-            </ul>
+            <h1>{{careers[0].place.university.name}}<small> {{careers[0].career.name}}</small></h1>
+            <p class="lead">Hay {{careers|length}} lugares donde puedes estudiar
+            {{careers[0].career.name}} en {{careers[0].place.university.name}} </p>
+            {% for career in careers %}
+            <blockquote>
+                <p>{{career.description}}</p>
+                <footer style="background:transparent;border:0px;">En <cite title="Source Title">{{career.place.campus_name}}</cite></footer>
+            </blockquote>
+            {% endfor %}
+            <div class="row">
+                <h2>Lugares</h2>
+                <ul class="sections list-inline text-justify">
+                    {% for career in careers %}
+                    <li class="active h2"><a style="color:rgba(0,0,0,0.7);" href="../../{{career.place.university.name.replace(' ', '-')}}/campus/{{career.place.campus_name.replace(' ','-')}}">{{career.place.campus_name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 </div>

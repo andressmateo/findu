@@ -18,13 +18,19 @@
     <div class="row">
         <aside id="left" class="col-md-3">
             <div class="logo_university" style="position: relative;margin-top: -100px;">
-                <img src="{{campus.university.logo}}" alt="Logo - {{campus.name}}" class="img-responsive img-thumbnail" />
+                <img src="{{campus.university.logo}}" alt="Logo" class="img-responsive img-thumbnail" />
             </div>
-            <h2>{{campus.university.name}}</h2>
         </aside>
         <div class="container-fluid col-md-9">
             <div class="row" id="overview">
-                <h1>{{campus.campus_name}}</h1>
+                <h1>{{campus.university.name}}<small> {{campus.campus_name}}</small></h1>
+            </div>
+            <div class="row" id="careers">
+                <ul class="sections list-inline text-justify">
+                    {% for career in campus.careers %}
+                    <li class="active h2"><a style="color:rgba(0,0,0,0.7);" href="../../{{campus.university.name.replace(' ', '-')}}/career/{{career.career.name.replace(' ','-')}}">{{career.career.name}}</a></li>
+                    {% endfor %}
+                </ul>
             </div>
             <div class="row" id="comments">
                 <h2>Commentarios</h2>
