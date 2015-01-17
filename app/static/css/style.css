@@ -129,7 +129,7 @@ bottom: 0;
 #frame > div > div.col-xs-12.col-sm-12.col-md-9.col-lg-9{
 	padding: 0;
 }
-#frame > div > div.col-xs-12.col-sm-12.col-md-9.col-lg-9 > div > div > div > a > div > div > div > div.titles{
+#frame > div > div > div > div > div > a > div > div > div > div.titles{
 	position: absolute;
 	bottom: 0;
 	left: 1.5em
