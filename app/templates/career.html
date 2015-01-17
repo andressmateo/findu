@@ -1,23 +1,13 @@
 {% set active_page = "career_page" %}
 {% extends "base.html" %}
 {% block body %}
-<section style="background-image: url(http://placekitten.com/g/1280/720)" class="size-four-one">
-    <div class="size-fully">
-        <div class="shadow-left visible-xs-block"></div>
-        <div class="shadow-right visible-xs-block"></div>
-        <div class="shadow hidden-xs"></div>
-        <div class="container" id="index-cover-text">
-
-        </div>
-    </div>
-</section>
-<div class="container">
+<div class="container" style="padding-top:50px;">
     <div class="row">
-        <aside id="left" class="col-md-3">
-            <div class="logo_university" style="position: relative;margin-top: -130px;">
-                <img src="https://cdn4.iconfinder.com/data/icons/medical-9/512/DNA-512.png" alt="Logo - {{career.name}}" class="img-responsive img-circle" style="background-color:rgba(255,255,255,0.1);" />
+        <aside id="left" class="col-md-3" style="padding-top:30px;">
+            <div>
+                <img src="{{if_none(career.icon,'//cdn0.iconfinder.com/data/icons/customicondesignoffice5/256/examples.png')}}" alt="Logo" class="img-responsive"/>
             </div>
-            <h1>{{career.name}}</h1>
+            <h1 class="text-center">{{career.name}}</h1>
             <ul class="nav sections">
                 <li class="active">
                     <a href="#overview">General</a>
@@ -26,7 +16,7 @@
                     <a href="#universities">{{join_universities_from_campuses(career.places.all())|length}} Universidades</a>
                 </li>
                 <li>
-                    <a href="#headquarters">{{career.places.all()|length }} Sedes</a>
+                    <a href="#campuses">{{career.places.all()|length }} Sedes</a>
                 </li>
                 <li>
                     <a href="#comments">Commentarios</a>
@@ -35,6 +25,10 @@
 
         </aside>
         <div class="container-fluid col-md-9">
+            <section style="background-image: url({{if_none(career.background,'http://placekitten.com/g/1366/768')}})" class="size-four-one">
+                <div class="size-fully">
+                </div>
+            </section>
             <div class="row" id="overview">
                 <div class="info col-md-12">
                     <div class="description">
@@ -60,7 +54,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div id="campuses" class="row">
                 <h2>Sedes <small>¿En Qué Lugar Estudiar? </small></h2>
                 <ul class="sections list-inline text-justify">
                 {% for campus in career.places.all() %}

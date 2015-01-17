@@ -80,9 +80,11 @@
                         <li class="stat"><span class="text-stats">Lema</span>{{ if_none(university.motto,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
                     </ul>
                     <div class="description">
-                        <p class="text-justify">
-                            {{(university.description)|safe}}
-                        </p>
+                        <blockquote>
+                            <p class="text-justify">
+                                {{(university.description)|safe}}
+                            </p>
+                        </blockquote>
                     </div>
                 </div>
                 <div class="buttoms col-md-4">
@@ -119,7 +121,7 @@
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                             <div class="size-one-one">
                                 <div class="size-fully"
-                                     style="background:url(https://cdn4.iconfinder.com/data/icons/medical-9/512/DNA-256.png);">
+                                     style="background:url({{if_none(career.icon,'https://cdn4.iconfinder.com/data/icons/medical-9/512/DNA-256.png')}});">
                                     <a href="{{ url_for('careers_page',career=career.name.replace(' ', '-'))}}" class="btn btn-lg"
                                         style="position: absolute;right: 0%;bottom: 0%;">
                                         <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>

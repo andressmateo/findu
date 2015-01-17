@@ -1,87 +1,133 @@
-{% set active_page = "results" %} {% extends "base.html" %}{% block body %}
-<br/>
-<br/>
-<br/>
+{% set active_page = "results" %} {% extends "base.html" %}
+{% block head %}
 <style>
-	
+    body{
+        background-color: #e5e5e5;
+    }
+    #accordion > div > a{
+        color:rgba(0,0,0,0.5);
+        font-size:2em;
+        font-weight: 100;
+    }
+    #accordion > div{
+        margin-top:2em;
+        margin-bottom:1em;
+    }
+    #accordion > div > a:hover{
+        text-decoration: none;
+    }
+    div.titles {
+        position: absolute;
+        bottom: 0;
+        left: 1.5em;
+    }
 </style>
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    <div class="list-group-item">
-        <div class="panel-heading" role="tab" id="headingOne">
-            <h4 class="panel-title">
-        <span class="badge">{{items["u"]|length+items["o"]|length}}</span>
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Universidades
-        </a>
-        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-      </h4>
-        </div>
-        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-            <div class="panel-body">
-            	<ul class="list-group">
-				{% for university in items["u"] %}
-					<li class="list-group-item">
-						<a href="{{url_for('universities_page', university=university.name.replace(' ', '-'))}}">
-	    					{{university.name}}
-	    				</a>
-    				</li>
-				{% endfor %}
-				{% for university in items["o"] %}
-					<li class="list-group-item">
-						<a href="{{url_for('universities_page', university=university.name.replace(' ', '-'))}}">
-	    					{{university.name}}*
-	    				</a>
-    				</li>
-				{% endfor %}
-				</ul>
+{% endblock %}
+{% block body %}
+<div id="search-list" style="padding-top:50px;">
+    <div class="container-fluid" style="padding:0;">
+        <div class="row" style="background:white;color: #737373;">
+            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2">
+
+            </div>
+            <div class="col-xs-11 col-sm-11 col-md-10 col-lg-10">
+                <h1 class="h3" style="margin-top: 10px;margin-bottom: 10px;">
+                    Resultados de la busqueda &#123;{{items["word"]}}&#125;
+                </h1>
             </div>
         </div>
-    </div>
-    <div class="list-group-item">
-        <div class="panel-heading" role="tab" id="headingTwo">
-            <h4 class="panel-title">
-        <span class="badge">{{items["c"]|length}}</span>
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          Carreras
-        </a>
-        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-      </h4>
-        </div>
-        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-            <div class="panel-body">
-            	<ul class="list-group">
-				{% for career in items["c"] %}
-					<li class="list-group-item">
-						<a href="{{url_for('careers_page',career=career.name.replace(' ', '-'))}}">
-	    					{{career.name}}
-	    				</a>
-    				</li>
-				{% endfor %}
-				</ul>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                <ul class="nav sections">
+                    <li class="">
+                        <a href="#universities">
+                            Universidades
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#careers">
+                            Carreras
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#campuses">
+                            Sedes
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </div>
-    </div>
-    <div class="list-group-item">
-        <div class="panel-heading" role="tab" id="headingThree">
-            <h4 class="panel-title">
-        <span class="badge">{{items["s"]|length}}</span>
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-          Sedes
-        </a>
-        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-      </h4>
-        </div>
-        <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-            <div class="panel-body">
-            	<ul class="list-group">
-				{% for campus in items["s"] %}
-					<li class="list-group-item">
-						<a href="{{url_for('campus_page',university=campus.university.name.replace(' ', '-'),campus=campus.campus_name.replace(' ', '-'))}}">
-	    					{{campus.campus_name}} de {{campus.university.name}}
-	    				</a>
-    				</li>
-				{% endfor %}
-				</ul>
+            <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="container-fluid">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#universities" aria-expanded="true" aria-controls="universities">
+                            {{items["u"]|length+items["o"]|length}} Universidades
+                        </a>
+                        <div id="universities" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" class="row">
+                            {% for university in items["u"]+items["o"] %}
+                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" style="padding:0;">
+                                    <a href="{{url_for('universities_page', university=university.name.replace(' ', '-'))}}">
+                                    <div style="background:white;margin:5px;padding:10px;">
+                                    <div class="size-sixteen-nine">
+                                        <div class="size-fully list-image-bg" style="background:url({{if_none(university.background,'http://placekitten.com/g/1280/720')}});">
+                                            <div class="titles">
+                                                <h3 style="color:white;" class="text-center">{{university.name}}</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#careers" aria-expanded="true" aria-controls="careers">
+                            {{items["c"]|length}} Carreras
+                        </a>
+                        <div id="careers" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                            {% for career in items["c"] %}
+                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" style="padding:0;">
+                                <a href="{{url_for('careers_page',career=career.name.replace(' ', '-'))}}">
+                                    <div style="background:white;margin:5px;padding:10px;">
+                                    <div class="size-one-one">
+                                        <div class="size-fully list-image-bg" style="background:url({{if_none(career.icon,'//cdn0.iconfinder.com/data/icons/customicondesignoffice5/256/examples.png')}});">
+                                            <div class="titles">
+                                                <h3 style="color:white;" class="text-center">{{career.name}}</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#campuses" aria-expanded="true" aria-controls="campuses">
+                            {{items["s"]|length}} Sedes
+                        </a>
+                        <div id="campuses" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+                            {% for campus in items["s"] %}
+                            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4" style="padding:0;">
+                                <a href="{{url_for('campus_page',university=campus.university.name.replace(' ', '-'),campus=campus.campus_name.replace(' ', '-'))}}">
+                                    <div style="background:white;margin:5px;padding:10px;">
+                                    <div class="size-four-one">
+                                        <div class="size-fully list-image-bg" style="background:url({{if_none(campus.background,'//www.udea.edu.co/portal/pls/portal/docs/1/606776.JPG')}});">
+                                            <div class="titles">
+                                                <h3 style="color:white;" class="text-center">{{campus.campus_name}}<br/><small>{{campus.university.name}}</small></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <iframe width="100%" frameborder="0" style="pointer-events:none; border:0"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDu6jZ0QqCMctO8SY4n-JfCqmLbtL5knjc
+                            &q={{ campus.lat }},{{ campus.long }}"></iframe>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

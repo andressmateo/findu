@@ -122,6 +122,7 @@ def buscar(busqueda):
     query = search.search(busqueda)
     repeated = set(query["u"]).intersection(set([x.university for x in query["o"]]))
     query["o"] = list(set([x.university for x in query["o"]]).difference(repeated))
+    query["word"] = busqueda
     return render_template("search_list.html", items=query)
 
 @app.route("/contacto")
