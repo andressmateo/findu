@@ -15,7 +15,7 @@ athene.controller('TypeaheadCtrl', function($scope, $http) {
     });
   };
 
-  });
+});
 
 athene.controller('ModalDemoCtrl', function ($scope, $modal) {
 

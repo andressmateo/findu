@@ -99,7 +99,7 @@ def search_json(search):
             result_json.append(o)
         for o_name in resultS:
             o = {
-                "name":o_name.university.name+ " - "+o_name.campus_name,
+                "name": o_name.campus_name,
             }
             result_json.append(o)
         return jsonify(names=result_json)
