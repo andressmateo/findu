@@ -1,7 +1,24 @@
 {% set active_page = "university_page" %}
 {% extends "base.html" %}
+{% block head %}
+<link href="//cdn.jsdelivr.net/bxslider/4.1.1/jquery.bxslider.css" rel="stylesheet" />
+<style type="text/css">
+    body > section > div > div > div.bx-viewport{
+        border:0 !important;
+        left:0 !important;
+    }
+    body > section > div > div > div.bx-viewport > ul > li > div > div{
+        box-shadow:none;
+        background-position: center center !important;
+    }
+    #headquarters > div > div > div.bx-viewport > div > div > div > span{
+        font-size:2em;
+    
+    }
+</style>
+{% endblock %}
 {% block body %}
-<section style="background-image: url({{ if_none(university.background,'http://placekitten.com/g/1280/720') }})" class="size-four-one">
+<section style="background-image: url({{ if_none(university.background,'http://placekitten.com/g/1280/720') }})" class="size-twentyone-nine">
     <div class="size-fully" id="cover-university">
         <div id="cover-title">
             <div class="container">
@@ -66,12 +83,66 @@
                     </a>
                 </li>
             </ul>
-            <br/><br/>
-            <!-- Twitter Frame -->
+            <br/>
+            <h2>Social</h2>
+            <div id="social" class="text-justify">
+                {% if university.facebook %}
+                <a href="https://www.facebook.com/{{university.facebook}}" target="_blank">
+                    <img src="http://static.tumblr.com/a81sjwi/FYfnihx68/facebook-square.svg" width="23%" alt="Logotipo Facebook" style="background:#3b5998;margin-bottom:6px;"/>
+                </a>
+                {% endif %}
+                {% if university.twitter %}
+                <a href="https://" target="_blank">
+                    <img src="http://static.tumblr.com/a81sjwi/crbnihxal/twitter.svg" width="23%" alt="Logotipo Twitter" style="background:#55acee;margin-bottom:6px;"/>
+                </a>
+                {% endif %}
+                {% if False %}
+                <a href="https://" target="_blank">
+                    <img src="http://static.tumblr.com/a81sjwi/MWBnihx7h/googleplus-square.svg" width="23%" alt="Logotipo Google+" style="background:#dd4b39;margin-bottom:6px;"/>
+                </a>
+                {% endif %}
+                {% if False %}
+                <a href="https://" target="_blank">
+                    <img src="http://static.tumblr.com/a81sjwi/Hx2nihx9a/instagram.svg" width="23%" alt="Logotipo Instagram" style="background:#3f729b;margin-bottom:6px;"/>
+                </a>
+                {% endif %}
+                {% if False %}
+                <a href="https://" target="_blank">
+                    <img src="http://static.tumblr.com/a81sjwi/ar0nihxa1/youtube.svg" width="23%" alt="Logotipo Youtube" style="background:#e52d27;margin-bottom:6px;"/>
+                </a>
+                {% endif %}
+                {% if False %}
+                <a href="https://" target="_blank">
+                    <img src="http://static.tumblr.com/a81sjwi/cebnihx6r/flickr.svg" width="23%" alt="Logotipo Flickr" style="background:#ff0084;margin-bottom:6px;"/>
+                </a>
+                {% endif %}
+                {% if False %}
+                <a href="https://" target="_blank">
+                    <img src="http://static.tumblr.com/a81sjwi/kfhnihxdi/vimeo.svg" width="23%" alt="Logotipo Vimeo" style="background:#1ab7ea;margin-bottom:6px;"/>
+                </a>
+                {% endif %}
+                {% if False %}
+                <a href="https://" target="_blank">
+                    <img src="http://static.tumblr.com/a81sjwi/hQqnihxet/rss-feed.svg" width="23%" alt="RSS Feed" style="background:#f86f09;margin-bottom:6px;"/>
+                </a>
+                {% endif %}
+                {% if False %}
+                <a href="https://" target="_blank">
+                    <img src="http://static.tumblr.com/a81sjwi/P5Cnihxk1/mail.svg" width="23%" alt="Sent an email" style="background:#00405d;margin-bottom:6px;"/>
+                </a>
+                {% endif %}
+            </div>
+            <div class="buttoms">
+                {% if if_none(university.facebook,False) %}
+                <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2F{{university.facebook}}&amp;width&amp;height=558&amp;colorscheme=light&amp;show_faces=true&amp;header=false&amp;stream=true&amp;show_border=false&amp;appId=211595795571701" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:558px;" allowTransparency="true"></iframe>
+                {% else %}
+                How can i put here...?
+                {% endif %}
+            </div>            <!-- Twitter Frame -->
         </aside>
         <div class="container-fluid col-md-9">
             <div class="row" id="overview">
-                <div class="info col-md-8">
+                <div class="info col-md-12">
                     <ul class="additional-stats list-inline">
                         <li class="stat"><span class="text-stats">Fundación</span>{{ if_none(university.established,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
                         <li class="stat"><span class="text-stats">Dirección</span>{{ if_none(university.address,'<a type="button" class="btn btn-danger btn-xs disabled">No Ingresado</a>')|safe }}</li>
@@ -87,26 +158,25 @@
                         </blockquote>
                     </div>
                 </div>
-                <div class="buttoms col-md-4">
-                    {% if if_none(university.facebook,False) %}
-                    <iframe style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; WIDTH: 100%; HEIGHT: 380px; OVERFLOW: hidden; BORDER-TOP: medium none; BORDER-RIGHT: medium none" src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2F{{university.facebook}}&amp;width=280&amp;height=395&amp;show_faces=false&amp;colorscheme=light&amp;stream=true&amp;show_border=false&amp;header=false&amp;appId=391548297617137" frameborder="0" allowtransparency="" scrolling="no"></iframe>
-                    {% else %}
-                    How can i put here...?
-                    {% endif %}
-                </div>
             </div>
             <div class="row" id="headquarters">
                 <h2>Sedes</h2>
                 <div class="container-fluid">
-                    <div class="row">
+                    <div class="sedes">
                     {% for place in university.places.all() %}
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="slide">
                             <a href="{{url_for('campus_page',university=university.name.replace(' ', '-'),
                             campus=place.campus_name.replace(' ', '-'))}}">
-                            <iframe width="100%" frameborder="0" style="pointer-events:none; border:0"
-                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDu6jZ0QqCMctO8SY4n-JfCqmLbtL5knjc
-                            &q={{ place.lat }},{{ place.long }}"></iframe>
-                            <h3 class="text-center">{{ place.campus_name }}</h3>
+                                <div class="size-sixteen-nine">
+                                    <div class="size-fully list-image-bg" style="background:url({{if_none(place.background,'http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-116915.jpg')}});box-shadow:none;">
+                                        <div style="border-radius:50%;position:absolute;z-index:10;height: 200px;width: 200px;overflow:hidden;opacity:0.9;right:1em;bottom:1em;">
+                                            <iframe  width="100%" height="100%"frameborder="0" style="pointer-events:none; border:0;position:absolute;z-index:9;"
+                                                     src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDu6jZ0QqCMctO8SY4n-JfCqmLbtL5knjc
+                                                    &q={{ place.lat }},{{ place.long }}"></iframe>
+                                        </div>
+                                        <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGP6zwAAAgcBApocMXEAAAAASUVORK5CYII=' title="{{place.campus_name}}"/>
+                                    </div>
+                                </div>
                             </a>
                         </div>
                     {% endfor %}
@@ -153,6 +223,18 @@
 
     </div>
 </div>
-
-
+{% endblock %}
+{% block scripts %}
+<script src="//cdn.jsdelivr.net/bxslider/4.1.1/jquery.bxslider.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('.sedes').bxSlider({
+        minSlides: 1,
+        maxSlides: 1,
+        moveSlides: 1,
+        captions:true,
+        auto:true,
+    });
+});
+</script>
 {% endblock %}

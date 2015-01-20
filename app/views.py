@@ -3,6 +3,7 @@
 from flask import render_template, redirect, session, url_for, request, json
 from app import app, db, models, search, json_tools
 import config
+import random
 
 #TEMPLATE FILTERS
 @app.template_global()
@@ -707,12 +708,16 @@ def list_careeratuniversity():
 
 @app.route("/universidades")
 def universities():
-    return render_template("universities.html", universities=models.University.query.all())
+    retvar = models.University.query.all()
+    random.shuffle(retvar)
+    return render_template("universities.html", universities=retvar)
 
 
 @app.route("/carreras")
 def careers():
-    return render_template("careers.html", careers=models.Career.query.all())
+    retvar = models.Career.query.all()
+    random.shuffle(retvar)
+    return render_template("careers.html", careers=retvar)
 
 
 @app.route("/universidades/<university>")
