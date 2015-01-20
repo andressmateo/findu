@@ -26,7 +26,7 @@ class University(db.Model):
     #News
     motto = db.Column(db.Text)
     established = db.Column(db.Integer)
-    type = db.Column(db.String(100)) # privada - publica.
+    type = db.Column(db.String(100))  # privada - publica.
     principal = db.Column(db.String(200))
     students = db.Column(db.Integer)
     web_site = db.Column(db.Text)
@@ -61,7 +61,7 @@ class University(db.Model):
 
 class KnowledgeArea(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    name = db.Column(db.String(200),unique=True)
+    name = db.Column(db.String(200), unique=True)
     definition = db.Column(db.Text)
 
     def __init__(self, name, definition):
@@ -75,7 +75,7 @@ class KnowledgeArea(db.Model):
 
 related = db.Table('related', db.metadata,
     db.Column('id_career', db.Integer, db.ForeignKey('career.id')),
-    db.Column('id_knowledge_area', db.Integer,db.ForeignKey('knowledge_area.id'))
+    db.Column('id_knowledge_area', db.Integer, db.ForeignKey('knowledge_area.id'))
 )
 
 
@@ -112,6 +112,8 @@ class UniversityHeadquarter(db.Model):
     university_id = db.Column(db.Integer, db.ForeignKey('university.id'))
     university = db.relationship('University', backref=db.backref('places', lazy='dynamic'))
     background = db.Column(db.Text)
+    #images object, images.all()
+
     def __init__(self, campus_name, lat, long, university, background=""):
         self.lat = lat
         self.long = long
@@ -158,3 +160,25 @@ class CareerAtUniversity(db.Model):
 
     def __repr__(self):
         return "<CareerAtUniversity "+self.career.name+"@"+self.place.university.name+" >"
+
+
+class ImageCampus(db.Model):
+    src = db.Column(db.Text, unique=True, primary_key=True)
+    title = db.Column(db.Text)
+    alt = db.Column(db.Text)
+    description = db.Column(db.Text)
+    source = db.Column(db.Text)
+    campus_id = db.Column(db.Integer, db.ForeignKey('universityheadquarter.id'))
+    campus = db.relationship('UniversityHeadquarter', backref=db.backref('images', lazy='dynamic'))
+
+    def __init__(self, campus, src, title="", alt="Image", description="", source=""):
+        self.campus = campus
+        self.src = src
+        self.title = title
+        self.alt = alt
+        self.description = description
+        self.source = source
+        print "Image Added: "+self.__repr__()
+
+    def __repr__(self):
+        return "<Image of "+self.campus.campus_name+" @"+self.src+" >"
