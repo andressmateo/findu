@@ -432,7 +432,7 @@ def save_changes_university():
     if check_log():
         return check_log()
     else:
-
+        try:
             name = request.args.get("name")
             description = request.args.get("description")
             logo = request.args.get("logo")
@@ -471,7 +471,8 @@ def save_changes_university():
                     models.University.facebook : facebook, models.University.twitter : twitter}, synchronize_session=False)
             db.session.commit()
             return str(1)
-
+        except:
+            return str(0)
 
 
 @app.route("/panel/edit_career/<career>")
