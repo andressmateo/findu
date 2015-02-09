@@ -1,6 +1,7 @@
 from flask import  jsonify
 from app import app, db, models, search
 
+
 def university_json():
     result = models.University.query.all()
     result_json = []
@@ -9,7 +10,11 @@ def university_json():
             "id": university.id,
             "name": university.name,
             "description": university.description,
-            "logo": university.logo
+            "logo": university.logo,
+            "accredited": university.accredited,
+            "name_url" : university.name.replace(' ','-'),
+            "background": university.background,
+            "type": university.type
         }
         result_json.append(u)
     return jsonify(university=result_json)

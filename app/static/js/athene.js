@@ -151,15 +151,53 @@ athene.filter('searchForKnowledges', function(){
 		if(!knowledge_question){
 			return arr;
 		}
-
 		var result = [];
 		knowledge_question = knowledge_question.toLowerCase();
-
 		angular.forEach(arr, function(item){
 			if(item.toLowerCase().indexOf(knowledge_question) !== -1){
 				result.push(item);
 			}
 		});
 		return result;
+	};
+});
+
+athene.filter('isAccredited', function(){
+
+	return function(arr, accredited){
+		if(!accredited){
+			return arr;
+		}
+		var result = [];
+        if(accredited == '1'){
+            angular.forEach(arr, function(item){
+                if(item.accredited){
+                    result.push(item);
+                }
+            });
+            return result;
+        }
+	};
+});
+
+athene.filter('type', function(){
+
+	return function(arr, type){
+		if(!type){
+			return arr;
+		}
+		var result = [];
+
+        angular.forEach(arr, function(item){
+            if(item.type == type){
+                result.push(item);
+            }else if(item.type == type){
+                result.push(item);
+            }else if(item.type == type){
+                result.push(item);
+            }
+        });
+        return result;
+
 	};
 });

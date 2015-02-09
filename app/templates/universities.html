@@ -8,7 +8,20 @@
 </style>
 {% endblock %}
 {% block body %}
-<div id="frame" class="container-fluid">
+<script>
+    athene.controller('getUniversitiesCtrl', function ($scope, $http) {
+
+    $http.get('/search_for_universities', {
+      params: {
+        method : 'POST',
+      }
+    }).then(function(response){
+          $scope.universities = response.data.university;
+    });
+
+    });
+</script>
+<div id="frame" class="container-fluid" ng-controller="getUniversitiesCtrl">
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3" style="box-sizing: border-box;">
         <div class="sidenav">
@@ -18,11 +31,31 @@
             <h2 class="h5 text-center" style="padding:0.25em;color:rgba(255,255,255,0.4);">
                 Tenemos <b>{{universities|length}}</b> universidades de las que puedes consultar información
             </h2>
+            <div class="col-lg-12 col-sm-12">
+                <h4 style="color:white;">
+                    Filtrar por:
+                </h4>
+            </div>
+            <div class="col-lg-11 col-sm-4 col-sm-offset-1">
+                <input type="checkbox" ng-model="accredited" ng-true-value="1"/> <label style="color:rgba(255,255,255,1);"> Acreditada</label>
+            </div>
+            <div class="col-lg-11 col-lg-offset-1 col-sm-4">
+                <b><h5 style="color:white;">Tipo</h5></b>
+                <div class="col-lg-11 col-lg-offset-1">
+                    <input type="radio" name="type" ng-model="type" value="PUBLIC"/>
+                        <label style="color:white;"> Pública</label> <br/>
+                    <input type="radio" name="type" ng-model="type" value="PRIVATE" />
+                        <label style="color:white;"> Privada</label> <br/>
+                    <input type="radio" name="type" ng-model="type" value="SEMI-PUBLIC"/>
+                        <label style="color:white;"> Semi-privada</label>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" style="box-sizing: border-box;">
         <div class="container-fluid">
         <div class="row" style="border-left: solid 1px #2d2d2d;">
+        <!--
         {% for university in universities[:2] %}
             <div class="col-md-6">
                 <a href="{{url_for('universities_page',university=university.name.replace(' ','-'))}}">
@@ -41,7 +74,8 @@
                     <span class="glyphicon glyphicon-heart" aria-hidden="true" style="float:right;color:#f44336;"></span>                </div>
             </div>
         {% endfor %}
-        {% for university in universities[2:] %}
+
+        {% for university in universities %}
             <div class="col-md-4">
                 <a href="{{url_for('universities_page',university=university.name.replace(' ','-'))}}">
                     <div class="fanart">
@@ -60,6 +94,24 @@
                 </div>
             </div>
         {% endfor %}
+        -->
+            <div class="col-md-4" ng-repeat="u in universities | isAccredited:accredited | type:type">
+                <a href="/universidades/{{'{{u.name_url}}'}}">
+                    <div class="fanart">
+                        <div class="size-sixteen-nine">
+                            <div class="size-fully list-image-bg" style="background:url({{'{{u.background}}'}})">
+                                <div class="titles">
+                                    <h3>{{'{{u.name}}'}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div class="list-university-icons">
+                    <span class="glyphicon glyphicon-resize-full" aria-hidden="true" style="color:#2196f3;"></span>
+                    <span class="glyphicon glyphicon-heart" aria-hidden="true" style="float:right;color:#f44336;"></span>
+                </div>
+            </div>
         </div>
         </div>
     </div>
