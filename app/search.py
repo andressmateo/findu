@@ -22,7 +22,8 @@ def search(question, param="all"):
         "u": [],
         "c": [],
         "s": [],
-        "o": []
+        "o": [],
+        "k": []
     }
     #"Universidades:"
     if param == "all" or param == "u":
@@ -36,4 +37,7 @@ def search(question, param="all"):
     #"OtherNames"
     if param == "all" or param == "u" or param == "o":
         query["o"] = models.OtherName.query.filter(unaccent(func.lower(models.OtherName.name)).contains(question)).all()
+    return query#"OtherNames"
+    if param == "all" or param == "k":
+        query["k"] = models.KnowledgeArea.query.filter(unaccent(func.lower(models.KnowledgeArea.name)).contains(question)).all()
     return query

@@ -125,8 +125,10 @@ def buscar_index():
 @app.route("/buscar/<busqueda>")
 def buscar(busqueda):
     query = search.search(busqueda)
-    repeated = set(query["u"]).intersection(set([x.university for x in query["o"]]))
-    query["o"] = list(set([x.university for x in query["o"]]).difference(repeated))
+    repeated_one = set(query["u"]).intersection(set([x.university for x in query["o"]]))
+    query["o"] = list(set([x.university for x in query["o"]]).difference(repeated_one))
+    repeated_two = set(query["k"]).intersection(set([x.name for x in query["c"]]))
+    query["k"] = list(set([x.name for x in query["c"]]).difference(repeated_two))
     query["word"] = busqueda
     return render_template("search_list.html", items=query)
 

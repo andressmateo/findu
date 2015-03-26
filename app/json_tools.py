@@ -86,6 +86,8 @@ def search_json(search):
         resultO = db.session.query(models.OtherName).filter(models.OtherName.name.ilike("%"+search+"%"))
         resultS = db.session.query(models.UniversityHeadquarter).filter(models.UniversityHeadquarter.
                                                                         campus_name.ilike("%"+search+"%"))
+        resultK = db.session.query(models.KnowledgeArea).filter(models.KnowledgeArea.name.ilike("%"+search+"%"))
+
         result_json = []
         for o_name in resultC:
             o = {
@@ -105,6 +107,11 @@ def search_json(search):
         for o_name in resultS:
             o = {
                 "name": o_name.campus_name,
+            }
+            result_json.append(o)
+        for o_name in resultK:
+            o = {
+                "name": o_name.name,
             }
             result_json.append(o)
         return jsonify(names=result_json)

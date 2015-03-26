@@ -2,7 +2,7 @@
 {% block head %}
 <style>
     body{
-        background-color: #e5e5e5;
+        background-color: black;
     }
     #accordion > div > a{
         color:rgba(0,0,0,0.5);
@@ -26,19 +26,19 @@
 {% block body %}
 <div id="search-list" style="padding-top:50px;">
     <div class="container-fluid" style="padding:0;">
-        <div class="row" style="background:white;color: #737373;">
+        <div class="row" style="color: white;">
             <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2">
 
             </div>
             <div class="col-xs-11 col-sm-11 col-md-10 col-lg-10">
-                <h1 class="h3" style="margin-top: 10px;margin-bottom: 10px;">
-                    Resultados de la busqueda &#123;{{items["word"]}}&#125;
+                <h1 class="h3" style="margin-top: 10px;">
+                    Resultados de la busqueda <i>{{items["word"]}}</i>
                 </h1>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                <ul class="nav sections">
+                <!--<ul class="nav sections">
                     <li class="">
                         <a href="#universities">
                             Universidades
@@ -54,9 +54,10 @@
                             Sedes
                         </a>
                     </li>
-                </ul>
+                </ul>-->
             </div>
             <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                <!--
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="container-fluid">
                         <a data-toggle="collapse" data-parent="#accordion" href="#universities" aria-expanded="true" aria-controls="universities">
@@ -127,7 +128,7 @@
                             {% endfor %}
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
