@@ -16,9 +16,24 @@ def flat_text(s):
     return (''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))).lower()
 
 
-def search(question, param="all"):
+def search(question):
     question = flat_text(question)
     query = {
+        "result": [],
+        "associated": [],
+    }
+
+    u = models.University.query.filter(unaccent(func.lower(models.University.name))==(question)).all()
+    if (u):
+        query["result"] = u[0]
+    c = models.Career.query.filter(unaccent(func.lower(models.Career.name))==(question)).all()
+    if (c):
+        query["result"] = c[0]
+    k = models.KnowledgeArea.query.filter(unaccent(func.lower(models.KnowledgeArea.name)).contains(question)).all()
+    if (k):
+        query["result"] = k[0]
+    return query
+    '''query = {
         "u": [],
         "c": [],
         "s": [],
@@ -27,10 +42,10 @@ def search(question, param="all"):
     }
     #"Universidades:"
     if param == "all" or param == "u":
-        query["u"] = models.University.query.filter(unaccent(func.lower(models.University.name)).contains(question)).all()
+        query["u"] = models.University.query.filter(unaccent(func.lower(models.University.name))==(question)).all()
     #"Carreras:"
     if param == "all" or param == "c":
-        query["c"] = models.Career.query.filter(unaccent(func.lower(models.Career.name)).contains(question)).all()
+        query["c"] = models.Career.query.filter(unaccent(func.lower(models.Career.name))==(question)).all()
     #"Sedes:"
     if param == "all" or param == "s":
         query["s"] = models.UniversityHeadquarter.query.filter(unaccent(func.lower(models.UniversityHeadquarter.campus_name)).contains(question)).all()
@@ -39,5 +54,5 @@ def search(question, param="all"):
         query["o"] = models.OtherName.query.filter(unaccent(func.lower(models.OtherName.name)).contains(question)).all()
     return query#"OtherNames"
     if param == "all" or param == "k":
-        query["k"] = models.KnowledgeArea.query.filter(unaccent(func.lower(models.KnowledgeArea.name)).contains(question)).all()
-    return query
+        query["k"] = models.KnowledgeArea.query.filter(unaccent(func.lower(models.KnowledgeArea.name))==(question)).all()
+    return query'''

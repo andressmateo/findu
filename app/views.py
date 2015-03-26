@@ -15,6 +15,20 @@ def if_none(original, remplace):
     else:
         return original
 
+@app.template_global()
+def is_knowledge_area(question):
+    if isinstance(question, models.KnowledgeArea):
+        return True
+
+@app.template_global()
+def is_university(question):
+    if isinstance(question, models.University):
+        return True
+
+@app.template_global()
+def is_career(question):
+    if isinstance(question, models.Career):
+        return True
 
 @app.template_global()
 def join_campus(university):
@@ -125,11 +139,11 @@ def buscar_index():
 @app.route("/buscar/<busqueda>")
 def buscar(busqueda):
     query = search.search(busqueda)
-    repeated_one = set(query["u"]).intersection(set([x.university for x in query["o"]]))
+    '''repeated_one = set(query["u"]).intersection(set([x.university for x in query["o"]]))
     query["o"] = list(set([x.university for x in query["o"]]).difference(repeated_one))
     repeated_two = set(query["k"]).intersection(set([x.name for x in query["c"]]))
     query["k"] = list(set([x.name for x in query["c"]]).difference(repeated_two))
-    query["word"] = busqueda
+    query["word"] = busqueda'''
     return render_template("search_list.html", items=query)
 
 @app.route("/contacto")
