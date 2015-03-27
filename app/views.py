@@ -418,10 +418,12 @@ def add_cat_university():
             try:
                 place = models.UniversityHeadquarter.query.filter_by(id=request.args.get("place_id")).first()
                 career = models.Career.query.filter_by(id=request.args.get("career_id")).first()
-                cat_university = models.CareerAtUniversity(request.args.get("description").encode('utf-8'), place, career)
-                db.session.add(cat_university)
-                db.session.commit()
-                return str(1)
+                #c = career.name.encode('utf-8')
+                career.name = career.name.encode('utf-8')
+                #cat_university = models.CareerAtUniversity(request.args.get("description").encode('utf-8'), place, career)
+                #db.session.add(cat_university)
+                #db.session.commit()
+                return str(career.name)
                 #return str(career.name).encode('utf-8')
             except Exception, e:
                 return str(e)
