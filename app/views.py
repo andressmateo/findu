@@ -423,7 +423,7 @@ def add_cat_university():
                 db.session.commit()
                 return str(1)
             except:
-                return str(place.campus_name)
+                return str(career.name)
         else:
             cats_university = db.session.query(models.CareerAtUniversity).all()
             return render_template("form_cat_university.html",cats_university=cats_university,places=select_place_data(),
