@@ -417,9 +417,9 @@ def add_cat_university():
         if request.args.get("action") == 'add':
             place = models.UniversityHeadquarter.query.filter_by(id=request.args.get("place_id")).first()
             career = models.Career.query.filter_by(id=request.args.get("career_id")).first()
+            cat_university = models.CareerAtUniversity(request.args.get("description").encode('utf-8'), place, career)
+            db.session.add(cat_university)
             try:
-                cat_university = models.CareerAtUniversity(request.args.get("description").encode('utf-8'), place, career)
-                db.session.add(cat_university)
                 db.session.commit()
                 return str(1)
             except:
