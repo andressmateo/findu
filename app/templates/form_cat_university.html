@@ -7,7 +7,7 @@ athene.controller('addCatUniversityCtrl', function ($scope, $modal, $http) {
   $scope.add = function () {
     $http.get('/panel/add_cat_university', {
       params: {
-        method : 'POST',
+        action: 'add',
         place_id: $scope.place_id,
         description: $scope.description,
         career_id: $scope.career_id,
