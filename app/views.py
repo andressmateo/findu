@@ -21,6 +21,12 @@ def is_knowledge_area(question):
         return True
 
 @app.template_global()
+def universities_for(career):
+    q = []
+    r = models.Career.query.filter()
+    return
+
+@app.template_global()
 def is_university(question):
     if isinstance(question, models.University):
         return True
@@ -409,9 +415,9 @@ def add_cat_university():
         return check_log()
     else:
         if request.args.get("method") == 'POST':
-            place = models.UniversityHeadquarter.query.filter_by(id=request.args.get("place_id")).first()
-            career = models.Career.query.filter_by(id=request.args.get("career_id")).first()
-            cat_university = models.CareerAtUniversity(request.args.get("description").encode('utf-8'),place, career)
+            place = models.UniversityHeadquarter.query.filter_by(id=request.args.get("place_id").encode('utf-8')).first()
+            career = models.Career.query.filter_by(id=request.args.get("career_id").encode('utf-8')).first()
+            cat_university = models.CareerAtUniversity(request.args.get("description").encode('utf-8'), place, career)
             db.session.add(cat_university)
             db.session.commit()
             return str(1)

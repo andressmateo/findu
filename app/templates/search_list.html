@@ -67,15 +67,15 @@
 
                 {% for campus in items["result"].places.all() %}
                 <div class="row" style="margin-top: 20px">
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
                         <img class="img-rounded img-responsive"
                              src="{{if_none(campus.place.university.logo,'http://cdn0.iconfinder.com/data/icons/customicondesignoffice5/256/examples.png')}}"
                              alt=""/>
                     </div>
-                    <div class="col-lg-10 col-md-10 ">
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
                         <a style="color:white;" href="{{url_for('universities_page', university=campus.place.university.name.replace(' ','-'))}}">
-                        <b><h3 style="margin-top: 5px;">{{campus.place.university.name}}</h3></b></a>
-
+                        <b><h3 style="margin-top: 1px;">{{campus.place.university.name}}</h3></b></a>
+                        <h4></h4>
                     </div>
                 </div>
                 {% endfor %}
