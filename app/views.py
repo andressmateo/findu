@@ -420,6 +420,9 @@ def add_cat_university():
                 career = models.Career.query.filter_by(id=request.args.get("career_id")).first()
                 place.university.name = place.university.name.encode('utf-8')
                 career.name = career.name.encode('utf-8')
+                career.description = career.description.encode('utf-8')
+                place.university.description = place.university.description.encode('utf-8')
+
                 cat_university = models.CareerAtUniversity(request.args.get("description").encode('utf-8'), place, career)
                 db.session.add(cat_university)
                 db.session.commit()
