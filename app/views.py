@@ -423,8 +423,8 @@ def add_cat_university():
                 #db.session.commit()
                 #return str(1)
                 return str(career.name).encode('utf-8')
-            except:
-                return str(career.id)
+            except Exception, e:
+                return str(e)
         else:
             cats_university = db.session.query(models.CareerAtUniversity).all()
             return render_template("form_cat_university.html",cats_university=cats_university,places=select_place_data(),
