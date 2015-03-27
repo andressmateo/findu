@@ -422,7 +422,7 @@ def add_cat_university():
                 #db.session.add(cat_university)
                 #db.session.commit()
                 #return str(1)
-                return str(career.id)
+                return str(career.name).encode('utf-8')
             except:
                 return str(career.id)
         else:
