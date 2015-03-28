@@ -353,7 +353,7 @@ def add_career():
                 names = list(k)
                 knowledges = db.session.query(models.KnowledgeArea).filter(models.KnowledgeArea.name.in_(names)).all()
                 career = models.Career(request.args.get("name").encode('utf-8'), request.args.get("type"),
-                                           request.args.get("description").encode('utf-8'),knowledges)
+                                           request.args.get("description").encode('utf-8'),knowledges,request.args.get("icon"),request.args.get("background"))
                 db.session.add(career)
                 db.session.commit()
                 return str(1)
@@ -532,7 +532,8 @@ def save_changes_career():
             models.Career.query.filter_by(id=request.args.get("id")).\
             update({models.Career.name: request.args.get("name").encode('utf-8'),
                     models.Career.description: request.args.get("description").encode('utf-8'),
-                    models.Career.type: request.args.get("type")}, synchronize_session=False)
+                    models.Career.type: request.args.get("type"), models.Career.icon: request.args.get("icon"),
+                    models.Career.background: request.args.get("background")}, synchronize_session=False)
             db.session.commit()
             return str(1)
         except:

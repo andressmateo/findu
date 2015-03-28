@@ -46,7 +46,9 @@ $scope.pullSelection = function (selection) {
         name: $scope.career_name,
         description: $scope.career_description,
         type: $scope.career_type,
-        knowledges: jsonSelections
+        knowledges: jsonSelections,
+        icon: $scope.icon,
+        background: $scope.background
       }
     }).then(function(response){
           $scope.openStatusModal(response.data);
@@ -172,16 +174,23 @@ $scope.pullSelection = function (selection) {
     </div>
     <div class="row">
         <div class="col-md-6">
-            <input type="text" ng-model="icon"/>
-            <img class="img-rounded" src="icon" alt=""/>
+            <b><h3>Icon</h3></b>
+            <input type="url" ng-model="icon"/>
+            <br/>
+            <h5>Preview:</h5>
+            <img class="img-rounded" style="width:30%;height:30%" src="{{'{{icon}}'}}" alt=""/>
         </div>
         <div class="col-md-6">
-            <input type="text" ng-model="background"/>
-            <img class="img-rounded" src="background" alt=""/>
+            <b><h3>Background</h3></b>
+            <input type="url" ng-model="background"/>
+            <br/>
+            <h5>Preview:</h5>
+            <img class="img-rounded" style="width:30%;height:30%" src="{{'{{background}}'}}" alt=""/>
         </div>
     </div>
+    <br/><br/><br/>
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-sm-10">
             <button ng-click="add()" class="btn btn-info">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Add</button>
         </div>

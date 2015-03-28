@@ -20,6 +20,8 @@ athene.controller('editCareerCtrl', function ($scope, $modal, $http) {
     $scope.career_type = "{{career.type}}";
     $scope.knowledges = [];
     $scope.selections = [];
+    $scope.icon = "{{career.icon}}";
+    $scope.background = "{{career.background}}";
 
     {% for knowledge in knowledges %}
         $scope.knowledges.push('{{knowledge.name}}');
@@ -39,7 +41,9 @@ athene.controller('editCareerCtrl', function ($scope, $modal, $http) {
         name: $scope.career_name,
         description: $scope.career_description,
         type: $scope.career_type,
-        knowledges: jsonSelections
+        knowledges: jsonSelections,
+        icon: $scope.icon,
+        background: $scope.background
       }
     }).then(function(response){
           $scope.openStatusModal(response.data);
@@ -164,6 +168,23 @@ athene.controller('editCareerCtrl', function ($scope, $modal, $http) {
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <b><h3>Icon</h3></b>
+            <input type="url" ng-model="icon"/>
+            <br/>
+            <h5>Preview:</h5>
+            <img class="img-rounded" style="width:30%;height:30%" src="{{'{{icon}}'}}" alt=""/>
+        </div>
+        <div class="col-md-6">
+            <b><h3>Background</h3></b>
+            <input type="url" ng-model="background"/>
+            <br/>
+            <h5>Preview:</h5>
+            <img class="img-rounded" style="width:30%;height:30%" src="{{'{{background}}'}}" alt=""/>
+        </div>
+    </div>
+    <br/><br/><br/>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button class="btn btn-info btn-sm" ng-click="edit({{career.id}})">
