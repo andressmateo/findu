@@ -162,6 +162,23 @@ athene.filter('searchForKnowledges', function(){
 	};
 });
 
+athene.filter('searchForCareers', function(){
+
+	return function(arr, career_question){
+		if(!career_question){
+			return arr;
+		}
+		var result = [];
+		career_question = career_question.toLowerCase();
+		angular.forEach(arr, function(item){
+			if(item.name.toLowerCase().indexOf(career_question) !== -1){
+				result.push(item);
+			}
+		});
+		return result;
+	};
+});
+
 athene.filter('isAccredited', function(){
 
 	return function(arr, accredited){

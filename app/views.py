@@ -21,12 +21,6 @@ def is_knowledge_area(question):
         return True
 
 @app.template_global()
-def universities_for(career):
-    q = []
-    r = models.Career.query.filter()
-    return
-
-@app.template_global()
 def is_university(question):
     if isinstance(question, models.University):
         return True

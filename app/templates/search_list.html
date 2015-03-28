@@ -38,12 +38,9 @@
         </div>
         <div class="row" style="color: white;">
             <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-
                 <div class="sidenav">
 
-
                 </div>
-
             </div>
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
 
@@ -65,16 +62,16 @@
                 </div>
                 <h4>Puedes estudiar {{items["result"].name}} en las siguientes universidades:</h4>
 
-                {% for campus in items["result"].places.all() %}
+                {% for university in join_universities_from_campuses(items["result"].places) %}
                 <div class="row" style="margin-top: 20px">
                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
                         <img class="img-rounded img-responsive"
-                             src="{{if_none(campus.place.university.logo,'http://cdn0.iconfinder.com/data/icons/customicondesignoffice5/256/examples.png')}}"
+                             src="{{if_none(university.logo,'http://cdn0.iconfinder.com/data/icons/customicondesignoffice5/256/examples.png')}}"
                              alt=""/>
                     </div>
                     <div class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
-                        <a style="color:white;" href="{{url_for('universities_page', university=campus.place.university.name.replace(' ','-'))}}">
-                        <b><h3 style="margin-top: 1px;">{{campus.place.university.name}}</h3></b></a>
+                        <a style="color:white;" href="{{url_for('universities_page', university=university.name.replace(' ','-'))}}">
+                        <b><h3 style="margin-top: 1px;">{{university.name}}</h3></b></a>
                         <h4></h4>
                     </div>
                 </div>
