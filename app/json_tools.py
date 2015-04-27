@@ -19,6 +19,16 @@ def university_json():
         result_json.append(u)
     return jsonify(university=result_json)
 
+def places_university_json(id):
+    university = models.University.query.filter_by(id=id)[0]
+    result_json = []
+    for place in university.places:
+        cu = {
+            "id": place.id,
+            "name": place.campus_name,
+        }
+        result_json.append(cu)
+    return jsonify(places=result_json)
 
 def names_json():
     result = models.OtherName.query.all()

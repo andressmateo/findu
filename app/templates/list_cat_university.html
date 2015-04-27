@@ -9,7 +9,7 @@
 {% for cat in cats_university %}
     <li class="list-group-item">
     <a href="{{ url_for('panel') }}/view_cat_university/{{cat.id}}">
-    {{cat.career.name}} - {{cat.place.university.name}}
+    {{cat.career.name}} - {{cat.university.name}}
     </a></li>
 {% endfor %}
 </ul>

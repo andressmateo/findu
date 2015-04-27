@@ -45,14 +45,31 @@
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
 
                 {%if is_university(items["result"])%}
-                    Universidad: {{items["result"].name}}
+                <div class="panel panel-default" style="margin-top: 15px;">
+                    <div class="panel-body" style="background: black">
+                        <div class="col-lg-1 col-md-1 col-sm-3 col-xs-3">
+                            <img class="img-rounded img-responsive" src="{{if_none(items['result'].logo,'http://cdn0.iconfinder.com/data/icons/customicondesignoffice5/256/examples.png')}}" alt=""/>
+                        </div>
+                        <div class="col-lg-11 col-md-11">
+                            <b><h3 style="margin-top: -5px;">{{items["result"].name}}</h3></b>
+                            <h5><p class="text-justify">{{items["result"].description}}</p></h5>
+                        </div>
+                    </div>
+                </div>
+
+                {% for career in join_campus(items["result"]) %}
+
+                <b><h2>{{career.name}}</h2></b>
+                <h6>{{career.description}}</h6>
+                {% endfor %}
+                <br/>
                 {%endif%}
 
                 {%if is_career(items["result"])%}
                 <div class="panel panel-default" style="margin-top: 15px;">
                     <div class="panel-body" style="background: black">
                         <div class="col-lg-1 col-md-1 col-sm-3 col-xs-3">
-                            <img class="img-circle img-responsive" src="{{if_none(items['result'].icon,'http://cdn0.iconfinder.com/data/icons/customicondesignoffice5/256/examples.png')}}" alt=""/>
+                            <img class="img-rounded img-responsive" src="{{if_none(items['result'].icon,'http://cdn0.iconfinder.com/data/icons/customicondesignoffice5/256/examples.png')}}" alt=""/>
                         </div>
                         <div class="col-lg-11 col-md-11">
                             <b><h3 style="margin-top: -5px;">{{items["result"].name}}</h3></b>
@@ -79,7 +96,19 @@
                 {%endif%}
 
                 {%if is_knowledge_area(items["result"])%}
-                    Área de conocimiento: {{items["result"].name}}
+                <div class="panel panel-default" style="margin-top: 15px;">
+                    <div class="panel-body" style="background: black">
+                        <!--<div class="col-lg-1 col-md-1 col-sm-3 col-xs-3">
+                            <img class="img-rounded img-responsive"
+                                 src="{{if_none(items['result'].icon,'http://cdn0.iconfinder.com/data/icons/customicondesignoffice5/256/examples.png')}}"
+                                 alt=""/>
+                        </div>-->
+                        <div class="col-lg-11 col-md-11">
+                            <b><h3 style="margin-top: -5px;">{{items["result"].name}}</h3></b>
+                            <h5><p class="text-justify">{{items["result"].description}}</p></h5>
+                        </div>
+                    </div>
+                </div>
                 {%endif%}
             </div>
             <div class="col-md-2 col-lg-2 col-sm-12 col-xs 12">

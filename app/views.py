@@ -98,6 +98,14 @@ def search_json():
     if request.method == 'GET':
         return json_tools.search_json(request.args.get("search"))
 
+@app.route("/panel/get_places", methods=['POST', 'GET'])
+def get_places():
+    id = request.args.get("id")
+    if (not isinstance(id, type(None))):
+        print "El id es"+str(id)
+        return json_tools.places_university_json(id)
+    return "Null"
+
 @app.route("/search_for_universities", methods=['POST', 'GET'])
 def search_for_universities():
     return json_tools.university_json()
@@ -409,23 +417,28 @@ def add_cat_university():
         return check_log()
     else:
         if request.args.get("action") == 'add':
-            try:
-                place = models.UniversityHeadquarter.query.filter_by(id=request.args.get("place_id")).first()
+           # try:
+                p = json.loads(request.args.get("places"))
+                places_id = list(p)
+                #for x in places_id:
+                #    places.append(models.UniversityHeadquarter.query.filter_by(id=x).first())
+                places = models.UniversityHeadquarter.query.filter(models.UniversityHeadquarter.id.in_(places_id)).all()
                 career = models.Career.query.filter_by(id=request.args.get("career_id")).first()
-                place.university.name = place.university.name.encode('utf-8')
+                #place.university.name = place.university.name.encode('utf-8')
                 career.name = career.name.encode('utf-8')
                 career.description = career.description.encode('utf-8')
-                place.university.description = place.university.description.encode('utf-8')
-                cat_university = models.CareerAtUniversity(request.args.get("description").encode('utf-8'), place, career)
+                #place.university.description = place.university.description.encode('utf-8')
+                university = models.University.query.filter_by(id=request.args.get("university_id"))[0]
+                cat_university = models.CareerAtUniversity(request.args.get("description").encode('utf-8'), university, career, places)
                 db.session.add(cat_university)
                 db.session.commit()
                 return str(1)
                 #return str(career.name).encode('utf-8')
-            except Exception, e:
-                return str(1)
+            #except Exception, e:
+             #   return str(e)
         else:
             cats_university = db.session.query(models.CareerAtUniversity).all()
-            return render_template("form_cat_university.html",cats_university=cats_university,places=select_place_data(),
+            return render_template("form_cat_university.html",cats_university=cats_university,universities=select_university_data(),
                                    careers=select_career_data())
 
 
@@ -571,10 +584,12 @@ def edit_cat_university(cat_university):
     if check_log():
         return check_log()
     else:
-        u = db.session.query(models.CareerAtUniversity).filter_by(id = cat_university)
+        u = db.session.query(models.CareerAtUniversity).filter_by(id = cat_university)[0]
         cats_university = db.session.query(models.CareerAtUniversity).all()
-        return render_template("edit_cat_university.html",cat_university=u[0],cats_university = cats_university,
-                               places=select_place_data(), careers=select_career_data())
+        p = models.University.query.filter_by(id=u.university.id)[0]
+        d = set(p.places).difference(set(u.places))
+        return render_template("edit_cat_university.html",cat_university=u,cats_university = cats_university,
+                               universities=select_university_data(),careers=select_career_data(), places_difference =  list(d))
 
 
 @app.route("/panel/edit_cat_university", methods=['POST', 'GET'])

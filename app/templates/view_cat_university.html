@@ -6,7 +6,7 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-9">
-                <b>{{cat_university.career.name}}</b> - {{cat_university.place.university.name}}<br/>
+                <b>{{cat_university.career.name}}</b> - {{cat_university.university.name}}<br/>
             </div>
             <div class="col-md-3">
                 <div class="col-md-12">
@@ -27,8 +27,12 @@
         <b>Description</b> <br/>
         {{cat_university.description}}
         <br/> <br/>
-        <b>Headquarter</b> <br/>
-        {{cat_university.place.campus_name}}
+        <b>Headquarters</b> <br/>
+        <ul>
+        {% for headquater in cat_university.places %}
+            <li>{{headquater.campus_name}}</li>
+        {% endfor %}
+        </ul>
         <br/> <br/>
         <b>Price</b> <br/>
         {{cat_university.price}}
@@ -42,7 +46,7 @@
         </h3>
     </div>
     <div class="modal-body">
-        really do you wish delete <b> <i>{{cat_university.career.name}}</b> - {{cat_university.place.university.name}}</i>?
+        really do you wish delete <b> <i>{{cat_university.career.name}}</b> - {{cat_university.university.name}}</i>?
     </div>
     <div class="modal-footer">
         <button class="btn btn-link" ng-click="cancel()">Cancel</button>

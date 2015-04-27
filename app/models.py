@@ -1,5 +1,4 @@
 from app import db
-from app import app
 
 class University(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
@@ -92,11 +91,9 @@ class UniversityHeadquarter(db.Model):
     campus_name = db.Column(db.String(200))
     lat = db.Column(db.Float)  # Latitude
     long = db.Column(db.Float)  # Longitude
-    #careers object, careers.all()
     university_id = db.Column(db.Integer, db.ForeignKey('university.id'))
     university = db.relationship('University', backref=db.backref('places', lazy='dynamic'))
     background = db.Column(db.Text)
-    #images object, images.all()
 
     def __init__(self, campus_name, lat, long, university, background=""):
         self.lat = lat
@@ -124,26 +121,36 @@ class OtherName(db.Model):
         return "<Name "+self.name+" >"
 
 
+career_at_headquarter = db.Table('career_at_headquarter', db.metadata,
+    db.Column('id_cat_university', db.Integer, db.ForeignKey('career_at_university.id')),
+    db.Column('id_university_headquarter', db.Integer, db.ForeignKey('universityheadquarter.id'))
+)
+
+
 class CareerAtUniversity(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
     description = db.Column(db.Text)
     graduates = db.Column(db.Integer)
     price = db.Column(db.Float)
-    place_id = db.Column(db.Integer, db.ForeignKey('universityheadquarter.id'))
-    place = db.relationship('UniversityHeadquarter', backref=db.backref('careers', lazy='dynamic'))
+    university_id = db.Column(db.Integer, db.ForeignKey('university.id'))
+    university = db.relationship('University', backref=db.backref('careers', lazy='dynamic'))
+    #place_id = db.Column(db.Integer, db.ForeignKey('universityheadquarter.id'))
+    #place = db.relationship('UniversityHeadquarter', backref=db.backref('careers', lazy='dynamic'))
+    places = db.relationship("UniversityHeadquarter", secondary=career_at_headquarter, backref=db.backref('careers', lazy='dynamic'))
     career_id = db.Column(db.Integer, db.ForeignKey('career.id'))
     career = db.relationship('Career', backref=db.backref('places', lazy='dynamic'))
 
-    def __init__(self, description, place, career, price=0, graduates=0):
+    def __init__(self, description, university, career, places=None, price=0, graduates=0):
         self.description = description
         self.graduates = graduates
         self.price = price
-        self.place = place
+        self.university = university
         self.career = career
+        self.places = places
         print "New CareerAtUniversity: "+self.__repr__()
 
     def __repr__(self):
-        return "<CareerAtUniversity "+self.career.name+"@"+self.place.university.name+" >"
+        return "<CareerAtUniversity "+self.career.name+" >"
 
 
 class ImageCampus(db.Model):

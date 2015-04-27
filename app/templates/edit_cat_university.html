@@ -4,10 +4,29 @@
 <script>
 athene.controller('editCatUniversityCtrl', function ($scope, $modal, $http) {
 
-       $scope.place = "{{cat_university.place.id}}";
-       $scope.career = "{{cat_university.career.id}}";
+       $scope.career_id = "{{cat_university.career.id}}";
        $scope.description = "{{cat_university.description}}";
+       $scope.university_id = {{cat_university.university.id}};
+       $scope.campus_selections = [];
 
+$scope.getPlaces = function () {
+$scope.places = [];
+  $http.get('/panel/get_places', {
+      params: {
+        id: $scope.university_id
+      }
+    }).then(function(response){
+    if(response.data!="Null"){
+      return response.data.places.map(function(item){
+        p = {name:item.name, id:item.id};
+        $scope.places.push(p);
+      });
+    }
+    });
+};
+{% for place in cat_university.places %}
+    $scope.campus{{place.id}} = true;
+{% endfor %}
   $scope.edit = function (id) {
     $http.get('/panel/edit_cat_university', {
       params: {
@@ -20,6 +39,9 @@ athene.controller('editCatUniversityCtrl', function ($scope, $modal, $http) {
     });
   };
 
+{% for place in cat_university.places %}
+        $scope.campus_selections.push({{place.id}});
+{% endfor %}
     $scope.openStatusModal = function (status) {
     if(status=='0'){
       template = 'fail.html'
@@ -70,16 +92,16 @@ athene.controller('editCatUniversityCtrl', function ($scope, $modal, $http) {
     </div>
 </script>
 
-
-<h2 class="text-center">Edit <i>{{cat_university.career.name}}</b> - {{cat_university.place.university.name}}</i></h2>
+<h3 class="text-center">Edit <i>{{cat_university.career.name}} - {{cat_university.university.name}}</i></h3>
 <form class="form-horizontal" role="form"  method="post" ng-controller="editCatUniversityCtrl">
     <div class="form-group">
-        <label for="selectName" class="col-sm-2 control-label">Place</label>
+        <label for="selectName" class="col-sm-2 control-label">University</label>
         <div class="col-sm-9">
             <fieldset disabled>
-                <select class="form-control" id="selectName" name="place_id" ng-model="place">
-                    {% for place in places %}
-                    <option value="{{ place.id }}">{{ place.university_and_campus }}</option>
+                <select class="form-control" id="selectName" name="university_id" ng-model="university_id"
+                        ng-change="getPlaces()">
+                    {% for university in universities %}
+                    <option value="{{ university.id }}">{{ university.name }}</option>
                     {% endfor %}
                 </select>
             </fieldset>
@@ -89,12 +111,27 @@ athene.controller('editCatUniversityCtrl', function ($scope, $modal, $http) {
         <label for="selectName" class="col-sm-2 control-label">Career</label>
         <div class="col-sm-9">
             <fieldset disabled>
-                <select class="form-control" id="selectCarrer" name="career_id" ng-model="career">
+                <select class="form-control" id="selectCarrer" name="career_id" ng-model="career_id">
                     {% for career in careers %}
                     <option value="{{ career.id }}">{{ career.name }}</option>
                     {% endfor %}
                 </select>
             </fieldset>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Places</label>
+        <div class="col-sm-9">
+            {% for place in cat_university.places %}
+                <input type="checkbox" name="place_id" ng-model="campus{{place.id}}"
+                       ng-change="select_campus({{ place.id }})" value="{{ place.id }}"> {{ place.campus_name }}<br/>
+
+            {% endfor %}
+            {% for place in places_difference %}
+                <input type="checkbox" name="place_id" ng-model="campus{{place.id}}"
+                       ng-change="select_campus({{ place.id }})" value="{{ place.id }}" /> {{ place.campus_name }}<br/>
+            {% endfor %}
+
         </div>
     </div>
     <div class="form-group">
@@ -106,8 +143,8 @@ athene.controller('editCatUniversityCtrl', function ($scope, $modal, $http) {
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button class="btn btn-info btn-sm" ng-click="edit({{cat_university.id}})">
-                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save changes</button>
+            <button ng-click="edit({{cat_university.id}})" class="btn btn-info">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Add</button>
         </div>
     </div>
 </form>
