@@ -7,7 +7,7 @@ import unicodedata
 
 
 @app.route("/api/search")
-def api_search():
+def contact():
     return "Search_Api"
 
 #Don't Touch

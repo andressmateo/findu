@@ -1,7 +1,7 @@
 from flask import request
 
 from app import app, tools
-from api import json_tools, tools
+from api import json_tools
 
 
 @app.route("/buscar_json", methods=['POST', 'GET'])
