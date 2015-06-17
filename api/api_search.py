@@ -1,9 +1,14 @@
 # -*- coding: utf8 -*-
-from app import models, app, db
+from app import app
+from data import models
 from sqlalchemy.sql.functions import ReturnTypeFromArgs
 from sqlalchemy import func
 import unicodedata
 
+
+@app.route("/api/search")
+def api_search():
+    return "Search_Api"
 
 #Don't Touch
 class unaccent(ReturnTypeFromArgs):

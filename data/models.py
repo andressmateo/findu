@@ -17,8 +17,6 @@ class University(db.Model):
     accredited = db.Column(db.Boolean)
     facebook = db.Column(db.Text)
     twitter = db.Column(db.Text)
-    #places object, places.all()
-    #names object, names.all()
 
     def __init__(self, name, description, logo, background="", motto="", established=0, type="", principal ="",
                  students=0, web_site="", address="", accredited=False, facebook="", twitter=""):

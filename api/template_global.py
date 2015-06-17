@@ -1,4 +1,6 @@
-from app import app, models, search
+from app import app
+from data import models
+from api import api_search
 
 @app.template_global()
 def if_none(original, remplace):
@@ -38,4 +40,4 @@ def join_universities_from_campuses(campuses):
 
 @app.template_global()
 def flat_text(word):
-    return search.flat_text(word)
+    return api_search.flat_text(word)

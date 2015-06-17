@@ -1,5 +1,8 @@
 from flask import request
-from app import app, tools, json_tools
+
+from app import app, tools
+from api import json_tools, tools
+
 
 @app.route("/buscar_json", methods=['POST', 'GET'])
 def search_json():

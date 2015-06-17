@@ -1,5 +1,7 @@
 from flask import  jsonify
-from app import app, db, models, search
+
+from app import db
+from data import models
 
 
 def university_json():

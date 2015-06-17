@@ -1,5 +1,7 @@
 from flask import session, redirect, url_for
-from app import models
+
+from data import models
+
 
 def check_log():
     if not session["logged"]:

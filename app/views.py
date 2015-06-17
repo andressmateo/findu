@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 # -*- coding: latin-1 -*-
-from flask import render_template, redirect, session, url_for, request, json
-from app import app, db, models, search, template_global, tools, json_answers
-import config
 import random
+
+from flask import render_template, redirect, session, url_for, request, json
+
+from app import app, db, tools
+from data import models
+from api import api_search
+import config
+
 
 @app.route("/main")
 @app.route('/index')
@@ -35,18 +40,13 @@ def buscar_index():
 
 @app.route("/buscar/<busqueda>")
 def buscar(busqueda):
-    query = search.search(busqueda)
+    query = api_search.search(busqueda)
     '''repeated_one = set(query["u"]).intersection(set([x.university for x in query["o"]]))
     query["o"] = list(set([x.university for x in query["o"]]).difference(repeated_one))
     repeated_two = set(query["k"]).intersection(set([x.name for x in query["c"]]))
     query["k"] = list(set([x.name for x in query["c"]]).difference(repeated_two))
     query["word"] = busqueda'''
     return render_template("search_list.html", items=query)
-
-@app.route("/contacto")
-def contact():
-    return "No hay"
-
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
