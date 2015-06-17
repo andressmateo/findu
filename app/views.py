@@ -72,7 +72,7 @@ def admin_link():
     else:
         return render_template("panel_base.html")
 
-
+######### Panel ##########
 @app.route("/panel")
 def panel():
     if tools.check_log():
@@ -124,6 +124,14 @@ def list_knowledge_area():
         knowledges = db.session.query(models.KnowledgeArea).all()
         return render_template("list_knowledge_area.html", knowledges = knowledges)
 
+#cat_university for career_at_university
+@app.route("/panel/list_cat_university")
+def list_cat_university():
+    if tools.check_log():
+        return tools.check_log()
+    else:
+        cats_university = db.session.query(models.CareerAtUniversity).all()
+        return render_template("list_cat_university.html", cats_university = cats_university)
 
 @app.route("/panel/view_university/<university>")
 def view_university(university):
@@ -133,16 +141,6 @@ def view_university(university):
         u = db.session.query(models.University).filter_by(id = university)
         universities = db.session.query(models.University).all()
         return render_template("view_university.html",university=u[0], universities = universities)
-
-
-#cat_university for career_at_university
-@app.route("/panel/list_cat_university")
-def list_cat_university():
-    if tools.check_log():
-        return tools.check_log()
-    else:
-        cats_university = db.session.query(models.CareerAtUniversity).all()
-        return render_template("list_cat_university.html", cats_university = cats_university)
 
 
 @app.route("/panel/view_career/<career>")
@@ -194,6 +192,10 @@ def view_knowledge_area(knowledge_area):
         knowledges = db.session.query(models.KnowledgeArea).all()
         return render_template("view_knowledge_area.html",knowledge=k[0],  knowledges = knowledges)
 
+
+########### Panel CRUD ##############
+
+### Add ###
 
 @app.route("/panel/add_university", methods=['POST', 'GET'])
 def add_university():
@@ -344,6 +346,7 @@ def add_knowledge_area():
             knowledges = db.session.query(models.KnowledgeArea).all()
             return render_template("form_knowledge_area.html",knowledges=knowledges)
 
+### Edit ###
 
 @app.route("/panel/edit_university/<university>")
 def edit_university(university):
@@ -516,6 +519,7 @@ def save_changes_knowledge_area():
         except:
             return str(0)
 
+### Delete ###
 
 @app.route("/panel/delete_university", methods=['POST', 'GET'])
 def panel_delete_university():
@@ -608,33 +612,7 @@ def panel_delete_cat_university():
         except:
             return str(0)
 
-
-"""
-@app.route("/list/university")
-def list_university():
-    return university_json()
-
-
-@app.route("/list/name")
-def list_names():
-    return names_json()
-
-
-@app.route("/list/campus")
-def list_campus():
-    return campus_json()
-
-
-@app.route("/list/career")
-def list_career():
-    return career_json()
-
-
-@app.route("/list/careeratuniversity")
-def list_careeratuniversity():
-    return careeratuniversity_json()
-"""
-
+####################################################################
 
 @app.route("/universidades")
 def universities():

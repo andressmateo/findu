@@ -162,16 +162,16 @@ athene.filter('searchForKnowledges', function(){
 	};
 });
 
-athene.filter('searchForCareers', function(){
+athene.filter('searchInSomeList', function(){
 
-	return function(arr, career_question){
-		if(!career_question){
+	return function(arr, question){
+		if(!question){
 			return arr;
 		}
 		var result = [];
-		career_question = career_question.toLowerCase();
+		question = question.toLowerCase();
 		angular.forEach(arr, function(item){
-			if(item.name.toLowerCase().indexOf(career_question) !== -1){
+			if(item.name.toLowerCase().indexOf(question) !== -1){
 				result.push(item);
 			}
 		});

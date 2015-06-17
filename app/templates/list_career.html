@@ -21,7 +21,7 @@ athene.controller('listCareerCtrl', function ($scope, $modal, $http) {
     <input type="text" class="form-control" ng-model="career_question"
            placeholder="Search for some Career">
     <ul class="list-group">
-        <li class="list-group-item" ng-repeat="career in careers | searchForCareers:career_question">
+        <li class="list-group-item" ng-repeat="career in careers | searchInSomeList:career_question">
             <a href="{{ url_for('panel') }}/view_career/{{'{{career.id}}'}}">
                 {{'{{career.name}}'}}
             </a></li>
