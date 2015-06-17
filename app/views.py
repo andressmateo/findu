@@ -327,14 +327,8 @@ def add_cat_university():
              #   return str(e)
         else:
             cats_university = db.session.query(models.CareerAtUniversity).all()
-<<<<<<< HEAD
-            return render_template("form_cat_university.html",cats_university=cats_university,universities=select_university_data(),
-                                   careers=select_career_data())
-=======
             return render_template("form_cat_university.html",cats_university=cats_university,places=tools.select_place_data(),
                                    careers=tools.select_career_data())
->>>>>>> 25abf4b0463a538b1263f7ede75d909654b7635a
-
 
 @app.route("/panel/add_knowledge_area", methods=['POST', 'GET'])
 def add_knowledge_area():
@@ -480,15 +474,8 @@ def edit_cat_university(cat_university):
     else:
         u = db.session.query(models.CareerAtUniversity).filter_by(id = cat_university)[0]
         cats_university = db.session.query(models.CareerAtUniversity).all()
-<<<<<<< HEAD
-        p = models.University.query.filter_by(id=u.university.id)[0]
-        d = set(p.places).difference(set(u.places))
-        return render_template("edit_cat_university.html",cat_university=u,cats_university = cats_university,
-                               universities=select_university_data(),careers=select_career_data(), places_difference =  list(d))
-=======
         return render_template("edit_cat_university.html",cat_university=u[0],cats_university = cats_university,
                                places=tools.select_place_data(), careers=tools.select_career_data())
->>>>>>> 25abf4b0463a538b1263f7ede75d909654b7635a
 
 
 @app.route("/panel/edit_cat_university", methods=['POST', 'GET'])
