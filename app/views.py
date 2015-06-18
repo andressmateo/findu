@@ -29,6 +29,9 @@ def not_found(error):
     print error
     return render_template("404.html")
 
+@app.route("/contacto")
+def contact():
+    return "No hay"
 
 @app.route("/buscar", methods=['POST', 'GET'])
 def buscar_index():
