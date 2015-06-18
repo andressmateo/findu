@@ -4,7 +4,7 @@ import random
 
 from flask import render_template, redirect, session, url_for, request, json
 
-from app import app, db, tools
+from app import app, db, util
 from data import models
 from api import api_search, template_global, json_answers
 import config
@@ -70,24 +70,24 @@ def logout():
 
 @app.route("/admin")
 def admin_link():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         return render_template("panel_base.html")
 
 ######### Panel ##########
 @app.route("/panel")
 def panel():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         return render_template("panel_base.html")
 
 
 @app.route("/panel/list_university")
 def list_university():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         universities = db.session.query(models.University).all()
         return render_template("list_university.html", universities = universities)
@@ -95,8 +95,8 @@ def list_university():
 
 @app.route("/panel/list_career")
 def list_career():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         careers = db.session.query(models.Career).all()
         return render_template("list_career.html", careers = careers)
@@ -104,8 +104,8 @@ def list_career():
 
 @app.route("/panel/list_name")
 def list_name():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         names = db.session.query(models.OtherName).all()
         return render_template("list_name.html", names = names)
@@ -113,16 +113,16 @@ def list_name():
 
 @app.route("/panel/list_campus")
 def list_campus():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         campuses = db.session.query(models.UniversityHeadquarter).all()
         return render_template("list_campus.html", campuses = campuses)
 
 @app.route("/panel/list_knowledge_area")
 def list_knowledge_area():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         knowledges = db.session.query(models.KnowledgeArea).all()
         return render_template("list_knowledge_area.html", knowledges = knowledges)
@@ -130,16 +130,16 @@ def list_knowledge_area():
 #cat_university for career_at_university
 @app.route("/panel/list_cat_university")
 def list_cat_university():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         cats_university = db.session.query(models.CareerAtUniversity).all()
         return render_template("list_cat_university.html", cats_university = cats_university)
 
 @app.route("/panel/view_university/<university>")
 def view_university(university):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         u = db.session.query(models.University).filter_by(id = university)
         universities = db.session.query(models.University).all()
@@ -148,8 +148,8 @@ def view_university(university):
 
 @app.route("/panel/view_career/<career>")
 def view_career(career):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         c = db.session.query(models.Career).filter_by(id = career)
         careers = db.session.query(models.Career).all()
@@ -158,8 +158,8 @@ def view_career(career):
 
 @app.route("/panel/view_name/<name>")
 def view_name(name):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         n = db.session.query(models.OtherName).filter_by(name = name)
         names = db.session.query(models.OtherName).all()
@@ -168,8 +168,8 @@ def view_name(name):
 
 @app.route("/panel/view_campus/<campus>")
 def view_campus(campus):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         n = db.session.query(models.UniversityHeadquarter).filter_by(id = campus)
         campuses = db.session.query(models.UniversityHeadquarter).all()
@@ -178,8 +178,8 @@ def view_campus(campus):
 
 @app.route("/panel/view_cat_university/<cat_university>")
 def view_cat_university(cat_university):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         n = db.session.query(models.CareerAtUniversity).filter_by(id = cat_university)
         cats_university = db.session.query(models.CareerAtUniversity).all()
@@ -188,8 +188,8 @@ def view_cat_university(cat_university):
 
 @app.route("/panel/view_knowledge_area/<knowledge_area>")
 def view_knowledge_area(knowledge_area):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         k = db.session.query(models.KnowledgeArea).filter_by(id = knowledge_area)
         knowledges = db.session.query(models.KnowledgeArea).all()
@@ -202,8 +202,8 @@ def view_knowledge_area(knowledge_area):
 
 @app.route("/panel/add_university", methods=['POST', 'GET'])
 def add_university():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         if request.args.get("method") == 'POST':
             try:
@@ -246,8 +246,8 @@ def add_university():
 
 @app.route("/panel/add_career", methods=['POST', 'GET'])
 def add_career():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         if request.args.get("method") == 'POST':
             try:
@@ -269,8 +269,8 @@ def add_career():
 
 @app.route("/panel/add_name", methods=['POST', 'GET'])
 def add_name():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         if request.args.get("method") == 'POST':
             try:
@@ -283,13 +283,13 @@ def add_name():
                 return str(0)
         else:
             names = db.session.query(models.OtherName).all()
-            return render_template("form_name.html",names=names,  data=tools.select_university_data())
+            return render_template("form_name.html",names=names,  data=util.select_university_data())
 
 
 @app.route("/panel/add_campus", methods=['POST', 'GET'])
 def add_campus():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         if request.args.get("method") == 'POST':
 
@@ -302,13 +302,13 @@ def add_campus():
 
         else:
             campuses = db.session.query(models.UniversityHeadquarter).all()
-            return render_template("form_campus.html", campuses=campuses,  data=tools.select_university_data())
+            return render_template("form_campus.html", campuses=campuses,  data=util.select_university_data())
 
 
 @app.route("/panel/add_cat_university", methods=['POST', 'GET'])
 def add_cat_university():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         if request.args.get("action") == 'add':
            # try:
@@ -332,13 +332,13 @@ def add_cat_university():
              #   return str(e)
         else:
             cats_university = db.session.query(models.CareerAtUniversity).all()
-            return render_template("form_cat_university.html",cats_university=cats_university,places=tools.select_place_data(),
-                                   careers=tools.select_career_data())
+            return render_template("form_cat_university.html",cats_university=cats_university,places=util.select_place_data(),
+                                   careers=util.select_career_data())
 
 @app.route("/panel/add_knowledge_area", methods=['POST', 'GET'])
 def add_knowledge_area():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         if request.args.get("method") == 'POST':
             k = models.KnowledgeArea(request.args.get("name").encode('utf-8'),request.args.get("definition").encode('utf-8'))
@@ -353,8 +353,8 @@ def add_knowledge_area():
 
 @app.route("/panel/edit_university/<university>")
 def edit_university(university):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         u = db.session.query(models.University).filter_by(id = university)
         universities = db.session.query(models.University).all()
@@ -363,8 +363,8 @@ def edit_university(university):
 
 @app.route("/panel/edit_university", methods=['POST', 'GET'])
 def save_changes_university():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             name = request.args.get("name")
@@ -411,8 +411,8 @@ def save_changes_university():
 
 @app.route("/panel/edit_career/<career>")
 def edit_career(career):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         u = db.session.query(models.Career).filter_by(id = career)
         careers = db.session.query(models.Career).all()
@@ -423,8 +423,8 @@ def edit_career(career):
 
 @app.route("/panel/edit_career", methods=['POST', 'GET'])
 def save_changes_career():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             k = json.loads(request.args.get("knowledges"))
@@ -449,18 +449,18 @@ def save_changes_career():
 
 @app.route("/panel/edit_campus/<campus>")
 def edit_campus(campus):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         u = db.session.query(models.UniversityHeadquarter).filter_by(id = campus)
         campuses = db.session.query(models.UniversityHeadquarter).all()
-        return render_template("edit_campus.html",campus=u[0], campuses = campuses, data=tools.select_university_data())
+        return render_template("edit_campus.html",campus=u[0], campuses = campuses, data=util.select_university_data())
 
 
 @app.route("/panel/edit_campus", methods=['POST', 'GET'])
 def save_changes_campus():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             models.UniversityHeadquarter.query.filter_by(id=request.args.get("id")).\
@@ -475,19 +475,19 @@ def save_changes_campus():
 
 @app.route("/panel/edit_cat_university/<cat_university>")
 def edit_cat_university(cat_university):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         u = db.session.query(models.CareerAtUniversity).filter_by(id = cat_university)[0]
         cats_university = db.session.query(models.CareerAtUniversity).all()
         return render_template("edit_cat_university.html",cat_university=u[0],cats_university = cats_university,
-                               places=tools.select_place_data(), careers=tools.select_career_data())
+                               places=util.select_place_data(), careers=util.select_career_data())
 
 
 @app.route("/panel/edit_cat_university", methods=['POST', 'GET'])
 def save_changes_cat_university():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             models.CareerAtUniversity.query.filter_by(id=request.args.get("id")).\
@@ -500,8 +500,8 @@ def save_changes_cat_university():
 
 @app.route("/panel/edit_knowledge_area/<knowledge_area>")
 def edit_knowledge_area(knowledge_area):
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         k = db.session.query(models.KnowledgeArea).filter_by(id = knowledge_area)
         knowledges = db.session.query(models.KnowledgeArea).all()
@@ -510,8 +510,8 @@ def edit_knowledge_area(knowledge_area):
 
 @app.route("/panel/edit_knowledge_area", methods=['POST', 'GET'])
 def save_changes_knowledge_area():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             models.KnowledgeArea.query.filter_by(id=request.args.get("id")).\
@@ -526,8 +526,8 @@ def save_changes_knowledge_area():
 
 @app.route("/panel/delete_university", methods=['POST', 'GET'])
 def panel_delete_university():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             models.OtherName.query.filter_by(university_id=request.args.get("id")).delete(synchronize_session=False)
@@ -544,8 +544,8 @@ def panel_delete_university():
 
 @app.route("/panel/delete_career", methods=['POST', 'GET'])
 def panel_delete_career():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             c = models.Career.query.filter_by(id=request.args.get("id")).first()
@@ -562,8 +562,8 @@ def panel_delete_career():
 
 @app.route("/panel/delete_name", methods=['POST', 'GET'])
 def panel_delete_name():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             db.session.query(models.OtherName).filter(models.OtherName.name.ilike(request.args.get("name")+"")).\
@@ -575,8 +575,8 @@ def panel_delete_name():
 
 @app.route("/panel/delete_campus", methods=['POST', 'GET'])
 def panel_delete_campus():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             models.CareerAtUniversity.query.filter_by(place_id=request.args.get("id")).delete(synchronize_session=False)
@@ -589,8 +589,8 @@ def panel_delete_campus():
 
 @app.route("/panel/delete_knowledge_area", methods=['POST', 'GET'])
 def panel_delete_knowledge_area():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             k = models.KnowledgeArea.query.filter_by(id=request.args.get("id")).first()
@@ -605,8 +605,8 @@ def panel_delete_knowledge_area():
 
 @app.route("/panel/delete_cat_university", methods=['POST', 'GET'])
 def panel_delete_cat_university():
-    if tools.check_log():
-        return tools.check_log()
+    if util.check_log():
+        return util.check_log()
     else:
         try:
             models.CareerAtUniversity.query.filter_by(id=request.args.get("id")).delete(synchronize_session=False)
