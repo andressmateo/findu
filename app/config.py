@@ -1,5 +1,3 @@
-"""PARAMETROS Globales"""
-
 name = "Findu"
 version = "0.3.3"
 team = ["Andres Mateo Otalvaro","Daniel Ermilson Velasquez","Santiago Montoya"]

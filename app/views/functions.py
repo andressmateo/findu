@@ -1,6 +1,15 @@
-from app import app
-from data import models
-from api import api_search
+from flask import render_template
+from app import app, models
+
+@app.errorhandler(404)
+def not_found(error=""):
+    print error
+    return render_template("404.html")
+
+@app.errorhandler(500)
+def not_found(error):
+    print error
+    return render_template("404.html")
 
 @app.template_global()
 def if_none(original, remplace):
@@ -38,6 +47,3 @@ def join_campus(university):
 def join_universities_from_campuses(campuses):
     return list(set([x.place.university for x in campuses]))
 
-@app.template_global()
-def flat_text(word):
-    return api_search.flat_text(word)

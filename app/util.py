@@ -1,6 +1,6 @@
 from flask import session, redirect, url_for
 
-from data import models
+from app import models
 
 
 def check_log():

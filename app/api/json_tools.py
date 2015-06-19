@@ -1,6 +1,6 @@
 from flask import  jsonify
 
-from app import db
+from app import db, models
 from data import models
 
 
