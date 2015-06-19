@@ -22,12 +22,12 @@ athene.controller('listCareerCtrl', function ($scope, $modal, $http) {
            placeholder="Search for some Career">
     <ul class="list-group">
         <li class="list-group-item" ng-repeat="career in careers | searchInSomeList:career_question">
-            <a href="{{ url_for('panel') }}/view_career/{{'{{career.id}}'}}">
+            <a href="{{ url_for('index.panel') }}/view_career/{{'{{career.id}}'}}">
                 {{'{{career.name}}'}}
             </a></li>
     </ul>
 </div>
-<form action="{{ url_for('panel') }}/add_career">
+<form action="{{ url_for('index.panel') }}/add_career">
     <button type="submit" class="btn btn-primary">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
     </button>

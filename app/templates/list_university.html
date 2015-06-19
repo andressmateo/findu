@@ -22,12 +22,12 @@
            placeholder="Search for some University">
     <ul class="list-group">
         <li class="list-group-item" ng-repeat="university in universities | searchInSomeList:university_question">
-            <a href="{{ url_for('panel') }}/view_university/{{'{{university.id}}'}}">
+            <a href="{{ url_for('index.panel') }}/view_university/{{'{{university.id}}'}}">
                 {{'{{university.name}}'}}
             </a></li>
     </ul>
 </div>
-<form action="{{ url_for('panel') }}/add_university">
+<form action="{{ url_for('index.panel') }}/add_university">
     <button type="submit" class="btn btn-primary">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
     </button>

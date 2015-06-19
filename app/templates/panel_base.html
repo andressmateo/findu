@@ -15,14 +15,14 @@
                     </div>
                     <a href="#add" class="list-group-item" data-toggle="collapse" data-parent="#MainMenu">manage</a>
                     <div class="collapse" id="add">
-                        <a href="{{ url_for('list_university') }}" class="list-group-item">University</a>
-                        <a href="{{ url_for('list_career') }}" class="list-group-item">Career</a>
-                        <a href="{{ url_for('list_name') }}" class="list-group-item">Alther Name</a>
-                        <a href="{{ url_for('list_campus') }}" class="list-group-item">Campus</a>
-                        <a href="{{ url_for('list_cat_university') }}" class="list-group-item">Carrer at University</a>
-                        <a href="{{ url_for('list_knowledge_area') }}" class="list-group-item">Knowledge Area</a>
+                        <a href="{{ url_for('panel.list_university') }}" class="list-group-item">University</a>
+                        <a href="{{ url_for('panel.list_career') }}" class="list-group-item">Career</a>
+                        <a href="{{ url_for('panel.list_name') }}" class="list-group-item">Alther Name</a>
+                        <a href="{{ url_for('panel.list_campus') }}" class="list-group-item">Campus</a>
+                        <a href="{{ url_for('panel.list_cat_university') }}" class="list-group-item">Carrer at University</a>
+                        <a href="{{ url_for('panel.list_knowledge_area') }}" class="list-group-item">Knowledge Area</a>
                     </div>
-                    <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-danger">Logout</a>
+                    <a href="{{ url_for('index.logout') }}" class="list-group-item list-group-item-danger">Logout</a>
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
                             </a>
                         </div>
                         <p class="navbar-text navbar-right" id="signame">Signed in as <a href="#" class="navbar-link">admin</a>
-                            | <a href="{{ url_for('logout') }}">Logout</a></p>
+                            | <a href="{{ url_for('index.logout') }}">Logout</a></p>
                     </div>
                 </nav>
             </div>

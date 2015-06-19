@@ -12,7 +12,7 @@
         <div class="row" style="margin:0;">
             {% for career in careers %}
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
-                <a href="{{url_for('careers_page',career=career.name.replace(' ', '-'))}}">
+                <a href="{{url_for('index.careers_page',career=career.name.replace(' ', '-'))}}">
                 <div class="size-one-one">
                     <div>
                     <div class="size-fully list-image-bg" style="background:url({{if_none(career.icon,'http://cdn0.iconfinder.com/data/icons/customicondesignoffice5/256/examples.png')}});">

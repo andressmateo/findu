@@ -64,7 +64,7 @@
         <!--
         {% for university in universities[:2] %}
             <div class="col-md-6">
-                <a href="{{url_for('universities_page',university=university.name.replace(' ','-'))}}">
+                <a href="{{url_for('index.universities_page',university=university.name.replace(' ','-'))}}">
                     <div class="fanart">
                         <div class="size-sixteen-nine">
                             <div class="size-fully list-image-bg" style="background:url({{if_none(university.background,'http://placekitten.com/g/1280/720')}});">
@@ -83,7 +83,7 @@
 
         {% for university in universities %}
             <div class="col-md-4">
-                <a href="{{url_for('universities_page',university=university.name.replace(' ','-'))}}">
+                <a href="{{url_for('index.universities_page',university=university.name.replace(' ','-'))}}">
                     <div class="fanart">
                         <div class="size-sixteen-nine">
                             <div class="size-fully list-image-bg" style="background:url({{if_none(university.background,'http://placekitten.com/g/1280/720')}});">

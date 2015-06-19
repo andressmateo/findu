@@ -41,7 +41,7 @@
                 <h2>Carreras <small>¿Qué puedo estudiar aquí?</small></h2>
                 <ul class="sections list-inline text-justify">
                     {% for career in campus.careers %}
-                    <li class="active h2"><a style="color:rgba(0,0,0,0.7);" href="{{url_for('career_at_university_page',university=campus.university.name.replace(' ', '-'),career=career.career.name.replace(' ','-'))}}">{{career.career.name}}</a></li>
+                    <li class="active h2"><a style="color:rgba(0,0,0,0.7);" href="{{url_for('index.career_at_university_page',university=campus.university.name.replace(' ', '-'),career=career.career.name.replace(' ','-'))}}">{{career.career.name}}</a></li>
                     {% endfor %}
                 </ul>
             </div>
