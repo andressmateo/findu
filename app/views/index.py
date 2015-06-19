@@ -39,7 +39,7 @@ def admin_link():
     if tools.check_log():
         return tools.check_log()
     else:
-        return render_template("panel_base.html")
+        return render_template("panel/base.html")
 
 @mod.route("/universidades")
 def universities():

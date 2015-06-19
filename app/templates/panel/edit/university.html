@@ -1,13 +1,37 @@
-{% extends "list_university.html" %}
+{% extends "panel/list/list_university.html" %}
 {% block body_panel %}
 
 <script>
-athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
+athene.controller('editUniversityCtrl', function ($scope, $modal, $http) {
 
-  $scope.add = function () {
-    $http.get('/panel/add_university', {
+    $scope.university_name = "{{university.name}}";
+    $scope.university_description = "{{university.description}}";
+    $scope.university_logo = "{{university.logo}}";
+    $scope.university_type = "{{if_none(university.type,'')}}";
+    $scope.university_motto = "{{if_none(university.motto,'')}}";
+    $scope.university_established = "{{if_none(university.established,'')}}";
+    $scope.university_principal = "{{if_none(university.principal,'')}}";
+    $scope.university_students = "{{if_none(university.students,'')}}";
+    $scope.university_web = "{{if_none(university.web_site,'')}}";
+    $scope.university_background = "{{if_none(university.background,'')}}";
+    $scope.university_address = "{{if_none(university.address,'')}}";
+    $scope.university_accredited = "{{if_none(university.accredited,False)}}";
+    $scope.university_facebook = "{{if_none(university.facebook,'')}}";
+    $scope.university_twitter = "{{if_none(university.twitter,'')}}";
+
+    $scope.edit = function (id) {
+
+    if($scope.university_students==''){
+        $scope.university_students = -1;
+    }
+    if($scope.university_established==''){
+        $scope.university_established = -1;
+    }
+
+    $http.get('/panel/edit_university', {
       params: {
         method : 'POST',
+        id: id,
         name: $scope.university_name,
         description: $scope.university_description,
         logo: $scope.university_logo,
@@ -41,6 +65,7 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
       }
     });
   };
+
 });
 </script>
 
@@ -78,9 +103,10 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
     </div>
 </script>
 
-<h2 class="text-center">Record a new University</h2>
-<form class="form-horizontal" role="form" action="" method="post" ng-controller="addUniversityCtrl">
-    <div class="form-group">
+<h3 class="text-center">Edit university: <i>{{university.name}}</i></h3>
+<form class="form-horizontal" role="form" action=""
+        method="post" ng-controller="editUniversityCtrl">
+<div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Name *</label>
         <div class="col-sm-9">
             <input name="name" type="name" class="form-control" id="inputName" ng-model="university_name"
@@ -154,7 +180,7 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
     <div class="form-group">
         <label class="col-sm-2 control-label">Background</label>
         <div class="col-sm-9">
-            <input name="background" type="url" class="form-control" ng-model="university_background"
+            <input name="background" class="form-control" ng-model="university_background"
                    placeholder="URL of an image big and pretty to be the background of the university's page">
         </div>
     </div>
@@ -193,8 +219,8 @@ athene.controller('addUniversityCtrl', function ($scope, $modal, $http) {
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button ng-click="add()" class="btn btn-info">
-                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Add</button>
+            <button class="btn btn-info btn-sm" ng-click="edit({{university.id}})">
+                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save changes</button>
         </div>
     </div>
 </form>

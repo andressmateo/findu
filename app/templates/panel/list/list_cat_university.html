@@ -1,20 +1,19 @@
-{% extends "panel_base.html" %}
-
+{% extends "panel/base.html" %}
 
 {% block body_panel %}
 {% endblock %}
 
 {% block list_panel %}
-<b>Campuses</b>
+<b>Careers At University</b>
 <ul class="list-group">
-{% for campus in campuses %}
+{% for cat in cats_university %}
     <li class="list-group-item">
-    <a href="{{ url_for('index.panel') }}/view_campus/{{campus.id}}">
-    {{campus.campus_name}}
+    <a href="{{ url_for('index.panel') }}/view_cat_university/{{cat.id}}">
+    {{cat.career.name}} - {{cat.university.name}}
     </a></li>
 {% endfor %}
 </ul>
-<form action="{{ url_for('index.panel') }}/add_campus">
+<form action="{{ url_for('index.panel') }}/add_cat_university">
     <button type="submit" class="btn btn-primary">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add</button>
 </form>

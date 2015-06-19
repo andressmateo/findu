@@ -5,81 +5,81 @@ import json
 mod = Blueprint('panel', __name__, url_prefix='/panel')
 @mod.route("/")
 def panel():
-    return render_template("panel_base.html")
+    return render_template("panel/base.html")
 
 @mod.route("/list_university")
 def list_university():
     universities = db.session.query(models.University).all()
-    return render_template("list_university.html", universities = universities)
+    return render_template("panel/list/list_university.html", universities = universities)
 
 
 @mod.route("/list_career")
 def list_career():
     careers = db.session.query(models.Career).all()
-    return render_template("list_career.html", careers = careers)
+    return render_template("panel/list/list_career.html", careers = careers)
 
 
 @mod.route("/list_name")
 def list_name():
     names = db.session.query(models.OtherName).all()
-    return render_template("list_name.html", names = names)
+    return render_template("panel/list/list_name.html", names = names)
 
 
 @mod.route("/list_campus")
 def list_campus():
     campuses = db.session.query(models.UniversityHeadquarter).all()
-    return render_template("list_campus.html", campuses = campuses)
+    return render_template("panel/list/list_campus.html", campuses = campuses)
 
 @mod.route("/list_knowledge_area")
 def list_knowledge_area():
     knowledges = db.session.query(models.KnowledgeArea).all()
-    return render_template("list_knowledge_area.html", knowledges = knowledges)
+    return render_template("panel/list/list_knowledge_area.html", knowledges = knowledges)
 
 #cat_university for career_at_university
 @mod.route("/list_cat_university")
 def list_cat_university():
     cats_university = db.session.query(models.CareerAtUniversity).all()
-    return render_template("list_cat_university.html", cats_university = cats_university)
+    return render_template("panel/list/list_cat_university.html", cats_university = cats_university)
 
 @mod.route("/view_university/<university>")
 def view_university(university):
     u = db.session.query(models.University).filter_by(id = university)
     universities = db.session.query(models.University).all()
-    return render_template("view_university.html",university=u[0], universities = universities)
+    return render_template("panel/view/view_university.html",university=u[0], universities = universities)
 
 
 @mod.route("/view_career/<career>")
 def view_career(career):
     c = db.session.query(models.Career).filter_by(id = career)
     careers = db.session.query(models.Career).all()
-    return render_template("view_career.html",career=c[0], careers = careers)
+    return render_template("panel/view/view_career.html",career=c[0], careers = careers)
 
 @mod.route("/view_name/<name>")
 def view_name(name):
     n = db.session.query(models.OtherName).filter_by(name = name)
     names = db.session.query(models.OtherName).all()
-    return render_template("view_name.html",name=n[0], names = names)
+    return render_template("panel/view/view_name.html",name=n[0], names = names)
 
 
 @mod.route("/view_campus/<campus>")
 def view_campus(campus):
     n = db.session.query(models.UniversityHeadquarter).filter_by(id = campus)
     campuses = db.session.query(models.UniversityHeadquarter).all()
-    return render_template("view_campus.html",campus=n[0], campuses = campuses)
+    return render_template("panel/view/view_campus.html",campus=n[0], campuses = campuses)
 
 
 @mod.route("/view_cat_university/<cat_university>")
 def view_cat_university(cat_university):
     n = db.session.query(models.CareerAtUniversity).filter_by(id = cat_university)
     cats_university = db.session.query(models.CareerAtUniversity).all()
-    return render_template("view_cat_university.html",cat_university=n[0], cats_university = cats_university)
+    return render_template("panel/view/view_cat_university.html",cat_university=n[0], cats_university = cats_university)
 
 
 @mod.route("/view_knowledge_area/<knowledge_area>")
 def view_knowledge_area(knowledge_area):
     k = db.session.query(models.KnowledgeArea).filter_by(id = knowledge_area)
     knowledges = db.session.query(models.KnowledgeArea).all()
-    return render_template("view_knowledge_area.html",knowledge=k[0],  knowledges = knowledges)
+    return render_template("panel/view/view_knowledge_area.html",knowledge=k[0],  knowledges = knowledges)
 
 
 @mod.route("/add_university", methods=['POST', 'GET'])
@@ -120,7 +120,7 @@ def add_university():
             return str(0)
     else:
         universities = db.session.query(models.University).all()
-        return render_template("form_university.html",universities=universities)
+        return render_template("panel/form/form_university.html",universities=universities)
 
 @mod.route("/add_career", methods=['POST', 'GET'])
 def add_career():
@@ -140,7 +140,7 @@ def add_career():
     else:
         knowledges = db.session.query(models.KnowledgeArea).all()
         careers = db.session.query(models.Career).all()
-        return render_template("form_career.html",careers=careers, knowledges = knowledges)
+        return render_template("panel/form/form_career.html",careers=careers, knowledges = knowledges)
 
 
 @mod.route("/add_name", methods=['POST', 'GET'])
@@ -156,7 +156,7 @@ def add_name():
             return str(0)
     else:
         names = db.session.query(models.OtherName).all()
-        return render_template("form_name.html",names=names,  data=util.select_university_data())
+        return render_template("panel/form/form_name.html",names=names,  data=util.select_university_data())
 
 
 @mod.route("/add_campus", methods=['POST', 'GET'])
@@ -172,7 +172,7 @@ def add_campus():
 
     else:
         campuses = db.session.query(models.UniversityHeadquarter).all()
-        return render_template("form_campus.html", campuses=campuses,  data=util.select_university_data())
+        return render_template("panel/form/form_campus.html", campuses=campuses,  data=util.select_university_data())
 
 
 @mod.route("/add_cat_university", methods=['POST', 'GET'])
@@ -200,7 +200,7 @@ def add_cat_university():
          #   return str(e)
     else:
         cats_university = db.session.query(models.CareerAtUniversity).all()
-        return render_template("form_cat_university.html",cats_university=cats_university,
+        return render_template("panel/form/form_cat_university.html",cats_university=cats_university,
                                places=util.select_place_data(), careers=util.select_career_data())
 
 @mod.route("/add_knowledge_area", methods=['POST', 'GET'])
@@ -213,14 +213,14 @@ def add_knowledge_area():
         return str(1)
     else:
         knowledges = db.session.query(models.KnowledgeArea).all()
-        return render_template("form_knowledge_area.html",knowledges=knowledges)
+        return render_template("panel/form/form_knowledge_area.html",knowledges=knowledges)
 
 
 @mod.route("/edit_university/<university>")
 def edit_university(university):
     u = db.session.query(models.University).filter_by(id = university)
     universities = db.session.query(models.University).all()
-    return render_template("edit_university.html",university=u[0], universities = universities)
+    return render_template("panel/edit/university.html",university=u[0], universities = universities)
 
 @mod.route("/edit_university", methods=['POST', 'GET'])
 def save_changes_university():
@@ -272,8 +272,8 @@ def edit_career(career):
     u = db.session.query(models.Career).filter_by(id = career)
     careers = db.session.query(models.Career).all()
     knowledges = db.session.query(models.KnowledgeArea).all()
-    return render_template("edit_career.html",career=u[0], careers = careers, knowledges = knowledges)
-    #return render_template("edit_career.html",career=u[0], careers = careers)
+    return render_template("panel/edit/career.html",career=u[0], careers = careers, knowledges = knowledges)
+    #return render_template("career.html",career=u[0], careers = careers)
 
 
 @mod.route("/edit_career", methods=['POST', 'GET'])
@@ -303,7 +303,7 @@ def save_changes_career():
 def edit_campus(campus):
     u = db.session.query(models.UniversityHeadquarter).filter_by(id = campus)
     campuses = db.session.query(models.UniversityHeadquarter).all()
-    return render_template("edit_campus.html",campus=u[0], campuses = campuses, data=util.select_university_data())
+    return render_template("panel/edit/campus.html",campus=u[0], campuses = campuses, data=util.select_university_data())
 
 
 @mod.route("/edit_campus", methods=['POST', 'GET'])
@@ -323,7 +323,7 @@ def save_changes_campus():
 def edit_cat_university(cat_university):
     u = db.session.query(models.CareerAtUniversity).filter_by(id = cat_university)[0]
     cats_university = db.session.query(models.CareerAtUniversity).all()
-    return render_template("edit_cat_university.html",cat_university=u[0],cats_university = cats_university,
+    return render_template("panel/edit/catUniversity.html",cat_university=u[0],cats_university = cats_university,
                            places=util.select_place_data(), careers=util.select_career_data())
 
 
@@ -343,7 +343,7 @@ def save_changes_cat_university():
 def edit_knowledge_area(knowledge_area):
     k = db.session.query(models.KnowledgeArea).filter_by(id = knowledge_area)
     knowledges = db.session.query(models.KnowledgeArea).all()
-    return render_template("edit_knowledge_area.html",knowledge=k[0],knowledges = knowledges)
+    return render_template("panel/edit/knowledgeArea.html",knowledge=k[0],knowledges = knowledges)
 
 
 @mod.route("/edit_knowledge_area", methods=['POST', 'GET'])
