@@ -6,7 +6,7 @@ from flask import render_template, redirect, session, url_for, request, json
 
 from app import app, db, tools
 from data import models
-from api import api_search, template_global, json_answers
+#from rest import api_search, template_global, json_answers
 import config
 
 
