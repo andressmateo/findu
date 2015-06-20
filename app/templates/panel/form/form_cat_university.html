@@ -1,0 +1,147 @@
+{% extends "panel/list/list_cat_university.html" %}
+{% block body_panel %}
+<script>
+athene.controller('addCatUniversityCtrl', function ($scope, $modal, $http) {
+
+$scope.campus_selections = []
+$scope.select_campus = function (id) {
+    is = false;
+    for (i=0;i<$scope.campus_selections.length;i++){
+        if($scope.campus_selections[i]==id){
+            var index = $scope.campus_selections.indexOf(id);
+            $scope.campus_selections.splice(index, 1);
+            is = true;
+            break;
+        }
+    }
+    if(!is){
+        $scope.campus_selections.push(id);
+    }
+
+};
+
+  $scope.add = function () {
+  var jsonSelections = JSON.stringify($scope.campus_selections);
+    $http.get('/panel/add_cat_university', {
+      params: {
+        action: 'add',
+        places: jsonSelections,
+        university_id: $scope.university_id,
+        description: $scope.description,
+        career_id: $scope.career_id,
+      }
+    }).then(function(response){
+          $scope.openStatusModal(response.data);
+    });
+  };
+$scope.getPlaces = function () {
+$scope.places = [];
+  $http.get('/panel/get_places', {
+      params: {
+        id: $scope.university_id
+      }
+    }).then(function(response){
+    if(response.data!="Null"){
+      return response.data.places.map(function(item){
+        p = {name:item.name, id:item.id};
+        $scope.places.push(p);
+      });
+    }
+    });
+};
+
+    $scope.openStatusModal = function (status) {
+    if(status=='0'){
+      template = 'fail.html'
+    }else if(status=='1'){
+      template = 'ok.html'
+    }
+    var modalInstance = $modal.open({
+      templateUrl: template,
+      controller: 'OkModalCtrl',
+      resolve: {
+      }
+    });
+  };
+});
+</script>
+
+<script type="text/ng-template" id="ok.html">
+    <div class="modal-header modal-success">
+        <h3 class="modal-title modal-success">
+             <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                Successful
+        </h3>
+    </div>
+    <div class="modal-body">
+        The operation was executed successfully :D
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-success btn-sm" ng-click="close('cat')">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="fail.html">
+    <div class="modal-header modal-danger">
+        <h3 class="modal-title modal-danger">
+             <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                ERROR
+        </h3>
+    </div>
+    <div class="modal-body">
+        An error occurred while the operation was executed
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-danger btn-sm" ng-click="close()">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+<h2 class="text-center">Add a new Career to a University</h2>
+<form class="form-horizontal" role="form"  method="post" ng-controller="addCatUniversityCtrl">
+    <div class="form-group">
+        <label for="selectName" class="col-sm-2 control-label">University</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="selectName" name="university_id" ng-model="university_id" ng-change="getPlaces()">
+                {% for university in universities %}
+                <option value="{{ university.id }}">{{ university.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="selectName" class="col-sm-2 control-label">Career</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="selectCarrer" name="career_id" ng-model="career_id">
+                {% for career in careers %}
+                <option value="{{ career.id }}">{{ career.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Places</label>
+        <div class="col-sm-9">
+            <div ng-repeat="place in places">
+                <input type="checkbox" name="place_id" ng-model="campus" ng-change="select_campus({{'{{ place.id }}'}})" value="{{'{{ place.id }}'}}"/>{{'{{ place.name }}'}}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="textareaDescription" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-9">
+            <textarea name="description" id="textareaDescription" class="form-control" rows="3" ng-model="description"
+                      placeholder="How is the Career in this University?" required></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button ng-click="add()" class="btn btn-info">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Add</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -32,7 +32,7 @@
                 <h2>Lugares</h2>
                 <ul class="sections list-inline text-justify">
                 {% for campus in careers %}
-                    <li class="active h2"><a style="color:rgba(0,0,0,0.7);" href="{{url_for('campus_page',university=campus.place.university.name.replace(' ', '-'),campus=campus.place.campus_name.replace(' ','-'))}}">{{campus.place.campus_name}}</a></li>
+                    <li class="active h2"><a style="color:rgba(0,0,0,0.7);" href="{{url_for('index.campus_page',university=campus.place.university.name.replace(' ', '-'),campus=campus.place.campus_name.replace(' ','-'))}}">{{campus.place.campus_name}}</a></li>
                 {% endfor %}
                 </ul>
             </div>

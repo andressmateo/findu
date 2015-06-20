@@ -1,0 +1,93 @@
+{% extends "panel/list/list_knowledge_area.html" %}
+{% block body_panel %}
+<script>
+athene.controller('addCareerCtrl', function ($scope, $modal, $http) {
+
+  $scope.add = function () {
+    $http.get('/panel/add_knowledge_area', {
+      params: {
+        method : 'POST',
+        name: $scope.know_name,
+        definition: $scope.know_definition,
+      }
+    }).then(function(response){
+          $scope.openStatusModal(response.data);
+    });
+  };
+
+    $scope.openStatusModal = function (status) {
+    if(status=='0'){
+      template = 'fail.html'
+    }else if(status=='1'){
+      template = 'ok.html'
+    }
+    var modalInstance = $modal.open({
+      templateUrl: template,
+      controller: 'OkModalCtrl',
+      resolve: {
+      }
+    });
+  };
+});
+</script>
+
+<script type="text/ng-template" id="ok.html">
+    <div class="modal-header modal-success">
+        <h3 class="modal-title modal-success">
+             <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                Successful
+        </h3>
+    </div>
+    <div class="modal-body">
+        The operation was executed successfully :D
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-success btn-sm" ng-click="close('know')">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="fail.html">
+    <div class="modal-header modal-danger">
+        <h3 class="modal-title modal-danger">
+             <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                ERROR
+        </h3>
+    </div>
+    <div class="modal-body">
+        An error occurred while the operation was executed
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-danger btn-sm" ng-click="close()">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+<h2 class="text-center" xmlns="">Record a new Knowledge Area</h2>
+<form class="form-horizontal" role="form" action="" method="post" ng-controller="addCareerCtrl">
+    <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Name *</label>
+        <div class="col-sm-9">
+            <input name="name" type="name" class="form-control" id="inputName" ng-model="know_name"
+                   placeholder="Career Name" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Definition *</label>
+        <div class="col-sm-9">
+            <textarea name="definition" class="form-control" rows="3" ng-model="know_definition"
+                      placeholder="Knowledge Area description" required></textarea> <br/>
+            * <i>For associate the knowledge area to a Career, you should do it from <a href="{{ url_for('panel') }}/list_career">Career</a></i>
+        </div>
+        <br/>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button ng-click="add()" class="btn btn-info">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Add</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

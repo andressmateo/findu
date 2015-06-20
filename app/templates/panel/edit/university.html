@@ -1,0 +1,227 @@
+{% extends "panel/list/list_university.html" %}
+{% block body_panel %}
+
+<script>
+athene.controller('editUniversityCtrl', function ($scope, $modal, $http) {
+
+    $scope.university_name = "{{university.name}}";
+    $scope.university_description = "{{university.description}}";
+    $scope.university_logo = "{{university.logo}}";
+    $scope.university_type = "{{if_none(university.type,'')}}";
+    $scope.university_motto = "{{if_none(university.motto,'')}}";
+    $scope.university_established = "{{if_none(university.established,'')}}";
+    $scope.university_principal = "{{if_none(university.principal,'')}}";
+    $scope.university_students = "{{if_none(university.students,'')}}";
+    $scope.university_web = "{{if_none(university.web_site,'')}}";
+    $scope.university_background = "{{if_none(university.background,'')}}";
+    $scope.university_address = "{{if_none(university.address,'')}}";
+    $scope.university_accredited = "{{if_none(university.accredited,False)}}";
+    $scope.university_facebook = "{{if_none(university.facebook,'')}}";
+    $scope.university_twitter = "{{if_none(university.twitter,'')}}";
+
+    $scope.edit = function (id) {
+
+    if($scope.university_students==''){
+        $scope.university_students = -1;
+    }
+    if($scope.university_established==''){
+        $scope.university_established = -1;
+    }
+
+    $http.get('/panel/edit_university', {
+      params: {
+        method : 'POST',
+        id: id,
+        name: $scope.university_name,
+        description: $scope.university_description,
+        logo: $scope.university_logo,
+        type: $scope.university_type,
+        motto: $scope.university_motto,
+        established: $scope.university_established,
+        principal: $scope.university_principal,
+        students: $scope.university_students,
+        web : $scope.university_web,
+        background : $scope.university_background,
+        address : $scope.university_address,
+        accredited : $scope.university_accredited,
+        facebook : $scope.university_facebook,
+        twitter : $scope.university_twitter
+      }
+    }).then(function(response){
+          $scope.openStatusModal(response.data);
+    });
+  };
+
+    $scope.openStatusModal = function (status) {
+    if(status=='0'){
+      template = 'fail.html'
+    }else if(status=='1'){
+      template = 'ok.html'
+    }
+    var modalInstance = $modal.open({
+      templateUrl: template,
+      controller: 'OkModalCtrl',
+      resolve: {
+      }
+    });
+  };
+
+});
+</script>
+
+<script type="text/ng-template" id="ok.html">
+    <div class="modal-header modal-success">
+        <h3 class="modal-title modal-success">
+             <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                Successful
+        </h3>
+    </div>
+    <div class="modal-body">
+        The operation was executed successfully :D
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-success btn-sm" ng-click="close('university')">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="fail.html">
+    <div class="modal-header modal-danger">
+        <h3 class="modal-title modal-danger">
+             <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                ERROR
+        </h3>
+    </div>
+    <div class="modal-body">
+        An error occurred while the operation was executed
+    </div>
+    <div class="modal-footer">
+         <button class="btn btn-danger btn-sm" ng-click="close()">
+             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ok
+         </button>
+    </div>
+</script>
+
+<h3 class="text-center">Edit university: <i>{{university.name}}</i></h3>
+<form class="form-horizontal" role="form" action=""
+        method="post" ng-controller="editUniversityCtrl">
+<div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Name *</label>
+        <div class="col-sm-9">
+            <input name="name" type="name" class="form-control" id="inputName" ng-model="university_name"
+                   placeholder="University Name" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="textareaDescription" class="col-sm-2 control-label">Description *</label>
+        <div class="col-sm-9">
+            <textarea name="description"id="textareaDescription"class="form-control" rows="3"
+                      ng-model="university_description"
+                      placeholder="University Description" required></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Logo (url) *</label>
+        <div class="col-sm-9">
+            <input name="logo" type="url" class="form-control" ng-model="university_logo"
+                   placeholder="URL of the University Logo" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Type</label>
+        <div class="col-sm-9">
+            <label class="radio-inline">
+              <input type="radio" name="type" ng-model="university_type" value="PUBLIC"> PUBLIC
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="type" ng-model="university_type" value="PRIVATE"> PRIVATE
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="type" ng-model="university_type" value="SEMI-PUBLIC"> SEMI-PUBLIC
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Motto</label>
+        <div class="col-sm-9">
+            <input name="motto" type="text" class="form-control"  ng-model="university_motto"
+                   placeholder="University's Motto">
+        </div>
+    </div>
+     <div class="form-group">
+        <label class="col-sm-2 control-label">Established</label>
+        <div class="col-sm-9">
+            <input name="established" type="text" class="form-control"  ng-model="university_established"
+                   placeholder="Date of foundation of the University">
+        </div>
+    </div>
+     <div class="form-group">
+        <label class="col-sm-2 control-label">Principal</label>
+        <div class="col-sm-9">
+            <input name="principal" type="text" class="form-control" ng-model="university_principal"
+                   placeholder="Principal of the University">
+        </div>
+    </div>
+     <div class="form-group">
+        <label class="col-sm-2 control-label">Students</label>
+        <div class="col-sm-9">
+            <input name="logo" type="text" class="form-control"  ng-model="university_students"
+                   placeholder="Number of student in the university">
+        </div>
+    </div>
+     <div class="form-group">
+        <label class="col-sm-2 control-label">Website</label>
+        <div class="col-sm-9">
+            <input name="web" type="url" class="form-control" ng-model="university_web"
+                   placeholder="URL of the university's website">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Background</label>
+        <div class="col-sm-9">
+            <input name="background" class="form-control" ng-model="university_background"
+                   placeholder="URL of an image big and pretty to be the background of the university's page">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Address</label>
+        <div class="col-sm-9">
+            <input name="address" type="text" class="form-control" ng-model="university_address"
+                   placeholder="University's address">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Accredited</label>
+        <div class="col-sm-9">
+            <input type="checkbox" ng-model="university_accredited" ng-true-value="True">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Facebook</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-addon">@</span>
+                    <input type="text" class="form-control" placeholder="Username of the university on Facebook"
+                            ng-model="university_facebook">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Twitter</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-addon">@</span>
+                    <input type="text" class="form-control" placeholder="Currently is not available"
+                           ng-model="university_twitter"disabled>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-info btn-sm" ng-click="edit({{university.id}})">
+                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save changes</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

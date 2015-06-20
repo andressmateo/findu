@@ -1,0 +1,36 @@
+{% extends "panel/base.html" %}
+
+
+{% block body_panel %}
+{% endblock %}
+
+{% block list_panel %}
+
+<script>
+athene.controller('listCareerCtrl', function ($scope, $modal, $http) {
+    $scope.careers = [];
+    {% for career in careers %}
+        career = {name: '{{career.name}}', id: '{{career.id}}' };
+        $scope.careers.push(career);
+    {% endfor %}
+});
+
+</script>
+<b>Careers</b>
+<div style="width:100%; height:450px; overflow: scroll;" ng-controller="listCareerCtrl">
+    <input type="text" class="form-control" ng-model="career_question"
+           placeholder="Search for some Career">
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="career in careers | searchInSomeList:career_question">
+            <a href="{{ url_for('index.panel') }}/view_career/{{'{{career.id}}'}}">
+                {{'{{career.name}}'}}
+            </a></li>
+    </ul>
+</div>
+<form action="{{ url_for('index.panel') }}/add_career">
+    <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+    </button>
+</form>
+
+{% endblock %}

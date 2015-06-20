@@ -165,7 +165,7 @@
                     <div class="sedes">
                     {% for place in university.places.all() %}
                         <div class="slide">
-                            <a href="{{url_for('campus_page',university=university.name.replace(' ', '-'),
+                            <a href="{{url_for('index.campus_page',university=university.name.replace(' ', '-'),
                             campus=place.campus_name.replace(' ', '-'))}}">
                                 <div class="size-sixteen-nine">
                                     <div class="size-fully list-image-bg" style="background:url({{if_none(place.background,'http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-116915.jpg')}});box-shadow:none;">
@@ -192,11 +192,11 @@
                             <div class="size-one-one">
                                 <div class="size-fully"
                                      style="background:url({{if_none(career.icon,'https://cdn4.iconfinder.com/data/icons/medical-9/512/DNA-256.png')}});">
-                                    <a href="{{ url_for('careers_page',career=career.name.replace(' ', '-'))}}" class="btn btn-lg"
+                                    <a href="{{ url_for('index.careers_page',career=career.name.replace(' ', '-'))}}" class="btn btn-lg"
                                         style="position: absolute;right: 0%;bottom: 0%;">
                                         <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
                                     </a>
-                                    <a href="{{url_for('career_at_university_page',university=university.name.replace(' ', '-'),career=career.name.replace(' ', '-'))}}"
+                                    <a href="{{url_for('index.career_at_university_page',university=university.name.replace(' ', '-'),career=career.name.replace(' ', '-'))}}"
                                        style="position: absolute;left: 0%;bottom: 0%;" class="btn btn-lg">
                                         <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
                                     </a>

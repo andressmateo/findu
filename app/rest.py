@@ -11,7 +11,7 @@ class ApiSearch(Resource):
                 "result": [],
                 "associated": [],
             }
-        
+
             u = models.University.query.filter(unaccent(func.lower(models.University.name))==(question)).all()
             if (u):
                 query["result"] = u[0]
