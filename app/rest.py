@@ -1,28 +1,22 @@
 from flask_restful import Resource, Api
 from flask import request
-from app import db, api
+from app import models, api
+import unicodedata
 
-#Token
+
 class ApiSearch(Resource):
-    def get(self, question=None):
-        def search(question, type='a'):
-            question = flat_text(question)
-            query = {
-                "result": [],
-                "associated": [],
-            }
-
-            u = models.University.query.filter(unaccent(func.lower(models.University.name))==(question)).all()
-            if (u):
-                query["result"] = u[0]
-            c = models.Career.query.filter(unaccent(func.lower(models.Career.name))==(question)).all()
-            if (c):
-                query["result"] = c[0]
-            k = models.KnowledgeArea.query.filter(unaccent(func.lower(models.KnowledgeArea.name)).contains(question)).all()
-            if (k):
-                query["result"] = k[0]
-            return query
-        return {"status": "OK"}
+    def get(self):
+        if "question" in request.args:
+            question = request.args.get('question')
+            universities = models.University.query.filter(models.University.name.ilike("%"+question+"%")).all()
+            other = models.OtherName.query.filter(models.OtherName.name.ilike(question)).all()
+            for o in other:
+                universities.add(o)
+            careers = models.Career.query.filter(models.Career.name.ilike('%'+question+'%')).all()
+            know = models.KnowledgeArea.query.filter(models.KnowledgeArea.name.ilike(question)).all()
+            return {"status":"ok","universities":question}
+        else:
+            return {"status": "error","error":"Not enough parameters"}
 
 
 
