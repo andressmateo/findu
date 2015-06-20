@@ -9,7 +9,7 @@ mod = Blueprint('index', __name__, url_prefix=None)
 
 @mod.route('/')
 def index():
-    return render_template("main.html")
+    return render_template("index.html")
 
 @mod.route("/contacto")
 def contact():
@@ -25,7 +25,7 @@ def login():
             return redirect(url_for("index.admin_link"))
         else:
             return 'Invalid username/password'
-    return render_template('login.html')
+    return render_template('oldViews/login.html')
 
 
 @mod.route('/logout', methods=['POST', 'GET'])
@@ -45,14 +45,14 @@ def admin_link():
 def universities():
     retvar = models.University.query.all()
     random.shuffle(retvar)
-    return render_template("universities.html", universities=retvar)
+    return render_template("oldViews/universities.html", universities=retvar)
 
 
 @mod.route("/carreras")
 def careers():
     retvar = models.Career.query.all()
     random.shuffle(retvar)
-    return render_template("careers.html", careers=retvar)
+    return render_template("oldViews/careers.html", careers=retvar)
 
 
 @mod.route("/universidades/<university>")
@@ -67,7 +67,7 @@ def universities_page(university):
     if len(u) <= 0:
         return redirect(url_for("buscar", busqueda=university))
     else:
-        return render_template("university.html", university=u[0])
+        return render_template("oldViews/university.html", university=u[0])
 
 
 @mod.route("/carreras/<career>")
@@ -80,7 +80,7 @@ def careers_page(career):
     if len(c) <= 0:
         return redirect(url_for("buscar", busqueda=career))
     else:
-        return render_template("career.html", career=c[0])
+        return render_template("oldViews/career.html", career=c[0])
 
 
 @mod.route("/universidades/<university>/carreras/<career>")
@@ -98,7 +98,7 @@ def career_at_university_page(university, career):
     for sede in s:
         if sede.place.university.name == university:
             r.append(sede)
-    return render_template("career_at_university.html", careers=r)
+    return render_template("oldViews/career_at_university.html", careers=r)
 
 
 @mod.route("/universidades/<university>/sedes/<campus>")
@@ -111,5 +111,5 @@ def campus_page(university, campus):
     c = models.UniversityHeadquarter.query.filter_by(campus_name=campus).all()
     for campus in c:
         if campus.university.name == university:
-            return render_template("campus.html", campus=campus)
+            return render_template("oldViews/campus.html", campus=campus)
     return redirect(url_for("404"))

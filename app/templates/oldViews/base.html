@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="ui.bootstrap.athene">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Athene</title>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+    <script src="{{ url_for('static', filename='js/athene.js') }}"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/hover.css/1.0.8/css/hover-min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.old.css') }}">
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    <!--Material Design for Bootstrap
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.material-design/0.3.0/css/material-wfont.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.material-design/0.3.0/css/material.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.material-design/0.3.0/css/ripples.min.css">
+    <script src="//cdn.jsdelivr.net/bootstrap.material-design/0.3.0/js/material.min.js"></script>
+    <script src="//cdn.jsdelivr.net/bootstrap.material-design/0.3.0/js/ripples.min.js"></script>
+-->
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <nav id="topNavBar" class="navbar navbar-default navbar-fixed-top hollow">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <strong class="navbar-brand">Athene</strong>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li {% if active_page == "main" %} class="active" {% endif %} >
+                        <a href="{{url_for('index.index')}}">Inicio<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li><a href="{{url_for("index.universities")}}">Universidades</a>
+                    </li>
+                    <li><a href="{{url_for("index.careers")}}">Carreras</a>
+                    </li>
+                    <li><a href="#">Examen</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Otros<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{url_for('panel.panel')}}">Panel</a>
+                            </li>
+                            <li><a href="{{url_for('index.admin_link')}}">Admin Panel</a>
+                            </li>
+                            <li><a href="#">API</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="{{url_for('search.buscar_index')}}">Busqueda Avanzada</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="#">I Don't Know</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left search-container" role="search" action="{{url_for('search.buscar_index')}}"
+                      method="post" ng-controller="TypeaheadCtrl">
+                    <input ng-model="asyncSelected" class="search-box" id="search-box"
+                           type="text" name="search" placeholder="¿Qué quieres buscar?"
+                           typeahead="possibility for possibility in getPossibilities($viewValue)"
+                           typeahead-loading="loadingResults"/>
+                    <label for="search-box"><span style="color:black;" class="glyphicon glyphicon-search search-icon"></span>
+                    </label>
+                    <i ng-show="loadingResults" class="glyphicon glyphicon-refresh"></i>
+                    <input type="submit" id="search-submit" />
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <div class="row hidden-xs" style="padding-top:8px;"><a href="#" class="btn btn-danger">Sign Up</a>
+                        </div>
+                    </li>
+                    <li class="dropdown hidden">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a>
+                            </li>
+                            <li><a href="#">Another action</a>
+                            </li>
+                            <li><a href="#">Something else here</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{url_for('index.login')}}">Log in</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% block body %}{% endblock %}
+    <footer {% if active_page == "search" %} class="footerStatic "{% endif %} {% if active_page == "404" %} class="hidden"{% endif %}>
+        <div class="container links">
+            <ul class="list-inline">
+                <li role="presentation"><a href="#">Acerca de</a>
+                </li>
+                <li><a href="#">Ayuda</a>
+                </li>
+                <li><a href="#">Terminos</a>
+                </li>
+                <li><a href="#">Privacidad</a>
+                </li>
+                <li><a href="#">Copyright</a>
+                </li>
+                <li><a href="">Feedback</a>
+                </li>
+                <li><a href=""><small><sup>{Alpha}</sup></small><sub>V0.0.3</sub></a>
+                </li>
+            </ul>
+        </div>
+        <div class="container">
+            <img align="left" class="logo" height="30"
+                 src="{{ url_for('static', filename='img/logo_footer_example.png') }}"
+                 alt="Mini white logo@2x">© 2015 Antares Team. All rights reserved.
+            <br>Made by __Names__ in Medellín, Colombia.
+        </div>
+    </footer>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

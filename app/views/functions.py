@@ -4,12 +4,12 @@ from app import app, models
 @app.errorhandler(404)
 def not_found(error=""):
     print error
-    return render_template("404.html")
+    return render_template("oldViews/404.html")
 
 @app.errorhandler(500)
 def not_found(error):
     print error
-    return render_template("404.html")
+    return render_template("oldViews/404.html")
 
 @app.template_global()
 def if_none(original, remplace):

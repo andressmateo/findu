@@ -6,8 +6,8 @@ def buscar_index():
     if request.method == 'POST':
         url = "/buscar/"+request.form['search']
         return redirect(url)
-    return render_template("search.html", title=config.name)
+    return render_template("oldViews/search.html", title=config.name)
 
 @mod.route("/<busqueda>")
 def buscar(busqueda):
-    return render_template("search_list.html")
+    return render_template("oldViews/search_list.html")
