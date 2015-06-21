@@ -1,25 +1,33 @@
-from flask_restful import Resource, Api
+from flask_restful import Resource
 from flask import request
+from sqlalchemy import func
+from sqlalchemy.sql.functions import ReturnTypeFromArgs
 from app import models, api
 import unicodedata
-
 
 class ApiSearch(Resource):
     def get(self):
         if "question" in request.args:
-            question = request.args.get('question')
-            universities = models.University.query.filter(models.University.name.ilike("%"+question+"%")).all()
-            other = models.OtherName.query.filter(models.OtherName.name.ilike(question)).all()
-            for o in other:
-                universities.add(o)
-            careers = models.Career.query.filter(models.Career.name.ilike('%'+question+'%')).all()
-            know = models.KnowledgeArea.query.filter(models.KnowledgeArea.name.ilike(question)).all()
-            return {"status":"ok","universities":question}
+            question = flat_text(request.args.get('question'))
+            universities = models.University.query.filter(unaccent(func.lower(models.University.name)).
+                                                          contains(question)).all()
+            other = models.OtherName.query.filter(unaccent(func.lower(models.OtherName.name)).contains(question)).all()
+            [universities.append(o.university) for o in other]
+            careers = models.Career.query.filter(unaccent(func.lower(models.Career.name)).contains(question)).all()
+            know = models.KnowledgeArea.query.filter(unaccent(func.lower(models.KnowledgeArea.name)).
+                                                     contains(question)).all()
+            return {"status":"ok","universities":[u.dict()for u in universities],"careers":[c.dict() for c in careers]}
         else:
             return {"status": "error","error":"Not enough parameters"}
 
 
+def flat_text(s):
+    if isinstance(s, str):
+        s = s.decode("utf-8")
+    return (''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))).lower()
 
+class unaccent(ReturnTypeFromArgs):
+    pass
 
 
 class ApiUniversity(Resource):

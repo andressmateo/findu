@@ -16,13 +16,11 @@ import config
 def hello():
     return render_template("main.html", config=config)
 
-
 @app.route("/404")
 @app.errorhandler(404)
 def not_found(error=""):
     print error
     return render_template("404.html")
-
 
 @app.errorhandler(500)
 def not_found(error):
@@ -241,7 +239,7 @@ def add_university():
                 return str(0)
         else:
             universities = db.session.query(models.University).all()
-            return render_template("form_university.html",universities=universities)
+            return render_template("panel/form/form_university.html",universities=universities)
 
 
 @app.route("/panel/add_career", methods=['POST', 'GET'])

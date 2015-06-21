@@ -38,6 +38,11 @@ class University(db.Model):
     def __repr__(self):
         return "<University "+self.name+" >"
 
+    def dict(self):
+        return {'id':self.id,'name':self.name,'description':self.description,'logo':self.logo,
+                'background':self.background,'motto':self.motto,'established':self.established,'type':self.type,
+                'principal':self.principal,'students':self.students,'web_site':self.web_site,'address':self.address,
+                'accredited':self.accredited,'facebook':self.facebook,'twitter':self.twitter}
 
 class KnowledgeArea(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
@@ -80,6 +85,9 @@ class Career(db.Model):
 
     def __repr__(self):
         return "<Career "+self.name+" >"
+
+    def dict(self):
+        return {}
 
 
 class UniversityHeadquarter(db.Model):
