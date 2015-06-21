@@ -19,7 +19,7 @@ var Slider = React.createClass({
             },{
                 image:"http://lorempixel.com/580/250/nature/4",
                 align:"center",
-                title:"This is our big Tagline!",
+                title:"<i>This is our big Taglineb!</i>",
                 slogan:"Here's our small slogan."
             }
         ]}
