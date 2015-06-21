@@ -8,6 +8,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), index=True)
     password_hash = db.Column(db.String(128))
+    type = db.Column(db.String(50))
     __mapper_args__ = {
         'polymorphic_on': type,
         'polymorphic_identity': 'user',

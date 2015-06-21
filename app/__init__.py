@@ -19,9 +19,11 @@ manager = Manager(app)
 manager.add_command("db", MigrateCommand)
 auth = HTTPBasicAuth()
 
+#Models Imports
+import models
+#Views Imports
 from app import views
 from app import rest
-
 from app.views import functions
 from app.views import index
 from app.views import search
@@ -29,4 +31,5 @@ from app.views import panel
 app.register_blueprint(index.mod)
 app.register_blueprint(search.mod)
 app.register_blueprint(panel.mod)
-
+#Api Imports
+from api import auth
