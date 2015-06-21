@@ -1,9 +1,8 @@
 import random
-
 from flask import Blueprint
 from flask import render_template, redirect, session, url_for, request, json
-
 from app import models
+from flask_login import logout_user
 
 mod = Blueprint('index', __name__, url_prefix=None)
 
@@ -19,27 +18,18 @@ def contact():
 
 @mod.route('/login', methods=['POST', 'GET'])
 def login():
-    if request.method == 'POST':
-        if request.form['username'] == config.adminUser and request.form['password'] == config.adminPass:
-            session["logged"] = True
-            return redirect(url_for("index.admin_link"))
-        else:
-            return 'Invalid username/password'
     return render_template('login.html')
 
 
 @mod.route('/logout', methods=['POST', 'GET'])
 def logout():
-    session["logged"] = False
-    return redirect(url_for("hello"))
+    logout_user()
+    return redirect(url_for("index.index"))
 
 
 @mod.route("/admin")
 def admin_link():
-    if tools.check_log():
-        return tools.check_log()
-    else:
-        return render_template("panel/base.html")
+    return render_template("panel/base.html")
 
 @mod.route("/universidades")
 def universities():

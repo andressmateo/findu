@@ -25,8 +25,16 @@
         </li>
     </ul>
     <ul class="hide-on-med-and-down right">
-        <li><a href="">First Sidebar Link</a></li>
-        <li><a href="">Second Sidebar Link</a></li>
+        {% if current_user.is_anonymous() %}
+        <li><a href="{{ url_for('index.login') }}">Entrar</a></li>
+        {% else %}
+        <li><a href="#">{{ current_user.username }}</a></li>
+        {% endif %}
+        {% if current_user.is_authenticated() %}
+        <li><a href="{{ url_for('index.logout') }}">Logout</a></li>
+        {% else %}
+        <li><a href="#">Other Link</a></li>
+        {% endif %}
         <li>
             <a class="dropdown-button" href="#" data-activates="dropdown1">
                 Dropdown<i class="mdi-navigation-arrow-drop-down right"></i>

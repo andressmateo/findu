@@ -8,7 +8,8 @@ import unicodedata
 class ApiSearch(Resource):
     def get(self):
         if "question" in request.args:
-            question = flat_text(request.args.get('question'))
+            question = flat_text(
+                request.args.get('question'))
             universities = models.University.query.filter(unaccent(func.lower(models.University.name)).
                                                           contains(question)).all()
             other = models.OtherName.query.filter(unaccent(func.lower(models.OtherName.name)).contains(question)).all()
