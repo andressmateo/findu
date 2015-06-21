@@ -13,7 +13,7 @@ def index():
 
 @mod.route("/contacto")
 def contact():
-    return "No hay"
+    return render_template("contact.html")
 
 
 
@@ -25,7 +25,7 @@ def login():
             return redirect(url_for("index.admin_link"))
         else:
             return 'Invalid username/password'
-    return render_template('oldViews/login.html')
+    return render_template('login.html')
 
 
 @mod.route('/logout', methods=['POST', 'GET'])
