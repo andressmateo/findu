@@ -32,4 +32,4 @@ app.register_blueprint(index.mod)
 app.register_blueprint(search.mod)
 app.register_blueprint(panel.mod)
 #Api Imports
-from api import auth
+from api import authentication

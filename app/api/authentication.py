@@ -1,6 +1,6 @@
 from app import (app,db,auth)
 from app.models import User
-from flask import (request, abort, jsonify, url_for)
+from flask import (request, abort, jsonify, url_for,g)
 @auth.verify_password
 def verify_password(username_or_token, password):
     # first try to authenticate by token
@@ -33,7 +33,11 @@ def api_register():
 def get_user(id):
     user = User.query.get(id)
     if not user:
-        abort(400)
+        return jsonify({
+            "status":"error",
+            "error":"User not found",
+            "message":"This id doesn't have a user assigned"
+        })
     return jsonify({'username': user.username})
 
 @app.route('/api/token')
