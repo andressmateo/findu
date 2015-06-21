@@ -1,9 +1,10 @@
 from app import (db,app)
+from flask_login import UserMixin
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), index=True)
@@ -36,6 +37,18 @@ class User(db.Model):
             return None    # invalid token
         user = User.query.get(data['id'])
         return user
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
 
 class Admin(User):
     __tablename__ = 'admin'
