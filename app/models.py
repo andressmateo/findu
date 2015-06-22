@@ -112,6 +112,9 @@ class KnowledgeArea(db.Model):
     def __repr__(self):
         return "<KnowledgeArea "+self.name+" >"
 
+    def dict(self):
+        return {'id':self.id,'name':self.name,'definition':self.definition}
+
 
 related = db.Table('related', db.metadata,
     db.Column('id_career', db.Integer, db.ForeignKey('career.id')),
@@ -127,7 +130,6 @@ class Career(db.Model):
     knowledge_areas = db.relationship("KnowledgeArea", secondary=related, backref=db.backref('careers', lazy='dynamic'))
     icon = db.Column(db.Text)
     background = db.Column(db.Text)
-    #places object, places.all()
 
     def __init__(self, name, type, description, knowledge_areas=None, icon="", background=""):
         self.name = name
@@ -142,7 +144,8 @@ class Career(db.Model):
         return "<Career "+self.name+" >"
 
     def dict(self):
-        return {}
+        return {'id':self.id,'name':self.name,'type':self.type,'description':self.description,'icon':self.icon,
+                'background':self.background}
 
 
 class UniversityHeadquarter(db.Model):
@@ -166,6 +169,9 @@ class UniversityHeadquarter(db.Model):
     def __repr__(self):
         return "<Headquarter "+self.campus_name+" >"
 
+    def dict(self):
+        return {'id':self.id,'name':self.campus_name,'latitude':self.lat,'longitude':self.long,
+                'universityId':self.university_id}
 
 class OtherName(db.Model):
     name = db.Column(db.String(200), unique=True, primary_key=True)
@@ -180,6 +186,8 @@ class OtherName(db.Model):
     def __repr__(self):
         return "<Name "+self.name+" >"
 
+    def dict(self):
+        return {'name':self.name,'universityId':self.university_id}
 
 career_at_headquarter = db.Table('career_at_headquarter', db.metadata,
     db.Column('id_cat_university', db.Integer, db.ForeignKey('career_at_university.id')),
@@ -211,6 +219,10 @@ class CareerAtUniversity(db.Model):
 
     def __repr__(self):
         return "<CareerAtUniversity "+self.career.name+" >"
+
+    def dict(self):
+        return {'id':self.id,'description':self.description,'graduates':self.graduates,'price':self.price,
+                'universityId':self.university_id,'carrerId':self.career_id}
 
 
 class ImageCampus(db.Model):
